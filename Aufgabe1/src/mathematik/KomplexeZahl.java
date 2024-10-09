@@ -1,8 +1,15 @@
 package mathematik;
+
 import trigonometrie.Winkel;
 
-// TODO: Kommentare
-
+/**
+ * Klasse für Definition und Berechnung von komplexen Zahlen.
+ * @author Andreas Beznoskov,
+ *         Dinh Tuan Anh Nguyen
+ * TODO: potenzieren funktioniert nicht für negative Exponenten sowie für 0
+ *       keine Exceptions oder robuste verwendung von importierten Methoden
+ *
+ */
 public class KomplexeZahl {
     private static final KomplexeZahl ZAHL = new KomplexeZahl(1,0);
     private static final KomplexeZahl KOMPLEXE_ZAHL = new KomplexeZahl(0,1);
@@ -12,14 +19,20 @@ public class KomplexeZahl {
     private Winkel winkel;
     private double betrag;
 
+    /**
+     * Leerer default Konstruktor
+     *
+     */
     public KomplexeZahl() {
-        this.realTeil = 0;
-        this.imaginaerTeil = 0;
 
-        this.winkel = new Winkel(0);
-        this.betrag = 0;
     }
 
+    /**
+     * Konstruktor zum definieren einer komplexen Zahl anhand des realen und imaginären Teils.
+     *
+     * @param realTeil reeler Bestandteil einer komplexen Zahl
+     * @param imaginaerTeil imaginärer Bestandteil einer komplexen Zahl
+     */
     public KomplexeZahl(double realTeil, double imaginaerTeil) {
         this.realTeil = realTeil;
         this.imaginaerTeil = imaginaerTeil;
@@ -28,6 +41,12 @@ public class KomplexeZahl {
         this.betrag = betragBerechnen(realTeil, imaginaerTeil);
     }
 
+    /**
+     * Konstruktor zum definieren einer komplexen Zahl anhand des Winkels und Betrags (Vektor).
+     *
+     * @param winkel winkel des Vektors einer komplexen Zahl
+     * @param betrag betrag (= Länge) des vektors einer komplexen Zahl
+     */
     public KomplexeZahl(Winkel winkel, double betrag) {
         this.winkel = winkel;
         this.betrag = betrag;
@@ -36,62 +55,136 @@ public class KomplexeZahl {
         this.imaginaerTeil = imaginaerTeilBerechnen(betrag, winkel);
     }
 
+    /**
+     * Getter Methode für realTeil
+     *
+     * @return gibt den reelen Teil der komplexen Zahl wieder
+     */
     public double getRealTeil() {
         return realTeil;
     }
 
+    /**
+     * Getter Methode für imaginaerTeil
+     *
+     * @return gibt den imaginären Teil der komplexen Zahl wieder
+     */
     public double getImaginaerTeil() {
         return imaginaerTeil;
     }
 
+    /**
+     * Getter Methode für betrag
+     *
+     * @return gibt den Betrag des Vektors der komplexen Zahl wieder
+     */
     public double getBetrag() {
         return betrag;
     }
 
+    /**
+     * Getter Methode für winkel
+     *
+     * @return gibt den winkel als Winkel object vom Vektor der komplexen Zahl wieder
+     */
     public double getWinkelInGrad() {
         return this.winkel.getWinkelInGrad();
     }
 
+    /**
+     * Setter Methode für realTeil mit Anpassung der Vektordarstellung
+     *
+     * @param realTeil der neue realTeil
+     */
     public void setRealTeil(double realTeil) {
         this.realTeil = realTeil;
         this.betrag = betragBerechnen(this.realTeil, this.imaginaerTeil);
         this.winkel = winkelBerechnen(this.realTeil, this.imaginaerTeil);
     }
 
+    /**
+     * Setter Methode für imaginaerTeil mit Anpassung der Vektordarstellung
+     *
+     * @param imaginaerTeil der neue imaginaerTeil
+     */
     public void setImaginaerTeil(double imaginaerTeil) {
         this.imaginaerTeil = imaginaerTeil;
         this.betrag = betragBerechnen(this.realTeil, this.imaginaerTeil);
         this.winkel = winkelBerechnen(this.realTeil, this.imaginaerTeil);
     }
 
+    /**
+     * Setter Methode für betrag mit Anpassung von real- und imaginaerTeil
+     *
+     * @param betrag der neue betrag
+     */
     public void setBetrag(double betrag) {
         this.betrag = betrag;
         this.realTeil = realTeilBerechnen(this.betrag, this.winkel);
         this.imaginaerTeil = imaginaerTeilBerechnen(this.betrag, this.winkel);
     }
 
+    /**
+     * Setter Methode für winkel mit Anpassung von real- und imaginaerTeil
+     *
+     * @param winkel der neue winkel
+     */
     public void setWinkel(Winkel winkel) {
         this.winkel = winkel;
         this.realTeil = realTeilBerechnen(this.betrag, this.winkel);
         this.imaginaerTeil = imaginaerTeilBerechnen(this.betrag, this.winkel);
     }
 
+    /**
+     * berechnet den reelen Teil der komplexen Zahl anhand des Betrags und Winkels
+     *
+     * @param betrag des Vektors
+     * @param winkel des Vektors
+     * @return reeller Teil
+     */
     private double realTeilBerechnen(double betrag, Winkel winkel) {
         return betrag * Math.cos(winkel.getWinkelImBogenmass());
     }
 
+    /**
+     * berechnet den imaginären Teil der komplexen Zahl anhand des Betrags und Winkels
+     *
+     * @param betrag des Vektors
+     * @param winkel des Vektors
+     * @return imaginärer Teil
+     */
     private double imaginaerTeilBerechnen(double betrag, Winkel winkel) {
         return betrag * Math.sin(winkel.getWinkelImBogenmass());
     }
 
+    /**
+     * berechnet den Winkel vom Vektor (a,b)
+     *
+     * @param a vom Vektor
+     * @param b vom Vektor
+     * @return Winkel des Vektors
+     */
     private Winkel winkelBerechnen(double a, double b) {
         return new Winkel(Math.atan2(a, b));
     }
 
+    /**
+     * berechnet den Betrag (=Länge) vom Vektor (a,b)
+     *
+     * @param a vom Vektor
+     * @param b vom Vektor
+     * @return den Betrag des Vektors
+     */
     private double betragBerechnen(double a, double b) {
         return Math.sqrt(a * a + b * b);
     }
 
+    /**
+     * Multiplikation von der komplexen Zahl mit einer anderen komplexen Zahl k
+     *
+     * @param k beliebige komplexe Zahl
+     * @return das Produkt der Multiplikation
+     */
     public KomplexeZahl multiplizieren(KomplexeZahl k) {
         double a = this.realTeil;
         double b = this.imaginaerTeil;
@@ -104,6 +197,12 @@ public class KomplexeZahl {
         return new KomplexeZahl(neuerRealTeil, neuerImaginaerTeil);
     }
 
+    /**
+     * Division einer komplexen Zahl mit einer anderen komplexen Zahl k
+     *
+     * @param k beliebige komplexe Zahl (!= 0)
+     * @return der Quotient der Division
+     */
     public KomplexeZahl dividieren(KomplexeZahl k) {
         double a = this.realTeil;
         double b = this.imaginaerTeil;
@@ -116,6 +215,12 @@ public class KomplexeZahl {
         return new KomplexeZahl(neuerRealTeil, neuerImaginaerTeil);
     }
 
+    /**
+     * Potenzieren der komplexen Zahl mit einem beliebigen Exponenten
+     *
+     * @param exponent der Exponent
+     * @return das Ergebnis der Potenz
+     */
     public KomplexeZahl potenzieren(int exponent) {
         KomplexeZahl produkt = new KomplexeZahl(this.realTeil, this.imaginaerTeil);
 
@@ -126,6 +231,11 @@ public class KomplexeZahl {
         return produkt;
     }
 
+    /**
+     * toString() der Klasse KomplexeZahl
+     *
+     * @return gibt die komplexe Zahl als (a + bi) aus
+     */
     @Override
     public String toString() {
         return this.realTeil + " + " + imaginaerTeil + "i";
