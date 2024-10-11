@@ -4,10 +4,15 @@ import trigonometrie.Winkel;
 
 /**
  * Klasse für Definition und Berechnung von komplexen Zahlen.
+ * Jede Komplexezahl wird durch
+ *      - realTeil          (reeller Teil der komplexenZahl)
+ *      - imaginearTeil     (imaginearer Teil der komplexenZahl)
+ *      - winkel            (winkel des Vektors der komplexenZahl)
+ *      - betrag            (Betrag =Länge des Vektors der komplexenZahl)
+ * beschrieben.
+ *
  * @author Andreas Beznoskov,
  *         Dinh Tuan Anh Nguyen
- * TODO: potenzieren funktioniert nicht für negative Exponenten sowie für 0
- *       keine Exceptions oder robuste verwendung von importierten Methoden
  *
  */
 public class KomplexeZahl {
@@ -20,7 +25,7 @@ public class KomplexeZahl {
     private double betrag;
 
     /**
-     * Leerer default Konstruktor
+     * Leerer default Konstruktor.
      *
      */
     public KomplexeZahl() {
@@ -165,7 +170,7 @@ public class KomplexeZahl {
      * @return Winkel des Vektors
      */
     private Winkel winkelBerechnen(double a, double b) {
-        return new Winkel(Math.atan2(a, b));
+        return new Winkel(Math.toDegrees(Math.atan2(a, b)));
     }
 
     /**
@@ -222,13 +227,13 @@ public class KomplexeZahl {
      * @return das Ergebnis der Potenz
      */
     public KomplexeZahl potenzieren(int exponent) {
-        KomplexeZahl produkt = new KomplexeZahl(this.realTeil, this.imaginaerTeil);
+        double neuerBetrag = Math.pow(this.betrag, exponent);
 
-        for (int i = 0; i < exponent; i++) {
-            produkt.multiplizieren(this);
-        }
+        double neuerWinkelGrad = this.getWinkelInGrad() * exponent;
+        Winkel neuerWinkel = new Winkel(neuerWinkelGrad);
 
-        return produkt;
+        return new KomplexeZahl(realTeilBerechnen(neuerBetrag, neuerWinkel),
+                                imaginaerTeilBerechnen(neuerBetrag, neuerWinkel));
     }
 
     /**
