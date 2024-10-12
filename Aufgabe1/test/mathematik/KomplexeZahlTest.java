@@ -6,8 +6,6 @@ import trigonometrie.Winkel;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Ignore;
-
 class KomplexeZahlTest {
 
     @Test
