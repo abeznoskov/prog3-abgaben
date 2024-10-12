@@ -171,6 +171,12 @@ public class KomplexeZahl {
      * @return Winkel des Vektors
      */
     private Winkel winkelBerechnen(double a, double b) {
+        /*// Realteil darf nicht negative sein, da nicht durch 0 geteilt werden darf
+        if(a < 0) {
+            throw new IllegalArgumentException("Man kann nicht durch 0 teilen.");
+        }
+        Realteil kann 0 sein, aber darf man das wirklich     
+        */
         return new Winkel(Math.toDegrees(Math.atan2(b, a)));
     }
 
@@ -182,6 +188,10 @@ public class KomplexeZahl {
      * @return den Betrag des Vektors
      */
     private double betragBerechnen(double a, double b) {
+        // Exception, da man keine Wurzel einer negativen Zahl ziehen kann
+        if(Math.sqrt(a * a + b * b) < 0){
+            throw new IllegalArgumentException("Betrag kann nicht negativ sein!");
+        }
         return Math.sqrt(a * a + b * b);
     }
 

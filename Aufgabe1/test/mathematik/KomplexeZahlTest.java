@@ -6,8 +6,6 @@ import trigonometrie.Winkel;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Ignore;
-
 class KomplexeZahlTest {
 
     @Test
@@ -201,5 +199,6 @@ class KomplexeZahlTest {
         System.out.println("Imaginaerteil: " + z.getImaginaerTeil());
         System.out.println("Betrag: " + z.getBetrag());
         System.out.println("Winkel in Bogenmaß: " + Math.toRadians(z.getWinkelInGrad()));
+        System.out.println(Math.atan2(5, 0));
     }
 }
