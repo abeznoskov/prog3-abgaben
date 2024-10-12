@@ -229,8 +229,8 @@ public class KomplexeZahl {
     public KomplexeZahl potenzieren(int exponent) {
         double neuerBetrag = Math.pow(this.betrag, exponent);
 
-        double neuerWinkelGrad = this.getWinkelInGrad() * exponent;
-        Winkel neuerWinkel = new Winkel(neuerWinkelGrad);
+        double neuerWinkelBogenmass = Math.toRadians(this.getWinkelInGrad()) * exponent;
+        Winkel neuerWinkel = new Winkel(Math.toDegrees(neuerWinkelBogenmass));
 
         return new KomplexeZahl(realTeilBerechnen(neuerBetrag, neuerWinkel),
                                 imaginaerTeilBerechnen(neuerBetrag, neuerWinkel));
