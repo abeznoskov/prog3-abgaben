@@ -188,7 +188,7 @@ public class KomplexeZahl {
     private double betragBerechnen(double a, double b) {
         // Exception, da man keine Wurzel einer negativen Zahl ziehen kann
         if(Math.sqrt(a * a + b * b) < 0){
-            throw new IllegalArgumentException("Betrag kann nicht negativ sein!");
+            throw new IllegalArgumentException("Man kann keine Wurzel einer negativen Zahl ziehen!");
         }
         return Math.sqrt(a * a + b * b);
     }
