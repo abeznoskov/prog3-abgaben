@@ -88,13 +88,14 @@ public class KomplexeZahl {
     }
 
     /**
-     * Getter Methode für winkel
+     * Getter Methode für winkel in Grad
      *
      * @return gibt den winkel als Winkel object vom Vektor der komplexen Zahl wieder
      */
     public double getWinkelInGrad() {
         return this.winkel.getWinkelInGrad();
     }
+
 
     /**
      * Setter Methode für realTeil mit Anpassung der Vektordarstellung
@@ -213,6 +214,11 @@ public class KomplexeZahl {
         double b = this.imaginaerTeil;
         double c = k.getRealTeil();
         double d = k.getImaginaerTeil();
+
+        // Exception, um nicht durch 0 zu teilen
+        if ((c*c + d*d) == 0) {
+            throw new ArithmeticException("Nenner ist 0!");
+        }
 
         double neuerRealTeil = (a*c + b*d) / (c*c + d*d);
         double neuerImaginaerTeil = (b*c - a*d) / (c*c + d*d);
