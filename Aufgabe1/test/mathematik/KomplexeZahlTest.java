@@ -6,6 +6,8 @@ import trigonometrie.Winkel;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.Ignore;
+
 class KomplexeZahlTest {
 
     @Test
@@ -36,8 +38,8 @@ class KomplexeZahlTest {
         // Then
         assertEquals(betrag, komplexeZahl.getBetrag(), 0.001);
         assertEquals(winkel.getWinkelInGrad(), komplexeZahl.getWinkelInGrad(), 0.001);
-        //assertEquals(2.5, komplexeZahl.getRealTeil(), 0.001);
-        assertEquals(4.330, komplexeZahl.getImaginaerTeil(), 0.001);
+        assertEquals(4.330, komplexeZahl.getRealTeil(), 0.001);
+        assertEquals(2.5, komplexeZahl.getImaginaerTeil(), 0.001);
     }
 
     @Test
@@ -76,9 +78,9 @@ class KomplexeZahlTest {
         KomplexeZahl zahl = new KomplexeZahl(2, 3);
         KomplexeZahl ergebnis = zahl.potenzieren(2);
 
-        // Expected result: (-7 + 24i)
-        double expectedRealPart = -7;
-        double expectedImaginaryPart = 24;
+        // Expected result: (-5 + 12i)
+        double expectedRealPart = -5;
+        double expectedImaginaryPart = 12;
 
         assertEquals(expectedRealPart, ergebnis.getRealTeil(), 0.001);
         assertEquals(expectedImaginaryPart, ergebnis.getImaginaerTeil(), 0.001);
@@ -131,36 +133,26 @@ class KomplexeZahlTest {
         double actualRealTeil = komplexeZahl.getRealTeil();
         double actualImaginaerTeil = komplexeZahl.getImaginaerTeil();
         
-        //assertEquals(expectedRealTeil, actualRealTeil, 0);
+        assertEquals(expectedRealTeil, actualRealTeil, 0);
         assertEquals(expectedImaginaerTeil, actualImaginaerTeil, 0);
     }
 
     @Test
-    void testSetWinkel() {
-        // Create a KomplexeZahl object with a known realTeil, imaginaerTeil, and betrag
+    void setWinkel_withNegativeAngle() {
+        // Arrange
         KomplexeZahl komplexeZahl = new KomplexeZahl(3, 4);
+        Winkel negativeWinkel = new Winkel(-45);
     
-        // Get the initial winkel
-        double initialWinkel = komplexeZahl.getWinkelInGrad();
+        // Act
+        komplexeZahl.setWinkel(negativeWinkel);
+        double radius = Math.sqrt(3*3 + 4*4);
     
-        // Create a new Winkel object with a different angle
-        Winkel neuerWinkel = new Winkel(initialWinkel + 45);
+        // Assert
+        double expectedRealTeil = radius * Math.cos(Math.toRadians(-45));
+        double expectedImaginaerTeil = radius * Math.sin(Math.toRadians(-45));
     
-        // Set the new Winkel using the setWinkel method
-        komplexeZahl.setWinkel(neuerWinkel);
-    
-        // Get the new winkel and realTeil, imaginaerTeil
-        double newWinkel = komplexeZahl.getWinkelInGrad();
-        double newRealTeil = komplexeZahl.getRealTeil();
-        double newImaginaerTeil = komplexeZahl.getImaginaerTeil();
-    
-        // Assert that the new winkel is equal to the expected value
-        assertEquals(initialWinkel + 45, newWinkel, 0.001);
-    
-        // Assert that the new realTeil and imaginaerTeil are equal to the expected values
-        // (using trigonometric properties of complex numbers)
-        assertEquals(3 * Math.cos(Math.toRadians(initialWinkel + 45)), newRealTeil, 0.001);
-        assertEquals(3 * Math.sin(Math.toRadians(initialWinkel + 45)), newImaginaerTeil, 0.001);
+        assertEquals(expectedRealTeil, komplexeZahl.getRealTeil(), 0.001);
+        assertEquals(expectedImaginaerTeil, komplexeZahl.getImaginaerTeil(), 0.001);
     }
 
     @Test
@@ -170,7 +162,8 @@ class KomplexeZahlTest {
 
         KomplexeZahl ergebnis = z1.multiplizieren(z2);
 
-        assertEquals(new KomplexeZahl(-1, 5), ergebnis);
+        assertEquals(-1.0, ergebnis.getRealTeil(), 0.01);
+        assertEquals(5.0, ergebnis.getImaginaerTeil(), 0.01);
     }
 
     @Test
@@ -180,25 +173,33 @@ class KomplexeZahlTest {
 
         KomplexeZahl ergebnis = z1.dividieren(z2);
 
-        assertEquals(new KomplexeZahl(2.0, 0.0), ergebnis);
+        assertEquals(2.0, ergebnis.getRealTeil(), 0.01);
+        assertEquals(0.0, ergebnis.getImaginaerTeil(), 0.01);
     }
 
     @Test
     void potenzieren() {
 
-        KomplexeZahl z = new KomplexeZahl(1, 1);
+        KomplexeZahl z = new KomplexeZahl(3, 2);
 
         KomplexeZahl ergebnis = z.potenzieren(2);
 
-        assertEquals(new KomplexeZahl(0, 2), ergebnis);
+        assertEquals(5.0, ergebnis.getRealTeil(), 0.01);
+        assertEquals(12.0, ergebnis.getImaginaerTeil(), 0.01);
     }
 
     public static void main(String[] args) {
-        KomplexeZahl z = new KomplexeZahl(3, 5);
+        //KomplexeZahl z = new KomplexeZahl(3, 5);
+
+        double betrag = 5.0;
+        Winkel winkel = new Winkel(30.0);
+
+        // When
+        KomplexeZahl z = new KomplexeZahl(winkel, betrag);
         
         System.out.println("Realteil: " + z.getRealTeil());
         System.out.println("Imaginaerteil: " + z.getImaginaerTeil());
         System.out.println("Betrag: " + z.getBetrag());
-        System.out.println("Winkel in Grad: " + (z.getWinkelInGrad()));
+        System.out.println("Winkel in Bogenmaß: " + Math.toRadians(z.getWinkelInGrad()));
     }
 }
