@@ -22,5 +22,9 @@ public class Main {
         Arrays.sort(komplexeZahlen, w.reversed());
         System.out.println(Arrays.toString(komplexeZahlen));
 
+        KomplexeZahl z = new KomplexeZahl(3,5);
+        System.out.println(z.getWinkelInGrad());
+        System.out.println(Math.toRadians(z.getWinkelInGrad()));
+
     }
 }

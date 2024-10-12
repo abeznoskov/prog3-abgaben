@@ -171,7 +171,7 @@ public class KomplexeZahl {
      * @return Winkel des Vektors
      */
     private Winkel winkelBerechnen(double a, double b) {
-        return new Winkel(Math.toDegrees(Math.atan2(a, b)));
+        return new Winkel(Math.toDegrees(Math.atan2(b, a)));
     }
 
     /**
