@@ -175,7 +175,7 @@ public class KomplexeZahl {
         if(a < 0) {
             throw new IllegalArgumentException("Man kann nicht durch 0 teilen.");
         }
-        Realteil kann 0 sein, aber darf man das wirklich     
+        Realteil kann 0 sein, aber warum kann java den atan mit a = 0 berechnen?    
         */
         return new Winkel(Math.toDegrees(Math.atan2(b, a)));
     }
