@@ -171,11 +171,9 @@ public class KomplexeZahl {
      * @return Winkel des Vektors
      */
     private Winkel winkelBerechnen(double a, double b) {
-        /*// Realteil darf nicht negative sein, da nicht durch 0 geteilt werden darf
-        if(a < 0) {
-            throw new IllegalArgumentException("Man kann nicht durch 0 teilen.");
-        }
-        Realteil kann 0 sein, aber warum kann java den atan mit a = 0 berechnen?    
+        /*
+        Realteil kann 0 sein. Mathematisch geht es nicht, da nicht durch 0 dividiert werden kann. 
+        Jedoch kann man es geometrisch interpretiert: a = 0, also x = 0 auf der x-Achse.
         */
         return new Winkel(Math.toDegrees(Math.atan2(b, a)));
     }
