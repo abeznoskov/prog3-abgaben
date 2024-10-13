@@ -96,7 +96,6 @@ public class KomplexeZahl {
         return this.winkel.getWinkelInGrad();
     }
 
-
     /**
      * Setter Methode für realTeil mit Anpassung der Vektordarstellung
      *
