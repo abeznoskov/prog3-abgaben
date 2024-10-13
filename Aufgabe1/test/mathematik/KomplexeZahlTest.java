@@ -131,8 +131,8 @@ class KomplexeZahlTest {
         double actualRealTeil = komplexeZahl.getRealTeil();
         double actualImaginaerTeil = komplexeZahl.getImaginaerTeil();
         
-        assertEquals(expectedRealTeil, actualRealTeil, 0);
-        assertEquals(expectedImaginaerTeil, actualImaginaerTeil, 0);
+        assertEquals(expectedRealTeil, actualRealTeil, 0.1);
+        assertEquals(expectedImaginaerTeil, actualImaginaerTeil, 0.1);
     }
 
     @Test

@@ -48,13 +48,14 @@ public class KomplexeZahl {
 
     /**
      * Konstruktor zum definieren einer komplexen Zahl anhand des Winkels und Betrags (Vektor).
+     * Vorzeichen des Betrags wird ignoriert.
      *
      * @param winkel winkel des Vektors einer komplexen Zahl
      * @param betrag betrag (= Länge) des vektors einer komplexen Zahl
      */
     public KomplexeZahl(Winkel winkel, double betrag) {
         this.winkel = winkel;
-        this.betrag = betrag;
+        this.betrag = Math.abs(betrag);
 
         this.realTeil = realTeilBerechnen(betrag, winkel);
         this.imaginaerTeil = imaginaerTeilBerechnen(betrag, winkel);
@@ -120,11 +121,12 @@ public class KomplexeZahl {
 
     /**
      * Setter Methode für betrag mit Anpassung von real- und imaginaerTeil
+     * Vorzeichen wird ignoriert
      *
      * @param betrag der neue betrag
      */
     public void setBetrag(double betrag) {
-        this.betrag = betrag;
+        this.betrag = Math.abs(betrag);
         this.realTeil = realTeilBerechnen(this.betrag, this.winkel);
         this.imaginaerTeil = imaginaerTeilBerechnen(this.betrag, this.winkel);
     }
