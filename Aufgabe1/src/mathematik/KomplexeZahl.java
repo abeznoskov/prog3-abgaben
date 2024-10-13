@@ -173,7 +173,7 @@ public class KomplexeZahl {
     private Winkel winkelBerechnen(double a, double b) {
         /*
         Realteil kann 0 sein. Mathematisch geht es nicht, da nicht durch 0 dividiert werden kann. 
-        Jedoch kann man es geometrisch interpretiert: a = 0, also x = 0 auf der x-Achse.
+        Jedoch kann man es geometrisch interpretieren: a = 0, also x = 0 auf der x-Achse.
         */
         return new Winkel(Math.toDegrees(Math.atan2(b, a)));
     }
@@ -186,10 +186,6 @@ public class KomplexeZahl {
      * @return den Betrag des Vektors
      */
     private double betragBerechnen(double a, double b) {
-        // Exception, da man keine Wurzel einer negativen Zahl ziehen kann
-        if(Math.sqrt(a * a + b * b) < 0){
-            throw new IllegalArgumentException("Man kann keine Wurzel einer negativen Zahl ziehen!");
-        }
         return Math.sqrt(a * a + b * b);
     }
 
@@ -215,18 +211,17 @@ public class KomplexeZahl {
      * Division einer komplexen Zahl mit einer anderen komplexen Zahl k
      *
      * @param k beliebige komplexe Zahl (!= 0)
+     * @throws ArithmeticException um nicht durch null zu teilen
      * @return der Quotient der Division
      */
-    public KomplexeZahl dividieren(KomplexeZahl k) {
+    public KomplexeZahl dividieren(KomplexeZahl k) throws ArithmeticException {
         double a = this.realTeil;
         double b = this.imaginaerTeil;
         double c = k.getRealTeil();
         double d = k.getImaginaerTeil();
 
-        // Exception, um nicht durch 0 zu teilen
-        if ((c*c + d*d) == 0) {
+        if ((c*c + d*d) == 0)
             throw new ArithmeticException("Nenner ist 0!");
-        }
 
         double neuerRealTeil = (a*c + b*d) / (c*c + d*d);
         double neuerImaginaerTeil = (b*c - a*d) / (c*c + d*d);
