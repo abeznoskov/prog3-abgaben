@@ -61,19 +61,15 @@ public class KontenSpielereien {
 		// Adhoc Test für Girokonto.abheben()
 		Konto meins = new Girokonto();
 		meins.einzahlen(new Geldbetrag(1000, Waehrung.ESCUDO));
-		System.out.println("Kontostand: "  + meins.getKontostand());
-		meins.toString();
+		System.out.println("Kontostand: "  + meins.getKontostand()); // getKontostand() gibt € zurueck
 
-		//Geldbetrag meinGeldbetrag = new Geldbetrag(100, Waehrung.DOBRA); // Geld was abgehoben werden soll
-		//meinGeldbetrag.umrechnen(Waehrung.EUR);
-		//boolean geht = meins.abheben(meinGeldbetrag);
-		//System.out.println("Klappt das Abheben?:" + geht);
-
-
-		//meins.abheben(meinGeldbetrag);
-		//meinGeldbetrag.umrechnen(Waehrung.EUR); // Call the umrechnen() method on the instance
-		//meins.ausgeben();
-		//System.out.println("Abgehobener Betrag: " + meinGeldbetrag);
+		Geldbetrag meinGeldbetrag = new Geldbetrag(100, Waehrung.DOBRA); // Geld was abgehoben werden soll
+		System.out.println("Abgehobener Betrag1: " + meinGeldbetrag);
+		meinGeldbetrag.umrechnen(Waehrung.ESCUDO); // Rechnet nicht korrekt
+		System.out.println("Betrag nach Umrechnung: " + meinGeldbetrag); // Betrag nach Umrechnung
+		meins.abheben(meinGeldbetrag);
+		System.out.println("Kontostand nach Abhebung: " + meins.getKontostand());
+		System.out.println("Abgehobener Betrag: " + meinGeldbetrag);
 	}
 
 }

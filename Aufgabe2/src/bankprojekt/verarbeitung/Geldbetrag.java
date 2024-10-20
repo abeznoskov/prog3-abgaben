@@ -16,7 +16,10 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 	 * Die Währung
 	 */
 	private Waehrung waehrung;
-	
+
+	public Waehrung getWaehrung(){
+	    return waehrung;
+	}
 	/**
 	 * erstellt den Betrag 0€
 	 */
