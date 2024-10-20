@@ -13,6 +13,6 @@ public enum Waehrung {
     }
 
     public double getRate() {
-        return rate;
+        return this.rate;
     }
 }

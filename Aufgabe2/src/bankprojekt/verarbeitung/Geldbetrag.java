@@ -17,13 +17,13 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 	 */
 	private Waehrung waehrung;
 
-	public Waehrung getWaehrung(){
-	    return waehrung;
-	}
 	/**
 	 * erstellt den Betrag 0€
 	 */
-	public Geldbetrag() {}
+	public Geldbetrag() {
+		this.betrag = 0;
+		this.waehrung = Waehrung.EUR;
+	}
 	
 	/**
 	 * erstellt einen Geldbetrag in der Währung Euro
@@ -34,6 +34,7 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 	{
 		if(!Double.isFinite(betrag))
 			throw new IllegalArgumentException();
+
 		this.betrag = betrag;
 		this.waehrung = Waehrung.EUR;
 	}
@@ -46,6 +47,7 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 	public Geldbetrag(double betrag, Waehrung w) {
 		if(!Double.isFinite(betrag))
 			throw new IllegalArgumentException();
+		
 		this.betrag = betrag;
 		this.waehrung = w;
 	}
@@ -57,7 +59,15 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 	public double getBetrag() {
 		return betrag;
 	}
-	
+
+	/**
+	 * Waehrung von this
+	 * @return Waehrung
+	 */
+	public Waehrung getWaehrung(){
+		return waehrung;
+	}
+
 	/**
 	 * rechnet this + summand
 	 * @param summand zu addierender Betrag
@@ -68,6 +78,10 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 	{
 		if(summand == null)
 			throw new IllegalArgumentException();
+
+		if(this.waehrung != summand.getWaehrung())
+			summand.umrechnen(this.waehrung);
+
 		return new Geldbetrag(this.betrag + summand.betrag);
 	}
 	
@@ -81,6 +95,10 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 	{
 		if(divisor == null)
 			throw new IllegalArgumentException();
+
+		if(this.waehrung != divisor.getWaehrung())
+			divisor.umrechnen(this.waehrung);
+
 		return new Geldbetrag(this.betrag - divisor.betrag);
 	}
 
@@ -98,23 +116,23 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 		if (this.waehrung == zielwaehrung) {
 			return;
 		}
+
 		double rate = zielwaehrung.getRate(); // Rate der Zielwaehrung
-		if (this.waehrung == Waehrung.EUR) {
-			this.betrag = this.betrag * rate;
-			this.waehrung = zielwaehrung;
-			return;
-		}
-		// TODO: non-Euro zu einer anderen non-Euro ist nicht korrekt no?
-		else {
-			this.betrag = this.betrag / rate;
-			this.betrag = this.betrag * rate;
-			this.waehrung = zielwaehrung;
-			return;
-		}
-	}
+
+        if (this.waehrung != Waehrung.EUR) {
+            this.betrag = this.betrag / rate; // Betrag in eur gesetzt
+        }
+
+        this.betrag = this.betrag * rate;
+        this.waehrung = zielwaehrung;
+        return;
+    }
 
 	@Override
 	public int compareTo(Geldbetrag o) {
+		if(this.waehrung != o.getWaehrung())
+			o.umrechnen(this.waehrung);
+
 		return Double.compare(this.betrag, o.betrag);
 	}
 
