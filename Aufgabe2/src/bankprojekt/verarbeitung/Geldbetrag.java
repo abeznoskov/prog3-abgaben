@@ -17,6 +17,7 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 	 */
 	private Waehrung waehrung;
 
+
 	/**
 	 * erstellt den Betrag 0€
 	 */
@@ -82,7 +83,7 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 		if(this.waehrung != summand.getWaehrung())
 			summand.umrechnen(this.waehrung);
 
-		return new Geldbetrag(this.betrag + summand.betrag);
+		return new Geldbetrag(this.betrag + summand.betrag, this.waehrung);
 	}
 	
 	/**
@@ -99,7 +100,7 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 		if(this.waehrung != divisor.getWaehrung())
 			divisor.umrechnen(this.waehrung);
 
-		return new Geldbetrag(this.betrag - divisor.betrag);
+		return new Geldbetrag(this.betrag - divisor.betrag, this.waehrung);
 	}
 
 	/**
@@ -117,13 +118,11 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 			return;
 		}
 
-		double rate = zielwaehrung.getRate(); // Rate der Zielwaehrung
-
         if (this.waehrung != Waehrung.EUR) {
-            this.betrag = this.betrag / rate; // Betrag in eur gesetzt
+            this.betrag = this.betrag / this.waehrung.getRate();
         }
 
-        this.betrag = this.betrag * rate;
+        this.betrag = this.betrag * zielwaehrung.getRate();
         this.waehrung = zielwaehrung;
         return;
     }

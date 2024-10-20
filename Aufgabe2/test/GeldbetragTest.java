@@ -47,4 +47,26 @@ public class GeldbetragTest {
         assertEquals(expectedBetrag, geldbetrag.getBetrag(), 0.001);
         assertEquals(Waehrung.DOBRA, geldbetrag.getWaehrung());
     }
+
+    @Test
+    public void testMinus_ThrowsIllegalArgumentExceptionWhenDivisorIsNull() {
+        Geldbetrag geldbetrag = new Geldbetrag(100, Waehrung.EUR);
+        Geldbetrag divisor = null;
+
+        assertThrows(IllegalArgumentException.class, () -> geldbetrag.minus(divisor));
+    }
+
+    @Test
+    public void testPlus_DifferentCurrencies() {
+        Geldbetrag geldbetrag1 = new Geldbetrag(100, Waehrung.EUR);
+        Geldbetrag geldbetrag2 = new Geldbetrag(50, Waehrung.DOBRA);
+
+        Geldbetrag result = geldbetrag1.plus(geldbetrag2);
+
+        geldbetrag1.umrechnen(Waehrung.DOBRA); // 100€ -> 2.454,8532 DOBRA
+        double expectedBetrag = 100 * Waehrung.DOBRA.getRate() + 50;
+
+        assertEquals(expectedBetrag, result.getBetrag(), 0.001);
+        assertEquals(Waehrung.DOBRA, result.getWaehrung());
+    }
 }
