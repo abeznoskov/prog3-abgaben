@@ -1,5 +1,11 @@
 package bankprojekt.geld;
 
+/**
+ * Enum fuer Waehrung
+ *
+ * @author Andreas Beznoskov,
+ *         Dinh Tuan Anh Nguyen
+ * */
 public enum Waehrung {
     EUR(1.0),
     ESCUDO(109.8269),
