@@ -4,7 +4,8 @@ import bankprojekt.geld.Waehrung;
 
 /**
  * Ein Geldbetrag mit Währung
- *
+ * @author Andreas Beznoskov,
+ *         Dinh Tuan Anh Nguyen
  */
 public class Geldbetrag implements Comparable<Geldbetrag>{
 	/**
