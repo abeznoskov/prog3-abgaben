@@ -93,6 +93,7 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 	 *
 	 * @param zielwaehrung - Die gewuenschte Waehrung, die der Geldbetrag annehmen soll
 	 */
+	// TODO: non-Euro zu einer anderen non-Euro ist scuffed
 	public void umrechnen(Waehrung zielwaehrung) {
 		if (this.waehrung == zielwaehrung) {
 			return;
