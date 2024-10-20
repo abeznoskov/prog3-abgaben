@@ -41,8 +41,8 @@ public class GeldbetragTest {
 
     @Test
     public void testUmrechnenNonEuroToAnotherCurrency() {
-        Geldbetrag geldbetrag = new Geldbetrag(100, Waehrung.FRANC);
-        double expectedBetrag = 100 / Waehrung.FRANC.getRate();
+        Geldbetrag geldbetrag = new Geldbetrag(1000, Waehrung.FRANC);
+        double expectedBetrag = 1000 / Waehrung.FRANC.getRate() * 24304.7429;
         geldbetrag.umrechnen(Waehrung.DOBRA);
         assertEquals(expectedBetrag, geldbetrag.getBetrag(), 0.001);
         assertEquals(Waehrung.DOBRA, geldbetrag.getWaehrung());

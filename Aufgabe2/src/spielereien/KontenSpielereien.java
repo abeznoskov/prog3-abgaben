@@ -79,8 +79,18 @@ public class KontenSpielereien {
 
 		geldbetrag1.umrechnen(Waehrung.DOBRA); // 100€ -> 2.454,8532 DOBRA
 		double expectedBetrag = 100 * Waehrung.DOBRA.getRate() + 50;
-		System.out.println("Erwartetes Betrag: " + expectedBetrag);
-		System.out.println("Echter Betrag: " + result);
+		//System.out.println("Erwartetes Betrag: " + expectedBetrag);
+		//System.out.println("Echter Betrag: " + result);
+
+
+		Geldbetrag geldbetrag = new Geldbetrag(1000, Waehrung.FRANC);
+		System.out.println("Betrag bevor Umrechnung: " + geldbetrag);
+
+		geldbetrag.umrechnen(Waehrung.DOBRA);
+
+		System.out.println("Betrag nach Umrechnung: " + geldbetrag);
+
+
 	}
 
 }
