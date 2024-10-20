@@ -98,14 +98,16 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 		if (this.waehrung == zielwaehrung) {
 			return;
 		}
-		else if (this.waehrung == Waehrung.EUR) {
-			this.betrag = this.betrag * zielwaehrung.getRate();
+		double rate = zielwaehrung.getRate(); // Rate der Zielwaehrung
+		if (this.waehrung == Waehrung.EUR) {
+			this.betrag = this.betrag * rate;
 			this.waehrung = zielwaehrung;
 			return;
 		}
+		// TODO: non-Euro zu einer anderen non-Euro ist nicht korrekt no?
 		else {
-			this.betrag = this.betrag / zielwaehrung.getRate();
-			this.betrag = this.betrag * zielwaehrung.getRate();
+			this.betrag = this.betrag / rate;
+			this.betrag = this.betrag * rate;
 			this.waehrung = zielwaehrung;
 			return;
 		}
