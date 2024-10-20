@@ -2,6 +2,7 @@ package spielereien;
 
 import java.time.LocalDate;
 
+import bankprojekt.geld.Waehrung;
 import bankprojekt.verarbeitung.Geldbetrag;
 import bankprojekt.verarbeitung.GesperrtException;
 import bankprojekt.verarbeitung.Girokonto;
@@ -22,7 +23,7 @@ public class KontenSpielereien {
 	 * @throws GesperrtException 
 	 */
 	public static void main(String[] args) throws GesperrtException {
-		Kontoart art1 = Kontoart.SPARBUCH;
+/*		Kontoart art1 = Kontoart.SPARBUCH;
 		
 		art1 = Kontoart.valueOf("FESTGELDKONTO");
 		
@@ -31,20 +32,11 @@ public class KontenSpielereien {
 			System.out.println(art.ordinal() + " " + art.name() + ": " + art.getInfo());
 		}
 		Kunde ich = new Kunde("Dorothea", "Hubrich", "zuhause", LocalDate.parse("1976-07-13"));
+		
 
-		Konto meins = new Girokonto();
-			//impliziter Up-Cast
-			//Zuweisungkompatibilität
-			//Polymorphie
-		boolean geht = meins.abheben(new Geldbetrag(100));
-		System.out.println(geht);
-		
-		meins.ausgeben();
-		
-		
 		System.exit(0);
 		
-		Girokonto meinGiro = new Girokonto(ich, 1234, new Geldbetrag(1000));
+		/*Girokonto meinGiro = new Girokonto(ich, 1234, new Geldbetrag(1000));
 		meinGiro.einzahlen(new Geldbetrag(50));
 		System.out.println(meinGiro);
 		
@@ -60,6 +52,28 @@ public class KontenSpielereien {
 		{
 			System.out.println("Zugriff auf gesperrtes Konto - Polizei rufen!");
 		}
+*/
+		//Konto meins = new Girokonto();
+		//impliziter Up-Cast
+		//Zuweisungkompatibilität
+		//Polymorphie
+
+		// Adhoc Test für Girokonto.abheben()
+		Konto meins = new Girokonto();
+		meins.einzahlen(new Geldbetrag(1000, Waehrung.ESCUDO));
+		System.out.println("Kontostand: "  + meins.getKontostand());
+		meins.toString();
+
+		//Geldbetrag meinGeldbetrag = new Geldbetrag(100, Waehrung.DOBRA); // Geld was abgehoben werden soll
+		//meinGeldbetrag.umrechnen(Waehrung.EUR);
+		//boolean geht = meins.abheben(meinGeldbetrag);
+		//System.out.println("Klappt das Abheben?:" + geht);
+
+
+		//meins.abheben(meinGeldbetrag);
+		//meinGeldbetrag.umrechnen(Waehrung.EUR); // Call the umrechnen() method on the instance
+		//meins.ausgeben();
+		//System.out.println("Abgehobener Betrag: " + meinGeldbetrag);
 	}
 
 }

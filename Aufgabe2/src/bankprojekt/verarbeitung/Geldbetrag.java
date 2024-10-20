@@ -81,6 +81,15 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 		return new Geldbetrag(this.betrag - divisor.betrag);
 	}
 
+	/**
+	 * Konvertiert gegebenen Geldbetrag zu der gewuenschten Waehrung
+	 * Wenn es schon in der gewollten Waehrung ist, wird keine aenderung vorgenommen
+	 * Von Euro wird es mit der Rate der Zielwaehrung multipliziert
+	 * Ist die Waehrung nicht in Euro, so wird es im Dreisatz umgerechnet,
+	 * also mit der eigenen Rate zu Euro dividiert und dann mit der Rate von der gewuenschten Waherung multipliziert
+	 *
+	 * @param zielwaehrung - Die gewuenschte Waehrung, die der Geldbetrag annehmen soll
+	 */
 	public void umrechnen(Waehrung zielwaehrung) {
 		if (this.waehrung == zielwaehrung) {
 			return;
@@ -120,9 +129,23 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 		return this.betrag < 0;
 	}
 	
+	// ToString Methode richtiges Waehrungszeichen ausgeben
+	// TODO: Richtiges Waehrungszeichen ausgeben (erledigt)
+	// TODO: Default für return statement, aber ist es korrekt?
 	@Override
-	public String toString()
-	{
-		return String.format("%,.2f €", this.betrag);
+	public String toString() {
+		//return String.format("%,.2f €", this.betrag);
+		switch (this.waehrung) {
+			case EUR:
+				return String.format("%,.2f €", this.betrag);
+			case ESCUDO:
+				return String.format("%,.2f Esc", this.betrag);
+			case DOBRA:
+				return String.format("%,.2f Db", this.betrag);
+			case FRANC:
+				return String.format("%,.2f FRF", this.betrag);
+			default:
+				return String.format("%,.2f", this.betrag);
+		}
 	}
 }
