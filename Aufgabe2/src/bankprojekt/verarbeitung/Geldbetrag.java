@@ -3,9 +3,8 @@ package bankprojekt.verarbeitung;
 import bankprojekt.geld.Waehrung;
 
 /**
- * TODO: Alle Methoden anpassen damit sie die Währung beachten
- *		 public void waehrungswechsel(Waehrung neu) -> in Klasse Konto
  * Ein Geldbetrag mit Währung
+ *
  */
 public class Geldbetrag implements Comparable<Geldbetrag>{
 	/**
@@ -105,14 +104,13 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 
 	/**
 	 * Konvertiert gegebenen Geldbetrag zu der gewuenschten Waehrung
-	 * Wenn es schon in der gewollten Waehrung ist, wird keine aenderung vorgenommen
+	 * Wenn es schon in der gewollten Waehrung ist, wird keine Änderung vorgenommen
 	 * Von Euro wird es mit der Rate der Zielwaehrung multipliziert
 	 * Ist die Waehrung nicht in Euro, so wird es im Dreisatz umgerechnet,
 	 * also mit der eigenen Rate zu Euro dividiert und dann mit der Rate von der gewuenschten Waherung multipliziert
 	 *
 	 * @param zielwaehrung - Die gewuenschte Waehrung, die der Geldbetrag annehmen soll
 	 */
-	// TODO: non-Euro zu einer anderen non-Euro ist scuffed
 	public void umrechnen(Waehrung zielwaehrung) {
 		if (this.waehrung == zielwaehrung) {
 			return;
@@ -151,13 +149,9 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 	{
 		return this.betrag < 0;
 	}
-	
-	// ToString Methode richtiges Waehrungszeichen ausgeben
-	// TODO: Richtiges Waehrungszeichen ausgeben (erledigt)
-	// TODO: Default für return statement, aber ist es korrekt?
+
 	@Override
 	public String toString() {
-		//return String.format("%,.2f €", this.betrag);
 		switch (this.waehrung) {
 			case EUR:
 				return String.format("%,.2f €", this.betrag);

@@ -232,7 +232,7 @@ public abstract class Konto implements Comparable<Konto>
 
 	/**
 	 * Sie wechselt die Währung, in der das Konto aktuell geführt wird
-	 * TODO: Body implementieren (ich glaube so? lol)
+	 * @param neu die Zielwährung
 	 */
 	public void waehrungswechsel(Waehrung neu){
 		kontostand.umrechnen(neu);
