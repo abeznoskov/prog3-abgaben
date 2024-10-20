@@ -61,9 +61,9 @@ public class GeldbetragTest {
         Geldbetrag geldbetrag1 = new Geldbetrag(100, Waehrung.EUR);
         Geldbetrag geldbetrag2 = new Geldbetrag(50, Waehrung.DOBRA);
 
-        Geldbetrag result = geldbetrag1.plus(geldbetrag2);
 
         geldbetrag1.umrechnen(Waehrung.DOBRA); // 100€ -> 2.454,8532 DOBRA
+        Geldbetrag result = geldbetrag1.plus(geldbetrag2);
         double expectedBetrag = 100 * Waehrung.DOBRA.getRate() + 50;
 
         assertEquals(expectedBetrag, result.getBetrag(), 0.001);

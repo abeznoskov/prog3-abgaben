@@ -59,7 +59,7 @@ public class KontenSpielereien {
 		//Polymorphie
 
 		// Adhoc Test für Girokonto.abheben()
-		Konto meins = new Girokonto();
+		/*Konto meins = new Girokonto();
 		meins.einzahlen(new Geldbetrag(1000, Waehrung.EUR));
 		System.out.println("Kontostand: "  + meins.getKontostand()); // getKontostand() gibt € zurueck
 
@@ -70,6 +70,17 @@ public class KontenSpielereien {
 		meins.abheben(meinGeldbetrag);
 		System.out.println("Kontostand nach Abhebung: " + meins.getKontostand());
 		System.out.println("Abgehobener Betrag: " + meinGeldbetrag);
+		*/
+		Geldbetrag geldbetrag1 = new Geldbetrag(100, Waehrung.EUR);
+		Geldbetrag geldbetrag2 = new Geldbetrag(50, Waehrung.DOBRA);
+
+		geldbetrag1.umrechnen(Waehrung.DOBRA); // 100€ -> 2.454,8532 DOBRA
+		Geldbetrag result = geldbetrag1.plus(geldbetrag2);
+
+		geldbetrag1.umrechnen(Waehrung.DOBRA); // 100€ -> 2.454,8532 DOBRA
+		double expectedBetrag = 100 * Waehrung.DOBRA.getRate() + 50;
+		System.out.println("Erwartetes Betrag: " + expectedBetrag);
+		System.out.println("Echter Betrag: " + result);
 	}
 
 }
