@@ -235,6 +235,8 @@ public abstract class Konto implements Comparable<Konto>
 	 * @param neu die Zielwährung
 	 */
 	public void waehrungswechsel(Waehrung neu){
+		if(neu == null)
+			throw new IllegalArgumentException("Die Zielwährung darf nicht null sein!");
 		kontostand.umrechnen(neu);
 	}
 }

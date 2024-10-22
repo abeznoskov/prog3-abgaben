@@ -22,6 +22,7 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 	 * erstellt den Betrag 0€
 	 */
 	public Geldbetrag() {
+		// optional bzw. sie hatte es komplett leer, da sie EUR oben initialisiert hatte
 		this.betrag = 0;
 		this.waehrung = Waehrung.EUR;
 	}
@@ -46,7 +47,7 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 	 * @throws IllegalArgumentException wenn betrag unendlich oder NaN ist
 	 */
 	public Geldbetrag(double betrag, Waehrung w) {
-		if(!Double.isFinite(betrag))
+		if(!Double.isFinite(betrag) || w == null)
 			throw new IllegalArgumentException();
 		
 		this.betrag = betrag;
@@ -128,10 +129,16 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 
 	@Override
 	public int compareTo(Geldbetrag o) {
-		if(this.waehrung != o.getWaehrung())
+
+		double inEuro = this.betrag / this.waehrung.getRate();
+		double oInEuro = o.betrag / o.waehrung.getRate();
+
+		/*if(this.waehrung != o.getWaehrung())
 			o.umrechnen(this.waehrung);
 
 		return Double.compare(this.betrag, o.betrag);
+		*/
+		return Double.compare(inEuro, oInEuro);
 	}
 
 	@Override
@@ -155,14 +162,14 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 	public String toString() {
 		switch (this.waehrung) {
 			case EUR:
-				return String.format("%,.2f €", this.betrag);
+				return String.format("%,.2f EUR", this.betrag);
 			case ESCUDO:
 				return String.format("%,.2f Esc", this.betrag);
 			case DOBRA:
 				return String.format("%,.2f Db", this.betrag);
 			case FRANC:
 				return String.format("%,.2f FRF", this.betrag);
-			default:
+			default: // TODO: darf man eine default nutzen?
 				return String.format("%,.2f", this.betrag);
 		}
 	}
