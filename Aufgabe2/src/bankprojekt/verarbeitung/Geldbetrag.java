@@ -81,27 +81,33 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 		if(summand == null)
 			throw new IllegalArgumentException();
 
+		// tempoaeres Attribut für Summand
+		Geldbetrag tempSummand = new Geldbetrag(summand.getBetrag(), summand.getWaehrung());
+
 		if(this.waehrung != summand.getWaehrung())
 			summand.umrechnen(this.waehrung);
 
-		return new Geldbetrag(this.betrag + summand.betrag, this.waehrung);
+		return new Geldbetrag(this.betrag + tempSummand.betrag, this.waehrung);
 	}
 	
 	/**
 	 * rechnet this - divisor
-	 * @param divisor abzuziehender Betrag
+	 * @param subtrahend abzuziehender Betrag
 	 * @return this - divisor in der Währung von this
-	 * @throws IllegalArgumentException wenn divisor null ist
+	 * @throws IllegalArgumentException wenn subtrahend null ist
 	 */
-	public Geldbetrag minus(Geldbetrag divisor)
+	public Geldbetrag minus(Geldbetrag subtrahend)
 	{
-		if(divisor == null)
+		if(subtrahend == null)
 			throw new IllegalArgumentException();
 
-		if(this.waehrung != divisor.getWaehrung())
-			divisor.umrechnen(this.waehrung);
+		// tempoaeres Attribut für Subtrahend
+		Geldbetrag tempSubtrahend = new Geldbetrag(subtrahend.getBetrag(), subtrahend.getWaehrung());
 
-		return new Geldbetrag(this.betrag - divisor.betrag, this.waehrung);
+		if(this.waehrung != subtrahend.getWaehrung())
+			tempSubtrahend.umrechnen(this.waehrung);
+
+		return new Geldbetrag(this.betrag - tempSubtrahend.betrag, this.waehrung);
 	}
 
 	/**
@@ -130,14 +136,10 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 	@Override
 	public int compareTo(Geldbetrag o) {
 
+		// Beide Betraege umrechnen in Euro
 		double inEuro = this.betrag / this.waehrung.getRate();
 		double oInEuro = o.betrag / o.waehrung.getRate();
 
-		/*if(this.waehrung != o.getWaehrung())
-			o.umrechnen(this.waehrung);
-
-		return Double.compare(this.betrag, o.betrag);
-		*/
 		return Double.compare(inEuro, oInEuro);
 	}
 
@@ -160,17 +162,6 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 
 	@Override
 	public String toString() {
-		switch (this.waehrung) {
-			case EUR:
-				return String.format("%,.2f EUR", this.betrag);
-			case ESCUDO:
-				return String.format("%,.2f Esc", this.betrag);
-			case DOBRA:
-				return String.format("%,.2f Db", this.betrag);
-			case FRANC:
-				return String.format("%,.2f FRF", this.betrag);
-			default: // TODO: darf man eine default nutzen?
-				return String.format("%,.2f", this.betrag);
-		}
+		return String.format("%, .2f " + waehrung.getSymbol(), this.betrag);
 	}
 }

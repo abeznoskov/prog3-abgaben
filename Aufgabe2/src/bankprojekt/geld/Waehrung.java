@@ -7,18 +7,22 @@ package bankprojekt.geld;
  *         Dinh Tuan Anh Nguyen
  * */
 public enum Waehrung {
-    EUR(1.0),
-    ESCUDO(109.8269),
-    DOBRA(24304.7429),
-    FRANC(490.92);
+    EUR(1.0, "EUR"),
+    ESCUDO(109.8269, "Esc"),
+    DOBRA(24304.7429, "Db"),
+    FRANC(490.92, "FRF"),;
 
     private final double rate;
+    private final String symbol;
 
-    private Waehrung(double rate) {
+    private Waehrung(double rate, String symbol) {
         this.rate = rate;
+        this.symbol = symbol;
     }
 
     public double getRate() {
         return this.rate;
     }
+
+    public String getSymbol() {return this.symbol;}
 }
