@@ -50,6 +50,13 @@ public class GeldbetragTest {
         assertEquals(Waehrung.DOBRA, geldbetrag.getWaehrung());
     }
 
+    @Test
+    public void testUmrechnen_ThrowsIllegalArgumentExceptionWennParameterNullIst() {
+
+        Geldbetrag geldbetrag = new Geldbetrag();
+        assertThrows(IllegalArgumentException.class, () -> geldbetrag.umrechnen(null));
+    }
+
     // Tests für plus(): ------------------------------------------------------------------------------------
 
     @Test
@@ -106,4 +113,15 @@ public class GeldbetragTest {
         assertEquals(999999999, result.getBetrag(), 0.001);
         assertEquals(Waehrung.EUR, result.getWaehrung());
     }
-}
+
+    @Test
+    public void testPlus_AdditionMitNullen() {
+        Geldbetrag geldbetrag1 = new Geldbetrag(100, Waehrung.EUR);
+        Geldbetrag geldbetrag2 = new Geldbetrag(0.00000001, Waehrung.EUR);
+
+        Geldbetrag result = geldbetrag1.plus(geldbetrag2);
+
+        assertEquals(100.00000001, result.getBetrag(), 0.0001);
+        assertEquals(Waehrung.EUR, result.getWaehrung());
+    }
+    }

@@ -91,9 +91,9 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 	}
 	
 	/**
-	 * rechnet this - divisor
+	 * rechnet this - subtrahend
 	 * @param subtrahend abzuziehender Betrag
-	 * @return this - divisor in der Währung von this
+	 * @return this - subtrahend in der Währung von this
 	 * @throws IllegalArgumentException wenn subtrahend null ist
 	 */
 	public Geldbetrag minus(Geldbetrag subtrahend)
@@ -120,6 +120,9 @@ public class Geldbetrag implements Comparable<Geldbetrag>{
 	 * @param zielwaehrung - Die gewuenschte Waehrung, die der Geldbetrag annehmen soll
 	 */
 	public void umrechnen(Waehrung zielwaehrung) {
+		if(zielwaehrung == null) {
+			throw new IllegalArgumentException();
+		}
 		if (this.waehrung == zielwaehrung) {
 			return;
 		}
