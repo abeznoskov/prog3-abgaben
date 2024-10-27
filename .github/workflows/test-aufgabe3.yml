@@ -21,6 +21,6 @@ jobs:
         with:
           java-version: 21
           maven-version: 3.9.9
-          path: ./Aufgabe3
+          checkout-path: ./Aufgabe3
 
       - run: mvn -V clean install
