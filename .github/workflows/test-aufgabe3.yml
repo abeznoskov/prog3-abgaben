@@ -21,13 +21,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-      
-      - name: Install Maven
-        run: |
-          MAVEN_VERSION=3.9.9  # Specify the Maven version here
-          curl -sL "https://archive.apache.org/dist/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz"
-          tar -xzf "apache-maven-${MAVEN_VERSION}-bin.tar.gz" -C /opt
-          echo "/opt/apache-maven-${MAVEN_VERSION}/bin" >> $GITHUB_PATH
 
       - name: Run the Maven verify phase
         working-directory: ./Aufgabe3
