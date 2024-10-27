@@ -33,13 +33,14 @@ jobs:
       - name: Display Maven version
         run: mvn -version
 
-      - run: |
+      - name: Maven clean package
+        run: |
           cd Aufgabe3
-          mvn -V clean install
+          mvn -V clean package
         shell: bash
 
       - name: Upload JAR file
         uses: actions/upload-artifact@v4
         with:
           name: JAR
-          path: target/*.jar
+          path: Aufgabe3/target/*.jar
