@@ -24,4 +24,4 @@ jobs:
 
       - name: Run the Maven verify phase
         working-directory: ./Aufgabe3
-        run: mvn --batch-mode --update-snapshots verify
+        run: mvn clean install
