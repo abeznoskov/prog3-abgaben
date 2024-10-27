@@ -1,5 +1,7 @@
 package bankprojekt.verarbeitung;
 
+import bankprojekt.geld.Waehrung;
+
 /**
  * Ein Girokonto, d.h. ein Konto mit einem Dispo und der Fähigkeit,
  * Überweisungen zu senden und zu empfangen.
@@ -109,4 +111,16 @@ public class Girokonto extends UeberweisungsfaehigesKonto{
 		else
 			return false;
 	}
+
+	/**
+	 * Sie wechselt die Währung, in der das Konto aktuell geführt wird
+	 * @param neu die Zielwährung
+	 */
+	@Override
+	public void waehrungswechsel(Waehrung neu) {
+		if(neu == null)
+			throw new IllegalArgumentException("Die Zielwährung darf nicht null sein!");
+		dispo.umrechnen(neu);
+	}
+
 }
