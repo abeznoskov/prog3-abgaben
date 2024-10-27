@@ -23,11 +23,9 @@ jobs:
           java-version: '21'
 
       - name: Set up Maven
-        env:
-          MAVEN_VERSION: '3.9.9'  # Specify the desired Maven version
-        run: |
-          curl -sL "https://archive.apache.org/dist/maven/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz" | tar xz -C /opt
-          echo "/opt/apache-maven-${MAVEN_VERSION}/bin" >> $GITHUB_PATH
+        uses: s4u/maven-install@v1
+        with:
+          version: '3.9.9'  # Specify the Maven version here
 
       - name: Run the Maven verify phase
         working-directory: ./Aufgabe3
