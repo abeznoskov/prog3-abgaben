@@ -21,11 +21,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-
-      - name: Set up Maven
-        uses: s4u/maven-install@v1
-        with:
-          version: '3.9.9'  # Specify the Maven version here
+          mvn-version: '3.9.9'
 
       - name: Run the Maven verify phase
         working-directory: ./Aufgabe3
