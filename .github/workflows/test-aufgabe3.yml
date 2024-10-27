@@ -23,5 +23,7 @@ jobs:
           maven-version: 3.9.9
           checkout-path: ./Aufgabe3
 
-      - run: mvn -V clean install
+      - run: |
+          cd Aufgabe3
+          mvn -V clean install
         shell: bash
