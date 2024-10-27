@@ -1,0 +1,42 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3 https://maven.apache.org/xsd/assembly-1.1.3.xsd">
+    <id>bankprojekt-jar</id>
+    <formats>
+        <format>jar</format>
+    </formats>
+    <fileSets>
+        <!-- Enthält den src-Ordner -->
+        <fileSet>
+            <directory>src</directory>
+            <outputDirectory>src</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+        <!-- Enthält die pom.xml -->
+        <fileSet>
+            <directory>.</directory>
+            <outputDirectory>.</outputDirectory>
+            <includes>
+                <include>pom.xml</include>
+            </includes>
+        </fileSet>
+        <!-- Enthält das apidocs-Verzeichnis -->
+        <fileSet>
+            <directory>apidocs</directory>
+            <outputDirectory>apidocs</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+        <!-- Enthält das jacoco-Verzeichnis -->
+        <fileSet>
+            <directory>target/site/jacoco</directory>
+            <outputDirectory>jacoco</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>
