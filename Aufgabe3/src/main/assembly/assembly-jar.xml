@@ -6,7 +6,7 @@
         <format>jar</format>
     </formats>
     <fileSets>
-        <!-- Enthält den src-Ordner -->
+        <!-- src -->
         <fileSet>
             <directory>src</directory>
             <outputDirectory>src</outputDirectory>
@@ -14,7 +14,7 @@
                 <include>**/*</include>
             </includes>
         </fileSet>
-        <!-- Enthält die pom.xml -->
+        <!-- pom -->
         <fileSet>
             <directory>.</directory>
             <outputDirectory>.</outputDirectory>
@@ -22,7 +22,7 @@
                 <include>pom.xml</include>
             </includes>
         </fileSet>
-        <!-- Enthält das apidocs-Verzeichnis -->
+        <!-- apidocs -->
         <fileSet>
             <directory>apidocs</directory>
             <outputDirectory>apidocs</outputDirectory>
@@ -30,7 +30,7 @@
                 <include>**/*</include>
             </includes>
         </fileSet>
-        <!-- Enthält das jacoco-Verzeichnis -->
+        <!-- jacoco -->
         <fileSet>
             <directory>target/site/jacoco</directory>
             <outputDirectory>jacoco</outputDirectory>

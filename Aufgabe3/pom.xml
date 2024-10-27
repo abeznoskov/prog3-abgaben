@@ -44,7 +44,6 @@
                 <version>0.8.12</version>
 
                 <executions>
-                    <!-- Execution für prepare-agent während der validate-Phase -->
                     <execution>
                         <id>prepare-agent</id>
                         <goals>
@@ -53,7 +52,6 @@
                         <phase>validate</phase>
                     </execution>
 
-                    <!-- Execution für report während der test-Phase -->
                     <execution>
                         <id>report</id>
                         <goals>
@@ -76,18 +74,18 @@
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
-                        <phase>package</phase> <!-- JavaDoc wird während der package-Phase erzeugt -->
+                        <phase>package</phase>
                         <goals>
                             <goal>jar</goal>
                         </goals>
                         <configuration>
-                            <show>package</show> <!-- Mindestens packageweite Sichtbarkeit -->
+                            <show>package</show>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
 
-            <!-- Assembly Plugin -->
+            <!-- Assembly Plugin(JAR) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
