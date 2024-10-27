@@ -39,7 +39,7 @@ jobs:
         shell: bash
 
       - name: Upload JAR file
-          uses: actions/upload-artifact@v4
-          with:
-            name: JAR
-            path: target/*.jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: JAR
+          path: target/*.jar
