@@ -15,13 +15,23 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+        with:
+          path: ./Aufgabe3  # Specify the checkout path here
+
       - name: Setup Maven Action
         uses: s4u/setup-maven-action@v1.15.0
         with:
           java-version: 21
           maven-version: 3.9.9
-          checkout-path: ./Aufgabe3
+
+      - name: List contents of Aufgabe3
+        run: ls -R Aufgabe3
+
+      - name: Display Java version
+        run: java -version
+
+      - name: Display Maven version
+        run: mvn -version
 
       - run: |
           cd Aufgabe3
