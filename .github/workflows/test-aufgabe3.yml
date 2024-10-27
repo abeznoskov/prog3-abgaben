@@ -22,6 +22,6 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Run Maven tests for /Aufgabe3/
+      - name: Run the Maven verify phase
         working-directory: ./Aufgabe3
-        run: mvn test
+        run: mvn --batch-mode --update-snapshots verify
