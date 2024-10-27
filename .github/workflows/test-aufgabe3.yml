@@ -24,3 +24,4 @@ jobs:
           checkout-path: ./Aufgabe3
 
       - run: mvn -V clean install
+        shell: bash
