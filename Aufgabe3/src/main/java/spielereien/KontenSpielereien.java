@@ -83,7 +83,7 @@ public class KontenSpielereien {
 		//System.out.println("Echter Betrag: " + result);
 
 
-		Geldbetrag geldbetrag = new Geldbetrag(1000, Waehrung.FRANC);
+		Geldbetrag geldbetrag = new Geldbetrag(100, Waehrung.EUR);
 		System.out.println("Betrag bevor Umrechnung: " + geldbetrag);
 
 		geldbetrag.umrechnen(Waehrung.DOBRA);
