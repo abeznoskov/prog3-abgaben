@@ -24,7 +24,7 @@
         </fileSet>
         <!-- apidocs -->
         <fileSet>
-            <directory>apidocs</directory>
+            <directory>target/apidocs</directory>
             <outputDirectory>apidocs</outputDirectory>
             <includes>
                 <include>**/*</include>
