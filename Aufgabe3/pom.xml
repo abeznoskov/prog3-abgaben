@@ -10,8 +10,6 @@
 
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -84,6 +82,60 @@
                         </goals>
                         <configuration>
                             <show>package</show> <!-- Mindestens packageweite Sichtbarkeit -->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>create-custom-jar</id>
+                        <phase>package</phase> <!-- Führe während der package-Phase aus -->
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <formats>
+                                <format>jar</format>
+                            </formats>
+                            <fileSets>
+                                <!-- Enthält den src-Ordner -->
+                                <fileSet>
+                                    <directory>src</directory>
+                                    <outputDirectory>src</outputDirectory>
+                                    <includes>
+                                        <include>**/*</include>
+                                    </includes>
+                                </fileSet>
+                                <!-- Enthält die pom.xml -->
+                                <fileSet>
+                                    <directory>.</directory>
+                                    <outputDirectory>.</outputDirectory>
+                                    <includes>
+                                        <include>pom.xml</include>
+                                    </includes>
+                                </fileSet>
+                                <!-- Enthält das apidocs-Verzeichnis -->
+                                <fileSet>
+                                    <directory>apidocs</directory>
+                                    <outputDirectory>apidocs</outputDirectory>
+                                    <includes>
+                                        <include>**/*</include>
+                                    </includes>
+                                </fileSet>
+                                <!-- Enthält das jacoco-Verzeichnis -->
+                                <fileSet>
+                                    <directory>target/site/jacoco</directory>
+                                    <outputDirectory>jacoco</outputDirectory>
+                                    <includes>
+                                        <include>**/*</include>
+                                    </includes>
+                                </fileSet>
+                            </fileSets>
                         </configuration>
                     </execution>
                 </executions>
