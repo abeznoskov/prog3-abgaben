@@ -10,6 +10,7 @@ import bankprojekt.verarbeitung.Konto;
 import bankprojekt.verarbeitung.Kontoart;
 import bankprojekt.verarbeitung.Kunde;
 import bankprojekt.verarbeitung.Sparbuch;
+import verwaltung.Bank;
 
 /**
  * Testprogramm für Konten
@@ -90,7 +91,15 @@ public class KontenSpielereien {
 
 		System.out.println("Betrag nach Umrechnung: " + geldbetrag);
 
+		Bank bank = new Bank(420); // Deklariere die Bank hier
+		LocalDate geb = LocalDate.of(2020, 1, 1);
+		Kunde testKundeA = new Kunde("David", "Schneider", "Arsch", geb);
+		Kunde testKundeB = new Kunde("David2", "Schneider2", "Arsch2", geb);
 
+		bank.girokontoErstellen(testKundeA);
+		bank.girokontoErstellen(testKundeB);
+
+		System.out.println(bank.getAlleKonten());
 
 	}
 

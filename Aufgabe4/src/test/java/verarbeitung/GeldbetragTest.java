@@ -1,3 +1,5 @@
+package verarbeitung;
+
 import bankprojekt.geld.Waehrung;
 import bankprojekt.verarbeitung.Geldbetrag;
 import org.junit.jupiter.api.Test;
