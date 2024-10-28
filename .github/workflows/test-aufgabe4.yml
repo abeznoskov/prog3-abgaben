@@ -1,0 +1,46 @@
+name: Test Aufgabe4
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          path: ./Aufgabe4  # Specify the checkout path here
+
+      - name: Setup Maven Action
+        uses: s4u/setup-maven-action@v1.15.0
+        with:
+          java-version: 21
+          maven-version: 3.9.9
+
+      - name: List contents of Aufgabe4
+        run: ls -R Aufgabe4
+
+      - name: Display Java version
+        run: java -version
+
+      - name: Display Maven version
+        run: mvn -version
+
+      - name: Maven clean package
+        run: |
+          cd Aufgabe4
+          mvn -V clean package
+        shell: bash
+
+      - name: Upload JAR file
+        uses: actions/upload-artifact@v4
+        with:
+          name: JAR
+          path: Aufgabe4/target/*.jar
