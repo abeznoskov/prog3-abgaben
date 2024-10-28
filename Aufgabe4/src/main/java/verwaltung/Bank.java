@@ -24,12 +24,14 @@ public class Bank {
     public long girokontoErstellen(Kunde inhaber) {
         Girokonto k = new Girokonto(inhaber, vergebeneKontoNr +1, standardDispo);
         kontoListe.put(vergebeneKontoNr, k);
+        vergebeneKontoNr++;
         return vergebeneKontoNr;
     }
 
     public long sparbuchErstellen(Kunde inhaber) {
         Sparbuch s = new Sparbuch(inhaber, vergebeneKontoNr +1);
         kontoListe.put(vergebeneKontoNr, s);
+        vergebeneKontoNr++;
         return vergebeneKontoNr;
     }
 
