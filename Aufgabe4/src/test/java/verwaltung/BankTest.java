@@ -10,6 +10,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// TODO: Tests noch WIP
 class BankTest {
     Bank bank; // Deklariere die Bank hier
     static LocalDate geb = LocalDate.of(2020, 1, 1);

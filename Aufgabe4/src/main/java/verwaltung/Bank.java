@@ -46,9 +46,13 @@ public class Bank {
      *
      * @param inhaber der Kunde
      * @return die zugewiesene Kontonummer
+     * @throws NullPointerException wenn inhaber null
      *
      */
-    public long girokontoErstellen(Kunde inhaber) {
+    public long girokontoErstellen(Kunde inhaber) throws NullPointerException{
+        if (inhaber == null)
+            throw new NullPointerException();
+
         this.vergebeneKontoNr += 1;
 
         Girokonto k = new Girokonto(inhaber, vergebeneKontoNr, standardDispo);
@@ -62,9 +66,13 @@ public class Bank {
      *
      * @param inhaber der Kunde
      * @return die zugewiesene Kontonummer
+     * @throws NullPointerException wenn inhaber null
      *
      */
-    public long sparbuchErstellen(Kunde inhaber) {
+    public long sparbuchErstellen(Kunde inhaber) throws NullPointerException {
+        if (inhaber == null)
+            throw new NullPointerException();
+
         this.vergebeneKontoNr += 1;
 
         Sparbuch s = new Sparbuch(inhaber, vergebeneKontoNr);
@@ -111,7 +119,12 @@ public class Bank {
      *
      */
     public boolean geldAbheben(long von, Geldbetrag betrag) throws GesperrtException {
-        return kontoListe.get(von).abheben(betrag);
+        Konto konto = kontoListe.get(von);
+
+        if (konto.isGesperrt())
+            throw new GesperrtException(konto.getKontonummer());
+
+        return konto.abheben(betrag);
     }
 
     /**
@@ -119,10 +132,16 @@ public class Bank {
      *
      * @param auf KontoNr
      * @param betrag Betrag
+     * @throws GesperrtException wenn Konto gesperrt
      *
      */
-    public void geldEinzahlen(long auf, Geldbetrag betrag) {
-        kontoListe.get(auf).einzahlen(betrag);
+    public void geldEinzahlen(long auf, Geldbetrag betrag) throws GesperrtException {
+        Konto konto = kontoListe.get(auf);
+
+        if (konto.isGesperrt())
+            throw new GesperrtException(konto.getKontonummer());
+
+        konto.einzahlen(betrag);
     }
 
     /**
@@ -142,6 +161,7 @@ public class Bank {
      *
      * @param nummer KontoNr
      * @return Kontostand
+     *
      */
     public Geldbetrag getKontostand(long nummer) {
         return kontoListe.get(nummer).getKontostand();
@@ -169,6 +189,12 @@ public class Bank {
 
         if (von == null | an == null)
             return false;
+
+        if (von.isGesperrt())
+            throw new GesperrtException(von.getKontonummer());
+
+        if (an.isGesperrt())
+            throw new GesperrtException(an.getKontonummer());
 
         if(!von.abheben(betrag))
             return false;
