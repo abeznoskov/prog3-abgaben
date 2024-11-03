@@ -74,7 +74,6 @@ public class Bank {
      */
     public long sparbuchErstellen(Kunde inhaber) throws NullPointerException {
         if (inhaber == null)
-            //throw new NullPointerException();
             throw new IllegalArgumentException();
 
         this.vergebeneKontoNr += 1;

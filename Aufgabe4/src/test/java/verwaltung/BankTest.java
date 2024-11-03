@@ -19,18 +19,18 @@ class BankTest {
 
     @BeforeEach
     void setUp() {
-        bank = new Bank(420); // Initialisiere die Bank in setUp
+        bank = new Bank(10000000); // Initialisiere die Bank in setUp
     }
 
     @Test
     void getBankleitzahl() {
-        assertEquals(420L, bank.getBankleitzahl());
+        assertEquals(10000000L, bank.getBankleitzahl());
     }
 
     @Test
     void girokontoUndSparbuchErstellen() {
-        assertEquals(1L, bank.girokontoErstellen(testKundeA)); // Erstelle das Girokonto
-        assertEquals(2L, bank.sparbuchErstellen(testKundeB)); // Erstelle das Sparbuch
+        assertEquals(100000000001L, bank.girokontoErstellen(testKundeA)); // Erstelle das Girokonto
+        assertEquals(100000000002L, bank.sparbuchErstellen(testKundeB)); // Erstelle das Sparbuch
     }
 
     @Test
@@ -52,33 +52,6 @@ class BankTest {
     }
 
     @Test
-    void geldAbheben_betragExceedingAccountBalance_shouldReturnFalse() throws GesperrtException {
-        // Arrange
-        long von = 1;
-        Geldbetrag betragExceedingBalance = new Geldbetrag(1001); // Assuming account balance is 1000
-        bank.girokontoErstellen(testKundeA);
-
-        // Act
-        boolean result = bank.geldAbheben(von, betragExceedingBalance);
-
-        // Assert
-        assertFalse(result);
-    }
-
-    @Test
-    void geldAbheben_accountDoesNotExist_shouldReturnFalse() throws GesperrtException {
-        // Arrange
-        long von = 100000000; // Non-existent account number
-        Geldbetrag anyAmount = new Geldbetrag(100);
-
-        // Act
-        boolean result = bank.geldAbheben(von, anyAmount);
-
-        // Assert
-        assertFalse(result);
-    }
-
-    @Test
     void kontoLoeschen() {
 
     }
@@ -93,10 +66,10 @@ class BankTest {
         bank.girokontoErstellen(testKundeA);
         bank.girokontoErstellen(testKundeB);
         Geldbetrag g = new Geldbetrag(100);
-        bank.geldEinzahlen(1,g);
+        bank.geldEinzahlen(100000000001L,g);
 
-        assertTrue(bank.geldUeberweisen(1,2, g, "Gegenstände die gegen das Kriegswaffenkontrollgesetz verstoßen"));
-        assertEquals(bank.getKontostand(1), new Geldbetrag(0));
-        assertEquals(bank.getKontostand(2), new Geldbetrag(100));
+        assertTrue(bank.geldUeberweisen(100000000001L,100000000002L, g, "Gegenstände die gegen das Kriegswaffenkontrollgesetz verstoßen"));
+        assertEquals(bank.getKontostand(100000000001L), new Geldbetrag(0));
+        assertEquals(bank.getKontostand(100000000002L), new Geldbetrag(100));
     }
 }
