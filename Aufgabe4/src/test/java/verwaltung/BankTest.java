@@ -52,8 +52,30 @@ class BankTest {
     }
 
     @Test
-    void geldEinzahlen() {
+    void geldAbheben_betragExceedingAccountBalance_shouldReturnFalse() throws GesperrtException {
+        // Arrange
+        long von = 1;
+        Geldbetrag betragExceedingBalance = new Geldbetrag(1001); // Assuming account balance is 1000
+        bank.girokontoErstellen(testKundeA);
 
+        // Act
+        boolean result = bank.geldAbheben(von, betragExceedingBalance);
+
+        // Assert
+        assertFalse(result);
+    }
+
+    @Test
+    void geldAbheben_accountDoesNotExist_shouldReturnFalse() throws GesperrtException {
+        // Arrange
+        long von = 100000000; // Non-existent account number
+        Geldbetrag anyAmount = new Geldbetrag(100);
+
+        // Act
+        boolean result = bank.geldAbheben(von, anyAmount);
+
+        // Assert
+        assertFalse(result);
     }
 
     @Test

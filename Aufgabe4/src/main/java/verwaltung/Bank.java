@@ -16,18 +16,21 @@ import java.util.Map;
  */
 public class Bank {
 
-    private final long bankleitzahl;
+    private final long bankleitzahl; // BLZ in DE starten bei 10000000
     private Map<Long, Konto> kontoListe = new HashMap<>();
-    private long vergebeneKontoNr = 0;
+    private long vergebeneKontoNr = 100000000000L;
     private final Geldbetrag  standardDispo = new Geldbetrag(200);
 
     /**
-     * Konstruktor mit Zuweisung der Bankleitzahl
+     * Konstruktor mit Zuweisung der positiven Bankleitzahl
      *
      * @param bankleitzahl die Bankleitzahl
      *
      */
     public Bank(long bankleitzahl) {
+        if (bankleitzahl < 10000000L || bankleitzahl > 99999999L)
+            throw new IllegalArgumentException("Bankleitzahlen in DE starten ab 10000000 bis max 99999999");
+
         this.bankleitzahl = bankleitzahl;
     }
 
@@ -46,12 +49,12 @@ public class Bank {
      *
      * @param inhaber der Kunde
      * @return die zugewiesene Kontonummer
-     * @throws NullPointerException wenn inhaber null
+     * @throws IllegalArgumentException wenn inhaber null
      *
      */
     public long girokontoErstellen(Kunde inhaber) throws NullPointerException{
         if (inhaber == null)
-            throw new NullPointerException();
+            throw new IllegalArgumentException();
 
         this.vergebeneKontoNr += 1;
 
@@ -66,12 +69,13 @@ public class Bank {
      *
      * @param inhaber der Kunde
      * @return die zugewiesene Kontonummer
-     * @throws NullPointerException wenn inhaber null
+     * @throws IllegalArgumentException wenn inhaber null
      *
      */
     public long sparbuchErstellen(Kunde inhaber) throws NullPointerException {
         if (inhaber == null)
-            throw new NullPointerException();
+            //throw new NullPointerException();
+            throw new IllegalArgumentException();
 
         this.vergebeneKontoNr += 1;
 
@@ -116,10 +120,21 @@ public class Bank {
      * @return true  -> wenn Abheben erfolgreich
      *         false -> wenn Abheben fehlgeschlagen
      * @throws GesperrtException wenn Konto gesperrt
+     * @throws IllegalArgumentException wenn von ungueltig ist
+     *                                  wenn konto NULL ist
      *
      */
     public boolean geldAbheben(long von, Geldbetrag betrag) throws GesperrtException {
+        if (betrag == null || betrag.getBetrag() < 0)
+            throw new IllegalArgumentException("Betrag darf nicht null oder negativ sein.");
+
+        if (von < 100000000000L || von > 999999999999L)
+            throw new IllegalArgumentException("Kontonummer ist zwischen 100000000000 und 999999999999.");
+
         Konto konto = kontoListe.get(von);
+
+        if (konto == null)
+            throw new IllegalArgumentException("Kontonummer wurde nicht gefunden.");
 
         if (konto.isGesperrt())
             throw new GesperrtException(konto.getKontonummer());
@@ -133,10 +148,21 @@ public class Bank {
      * @param auf KontoNr
      * @param betrag Betrag
      * @throws GesperrtException wenn Konto gesperrt
+     * @throws IllegalArgumentException wenn auf ungueltig ist
+     *                                  wenn konto NULL ist
      *
      */
     public void geldEinzahlen(long auf, Geldbetrag betrag) throws GesperrtException {
+        if (betrag == null)
+            throw new IllegalArgumentException("Betrag darf nicht null oder negativ sein.");
+
+        if (auf < 100000000000L || auf > 999999999999L)
+            throw new IllegalArgumentException("Kontonummer ist zwischen 100000000000 und 999999999999.");
+
         Konto konto = kontoListe.get(auf);
+
+        if (konto == null)
+            throw new IllegalArgumentException("Kontonummer wurde nicht gefunden.");
 
         if (konto.isGesperrt())
             throw new GesperrtException(konto.getKontonummer());
@@ -150,9 +176,13 @@ public class Bank {
      * @param nummer KontoNr
      * @return true  -> wenn Löschen erfolgreich
      *         false -> wenn Konto nicht gefunden
+     * @throws IllegalArgumentException wenn Kontonummer negativ ist
      *
      */
     public boolean kontoLoeschen(long nummer) {
+        if (nummer < 0)
+            throw new IllegalArgumentException("Kontonummer darf nicht negativ sein.");
+
         return kontoListe.remove(nummer) != null;
     }
 
@@ -161,10 +191,21 @@ public class Bank {
      *
      * @param nummer KontoNr
      * @return Kontostand
+     * @throws IllegalArgumentException wenn Kontonummer negativ ist
+     * @throws NullPointerException wenn Konto nicht existiert
      *
      */
     public Geldbetrag getKontostand(long nummer) {
-        return kontoListe.get(nummer).getKontostand();
+        if (nummer < 0)
+            throw new IllegalArgumentException("Kontonummer darf nicht negativ sein.");
+
+        Konto konto = kontoListe.get(nummer);
+
+        if (konto == null)
+            throw new NullPointerException("Konto mit der angegebenen Kontonummer wurde nicht gefunden.");
+
+        //return kontoListe.get(nummer).getKontostand();
+        return konto.getKontostand();
     }
 
     /**
