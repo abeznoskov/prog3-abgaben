@@ -4,6 +4,7 @@ import bankprojekt.verarbeitung.Geldbetrag;
 import bankprojekt.verarbeitung.GesperrtException;
 import bankprojekt.verarbeitung.Kunde;
 import bankprojekt.verwaltung.Bank;
+import bankprojekt.verwaltung.KontoNichtVorhandenException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -63,7 +64,7 @@ class BankTest {
     }
 
     @Test
-    void geldUeberweisen() throws GesperrtException {
+    void geldUeberweisen() throws GesperrtException, KontoNichtVorhandenException {
         bank.girokontoErstellen(testKundeA);
         bank.girokontoErstellen(testKundeB);
         Geldbetrag g = new Geldbetrag(100);

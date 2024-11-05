@@ -130,6 +130,7 @@ public class Bank {
      * @throws IllegalArgumentException wenn von ungueltig ist
      *                                  wenn konto NULL ist
      * @throws GesperrtException wenn Konto gesperrt
+     * @throws KontoNichtVorhandenException wenn Konto nicht existiert
      *
      */
     public boolean geldAbheben(long von, Geldbetrag betrag) throws KontoNichtVorhandenException, GesperrtException {
@@ -151,6 +152,7 @@ public class Bank {
      * @param betrag Betrag
      * @throws IllegalArgumentException wenn Kontonummer nicht gefunden
      *                                  wenn Betrag null
+     * @throws KontoNichtVorhandenException wenn Konto nicht existiert
      *
      */
     public void geldEinzahlen(long auf, Geldbetrag betrag) throws IllegalArgumentException, KontoNichtVorhandenException {
@@ -187,7 +189,7 @@ public class Bank {
      * @param nummer KontoNr
      * @return Kontostand
      * @throws IllegalArgumentException wenn Kontonummer negativ ist
-     * @throws NullPointerException wenn Konto nicht existiert
+     * @throws KontoNichtVorhandenException wenn Konto nicht existiert
      *
      */
     public Geldbetrag getKontostand(long nummer) throws IllegalArgumentException, KontoNichtVorhandenException {
