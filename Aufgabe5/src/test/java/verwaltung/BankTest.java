@@ -3,6 +3,8 @@ package verwaltung;
 import bankprojekt.verarbeitung.Geldbetrag;
 import bankprojekt.verarbeitung.GesperrtException;
 import bankprojekt.verarbeitung.Kunde;
+import bankprojekt.verwaltung.Bank;
+import bankprojekt.verwaltung.KontoNichtVorhandenException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,18 +21,18 @@ class BankTest {
 
     @BeforeEach
     void setUp() {
-        bank = new Bank(420); // Initialisiere die Bank in setUp
+        bank = new Bank(10000000); // Initialisiere die Bank in setUp
     }
 
     @Test
     void getBankleitzahl() {
-        assertEquals(420L, bank.getBankleitzahl());
+        assertEquals(10000000L, bank.getBankleitzahl());
     }
 
     @Test
     void girokontoUndSparbuchErstellen() {
-        assertEquals(1L, bank.girokontoErstellen(testKundeA)); // Erstelle das Girokonto
-        assertEquals(2L, bank.sparbuchErstellen(testKundeB)); // Erstelle das Sparbuch
+        assertEquals(100000000001L, bank.girokontoErstellen(testKundeA)); // Erstelle das Girokonto
+        assertEquals(100000000002L, bank.sparbuchErstellen(testKundeB)); // Erstelle das Sparbuch
     }
 
     @Test
@@ -52,11 +54,6 @@ class BankTest {
     }
 
     @Test
-    void geldEinzahlen() {
-
-    }
-
-    @Test
     void kontoLoeschen() {
 
     }
@@ -67,14 +64,14 @@ class BankTest {
     }
 
     @Test
-    void geldUeberweisen() throws GesperrtException {
+    void geldUeberweisen() throws GesperrtException, KontoNichtVorhandenException {
         bank.girokontoErstellen(testKundeA);
         bank.girokontoErstellen(testKundeB);
         Geldbetrag g = new Geldbetrag(100);
-        bank.geldEinzahlen(1,g);
+        bank.geldEinzahlen(100000000001L,g);
 
-        assertTrue(bank.geldUeberweisen(1,2, g, "Gegenstände die gegen das Kriegswaffenkontrollgesetz verstoßen"));
-        assertEquals(bank.getKontostand(1), new Geldbetrag(0));
-        assertEquals(bank.getKontostand(2), new Geldbetrag(100));
+        assertTrue(bank.geldUeberweisen(100000000001L,100000000002L, g, "Gegenstände die gegen das Kriegswaffenkontrollgesetz verstoßen"));
+        assertEquals(bank.getKontostand(100000000001L), new Geldbetrag(0));
+        assertEquals(bank.getKontostand(100000000002L), new Geldbetrag(100));
     }
 }

@@ -5,12 +5,8 @@ import java.time.LocalDate;
 import bankprojekt.geld.Waehrung;
 import bankprojekt.verarbeitung.Geldbetrag;
 import bankprojekt.verarbeitung.GesperrtException;
-import bankprojekt.verarbeitung.Girokonto;
-import bankprojekt.verarbeitung.Konto;
-import bankprojekt.verarbeitung.Kontoart;
 import bankprojekt.verarbeitung.Kunde;
-import bankprojekt.verarbeitung.Sparbuch;
-import verwaltung.Bank;
+import bankprojekt.verwaltung.Bank;
 
 /**
  * Testprogramm für Konten
