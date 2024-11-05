@@ -19,7 +19,7 @@ public class Bank {
     private final long bankleitzahl; // BLZ in DE starten bei 10000000
     private Map<Long, Konto> kontoListe = new HashMap<>();
     private long vergebeneKontoNr = 100000000000L;
-    private final Geldbetrag standardDispo = new Geldbetrag(200);
+    private static final double standardDispo = 200;
 
     /**
      * Konstruktor mit Zuweisung der positiven Bankleitzahl
@@ -59,7 +59,7 @@ public class Bank {
 
         this.vergebeneKontoNr += 1;
 
-        Girokonto k = new Girokonto(inhaber, vergebeneKontoNr, standardDispo);
+        Girokonto k = new Girokonto(inhaber, vergebeneKontoNr, new Geldbetrag(standardDispo));
         this.kontoListe.put(vergebeneKontoNr, k);
 
         return vergebeneKontoNr;
@@ -127,22 +127,19 @@ public class Bank {
      * @param betrag Betrag
      * @return true  -> wenn Abheben erfolgreich
      *         false -> wenn Abheben fehlgeschlagen
-     * @throws GesperrtException wenn Konto gesperrt
      * @throws IllegalArgumentException wenn von ungueltig ist
      *                                  wenn konto NULL ist
+     * @throws GesperrtException wenn Konto gesperrt
      *
      */
-    public boolean geldAbheben(long von, Geldbetrag betrag) throws GesperrtException {
+    public boolean geldAbheben(long von, Geldbetrag betrag) throws KontoNichtVorhandenException, GesperrtException {
         if (betrag == null || betrag.getBetrag() < 0)
             throw new IllegalArgumentException("Betrag darf nicht null oder negativ sein.");
 
         Konto konto = kontoListe.get(von);
 
         if (konto == null)
-            throw new IllegalArgumentException("Kontonummer wurde nicht gefunden.");
-
-        if (konto.isGesperrt())
-            throw new GesperrtException(konto.getKontonummer());
+            throw new KontoNichtVorhandenException(von);
 
         return konto.abheben(betrag);
     }
@@ -152,19 +149,18 @@ public class Bank {
      *
      * @param auf KontoNr
      * @param betrag Betrag
-     * @throws GesperrtException wenn Konto gesperrt
      * @throws IllegalArgumentException wenn Kontonummer nicht gefunden
      *                                  wenn Betrag null
      *
      */
-    public void geldEinzahlen(long auf, Geldbetrag betrag) throws GesperrtException {
+    public void geldEinzahlen(long auf, Geldbetrag betrag) throws IllegalArgumentException, KontoNichtVorhandenException {
         if (betrag == null)
             throw new IllegalArgumentException("Betrag darf nicht null oder negativ sein.");
 
         Konto konto = kontoListe.get(auf);
 
         if (konto == null)
-            throw new IllegalArgumentException("Kontonummer wurde nicht gefunden.");
+            throw new KontoNichtVorhandenException(auf);
 
         konto.einzahlen(betrag);
     }
@@ -178,7 +174,7 @@ public class Bank {
      * @throws IllegalArgumentException wenn Kontonummer negativ ist
      *
      */
-    public boolean kontoLoeschen(long nummer) {
+    public boolean kontoLoeschen(long nummer) throws IllegalArgumentException {
         if (nummer < 0)
             throw new IllegalArgumentException("Kontonummer darf nicht negativ sein.");
 
@@ -194,14 +190,14 @@ public class Bank {
      * @throws NullPointerException wenn Konto nicht existiert
      *
      */
-    public Geldbetrag getKontostand(long nummer) {
+    public Geldbetrag getKontostand(long nummer) throws IllegalArgumentException, KontoNichtVorhandenException {
         if (nummer < 0)
             throw new IllegalArgumentException("Kontonummer darf nicht negativ sein.");
 
         Konto konto = kontoListe.get(nummer);
 
         if (konto == null)
-            throw new NullPointerException("Konto mit der angegebenen Kontonummer wurde nicht gefunden.");
+            throw new KontoNichtVorhandenException(nummer);
 
         return kontoListe.get(nummer).getKontostand();
     }
