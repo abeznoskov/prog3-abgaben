@@ -1,4 +1,4 @@
-package verwaltung;
+package bankprojekt.verwaltung;
 
 import bankprojekt.verarbeitung.*;
 
@@ -19,12 +19,13 @@ public class Bank {
     private final long bankleitzahl; // BLZ in DE starten bei 10000000
     private Map<Long, Konto> kontoListe = new HashMap<>();
     private long vergebeneKontoNr = 100000000000L;
-    private final Geldbetrag  standardDispo = new Geldbetrag(200);
+    private final Geldbetrag standardDispo = new Geldbetrag(200);
 
     /**
      * Konstruktor mit Zuweisung der positiven Bankleitzahl
      *
      * @param bankleitzahl die Bankleitzahl
+     * @throws IllegalArgumentException Wenn Bankleitzahl nicht zulässig ist
      *
      */
     public Bank(long bankleitzahl) {
@@ -49,10 +50,10 @@ public class Bank {
      *
      * @param inhaber der Kunde
      * @return die zugewiesene Kontonummer
-     * @throws IllegalArgumentException wenn inhaber null
+     * @throws IllegalArgumentException wenn Kunde null
      *
      */
-    public long girokontoErstellen(Kunde inhaber) throws NullPointerException{
+    public long girokontoErstellen(Kunde inhaber) throws IllegalArgumentException{
         if (inhaber == null)
             throw new IllegalArgumentException();
 
@@ -69,10 +70,10 @@ public class Bank {
      *
      * @param inhaber der Kunde
      * @return die zugewiesene Kontonummer
-     * @throws IllegalArgumentException wenn inhaber null
+     * @throws IllegalArgumentException wenn Kunde null
      *
      */
-    public long sparbuchErstellen(Kunde inhaber) throws NullPointerException {
+    public long sparbuchErstellen(Kunde inhaber) throws IllegalArgumentException {
         if (inhaber == null)
             throw new IllegalArgumentException();
 
@@ -92,9 +93,15 @@ public class Bank {
      */
     public String getAlleKonten() {
         StringBuilder alleKonten = new StringBuilder();
+
         for(Konto k: kontoListe.values()) {
-            alleKonten.append(k.toString());
+            alleKonten.append(k.getKontonummerFormatiert())
+                    .append("  ")
+                    .append(k.getKontostand())
+                    .append("  ")
+                    .append(System.lineSeparator());
         }
+
         return alleKonten.toString();
     }
 
@@ -106,8 +113,10 @@ public class Bank {
      */
     public List<Long> getAlleKontonummern() {
         List<Long> alleKontonummern = new ArrayList<>();
+
         for(Map.Entry<Long, Konto> k: kontoListe.entrySet())
             alleKontonummern.add(k.getKey());
+
         return alleKontonummern;
     }
 
@@ -127,9 +136,6 @@ public class Bank {
         if (betrag == null || betrag.getBetrag() < 0)
             throw new IllegalArgumentException("Betrag darf nicht null oder negativ sein.");
 
-        if (von < 100000000000L || von > 999999999999L)
-            throw new IllegalArgumentException("Kontonummer ist zwischen 100000000000 und 999999999999.");
-
         Konto konto = kontoListe.get(von);
 
         if (konto == null)
@@ -147,24 +153,18 @@ public class Bank {
      * @param auf KontoNr
      * @param betrag Betrag
      * @throws GesperrtException wenn Konto gesperrt
-     * @throws IllegalArgumentException wenn auf ungueltig ist
-     *                                  wenn konto NULL ist
+     * @throws IllegalArgumentException wenn Kontonummer nicht gefunden
+     *                                  wenn Betrag null
      *
      */
     public void geldEinzahlen(long auf, Geldbetrag betrag) throws GesperrtException {
         if (betrag == null)
             throw new IllegalArgumentException("Betrag darf nicht null oder negativ sein.");
 
-        if (auf < 100000000000L || auf > 999999999999L)
-            throw new IllegalArgumentException("Kontonummer ist zwischen 100000000000 und 999999999999.");
-
         Konto konto = kontoListe.get(auf);
 
         if (konto == null)
             throw new IllegalArgumentException("Kontonummer wurde nicht gefunden.");
-
-        if (konto.isGesperrt())
-            throw new GesperrtException(konto.getKontonummer());
 
         konto.einzahlen(betrag);
     }
@@ -203,8 +203,7 @@ public class Bank {
         if (konto == null)
             throw new NullPointerException("Konto mit der angegebenen Kontonummer wurde nicht gefunden.");
 
-        //return kontoListe.get(nummer).getKontostand();
-        return konto.getKontostand();
+        return kontoListe.get(nummer).getKontostand();
     }
 
     /**
@@ -227,20 +226,13 @@ public class Bank {
         Konto von = kontoListe.get(vonKontonr);
         Konto an = kontoListe.get(nachKontonr);
 
-        if (von == null | an == null)
+        if (!(von instanceof UeberweisungsfaehigesKonto) || !(an instanceof UeberweisungsfaehigesKonto))
             return false;
 
-        if (von.isGesperrt())
-            throw new GesperrtException(von.getKontonummer());
-
-        if (an.isGesperrt())
-            throw new GesperrtException(an.getKontonummer());
-
-        if(!von.abheben(betrag))
+        if(!((UeberweisungsfaehigesKonto) von).ueberweisungAbsenden(betrag, an.getInhaber().toString(), an.getKontonummer(), this.bankleitzahl, verwendungszweck))
             return false;
 
-        an.einzahlen(betrag);
-
+        ((UeberweisungsfaehigesKonto) an).ueberweisungEmpfangen(betrag, von.getInhaber().toString(),von.getKontonummer(), this.bankleitzahl, verwendungszweck);
         return true;
     }
 }

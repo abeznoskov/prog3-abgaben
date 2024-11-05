@@ -3,6 +3,7 @@ package verwaltung;
 import bankprojekt.verarbeitung.Geldbetrag;
 import bankprojekt.verarbeitung.GesperrtException;
 import bankprojekt.verarbeitung.Kunde;
+import bankprojekt.verwaltung.Bank;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
