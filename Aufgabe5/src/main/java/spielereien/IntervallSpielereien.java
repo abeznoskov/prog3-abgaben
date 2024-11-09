@@ -10,7 +10,7 @@ import java.util.Date;
  * @author Pepe Duks
  * Main-Klasse zum testen von mathematik.Intervall
  */
-public class Hauptprogramm {
+public class IntervallSpielereien {
     /**
      * Ad-Hoc Tests für die Klasse mathematik.Intervall.
      * @param args nicht benutzt
