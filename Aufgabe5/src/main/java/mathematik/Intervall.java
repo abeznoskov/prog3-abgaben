@@ -67,6 +67,10 @@ public class Intervall<T extends Comparable<T>> {
      * @param anderes das zweite Intervall
      * @return ein neues Intervall, das die Schnittmenge enthaelt oder null, wenn es keine Schnittmenge gibt
      * @throws IllegalArgumentException wenn der angegebene Wert nicht vom gleichen Typ ist wie die untere
+     * TODO: ich weiss nicht, ob wir Comparable nutzen dürfen:
+     *          public <A> Intervall<T> schnitt(Intervall<A> anderes)
+     * bzw.     public <A extends T>  Intervall<T> schnitt(Intervall<? extends A> anderes)
+     *
      */
     public <A extends Comparable<A>> Intervall<T> schnitt(Intervall<A> anderes) {
         if (anderes == null || anderes.untereGrenze.getClass() != this.untereGrenze.getClass()) {
