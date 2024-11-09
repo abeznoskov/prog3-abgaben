@@ -1,5 +1,13 @@
 package mathematik;
 
+/**
+ * Klasse Intervall, die ein mathematisches Intervall auf
+ * einer linear geordneten Menge darstellt
+ *
+ * @author Andreas Beznoskov,
+ *         Dinh Tuan Anh Nguyen
+ *
+ */
 public class Intervall<T extends Comparable<T>> {
     /**
      * untere Grenze eines Intervalls
@@ -51,38 +59,30 @@ public class Intervall<T extends Comparable<T>> {
      * prüft, ob der angegebene Wert im Intervall liegt
      * @param wert der gesuchte Wert
      * @return true, wenn der Wert im Intervall liegt, sonst false
+     * @throws NullPointerException wenn wert NULL ist
      */
-    public <E> boolean enthaelt(E wert) {
-        if (wert == null || !wert.getClass().equals(untereGrenze.getClass())) {
-            return false;
+    public <E extends T> boolean enthaelt(E wert) {
+        if (wert == null){
+            throw new NullPointerException();
         }
-        T wertT = (T) wert;
 
-
-        return (wertT.compareTo(untereGrenze) >= 0) && (wertT.compareTo(obereGrenze) <= 0);
+        return untereGrenze.compareTo(wert) <= 0 && obereGrenze.compareTo(wert) >= 0;
     }
 
     /**
      * erstellt ein neues Intervall, das die Schnittmenge zweier Intervall-Objekte enthaelt
+     * @param <A> der Typ des anderen Intervalls, welcher vom Typ dieses Intervalls abgeleitet ist
      * @param anderes das zweite Intervall
-     * @return ein neues Intervall, das die Schnittmenge enthaelt oder null, wenn es keine Schnittmenge gibt
-     * @throws IllegalArgumentException wenn der angegebene Wert nicht vom gleichen Typ ist wie die untere
-     * TODO: ich weiss nicht, ob wir Comparable nutzen dürfen:
-     *          public <A> Intervall<T> schnitt(Intervall<A> anderes)
-     * bzw.     public <A extends T>  Intervall<T> schnitt(Intervall<? extends A> anderes)
+     * @return ein neues Intervall, das die Schnittmenge enthaelt oder leeres Intervall, wenn es keine Schnittmenge gibt
+     * @throws NullPointerException wenn anderes Intervall NULL ist
      *
      */
-    public <A extends Comparable<A>> Intervall<T> schnitt(Intervall<A> anderes) {
-        if (anderes == null || anderes.untereGrenze.getClass() != this.untereGrenze.getClass()) {
-            return null;
-        }
+    public <A extends T>  Intervall<T> schnitt(Intervall<? extends A> anderes) {
+        if (anderes == null)
+            throw new NullPointerException();
 
-        T neueUntereGrenze = (this.untereGrenze.compareTo((T) anderes.untereGrenze) > 0) ? this.untereGrenze : (T) anderes.untereGrenze;
-        T neueObereGrenze = (this.obereGrenze.compareTo((T) anderes.obereGrenze) < 0) ? this.obereGrenze : (T) anderes.obereGrenze;
-
-        if (neueUntereGrenze.compareTo(neueObereGrenze) > 0) {
-            return new Intervall<>(null, null);
-        }
+        T neueObereGrenze = obereGrenze.compareTo(anderes.untereGrenze) < 0 ? obereGrenze : anderes.obereGrenze;
+        T neueUntereGrenze = untereGrenze.compareTo(anderes.untereGrenze) > 0 ? untereGrenze : anderes.untereGrenze;
 
         return new Intervall<>(neueUntereGrenze, neueObereGrenze);
     }
