@@ -54,7 +54,7 @@ public class Intervall<T extends Comparable<T>> {
      */
     public <E> boolean enthaelt(E wert) {
         if (wert == null || !wert.getClass().equals(untereGrenze.getClass())) {
-            return false; 
+            return false;
         }
         T wertT = (T) wert;
 
@@ -83,12 +83,17 @@ public class Intervall<T extends Comparable<T>> {
         return new Intervall<>(neueUntereGrenze, neueObereGrenze);
     }
 
+
+    /**
+     * Gibt einen String des Intervall-Objekts zurueck
+     * @return Ein String, der die Werte von untereGrenze und obereGrenze
+     *         im Format "Intervall{untere Grenze: Wert, obere Grenze: Wert}" enthaelt
+     */
     @Override
     public String toString() {
         return "Intervall{" +
-                "untereGrenze=" + untereGrenze +
-                ", obereGrenze=" + obereGrenze +
+                "untere Grenze: " + untereGrenze +
+                ", obere Grenze: " + obereGrenze +
                 '}';
     }
-
 }
