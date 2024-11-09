@@ -21,7 +21,7 @@ public class Intervall<T extends Comparable<T>> {
         this.untereGrenze = untereGrenze;
         this.obereGrenze = obereGrenze;
     }
-    
+
     /**
      * Getter für die untereGrenze
      * @return untere Grenze des Intervalls
@@ -82,4 +82,13 @@ public class Intervall<T extends Comparable<T>> {
 
         return new Intervall<>(neueUntereGrenze, neueObereGrenze);
     }
+
+    @Override
+    public String toString() {
+        return "Intervall{" +
+                "untereGrenze=" + untereGrenze +
+                ", obereGrenze=" + obereGrenze +
+                '}';
+    }
+
 }
