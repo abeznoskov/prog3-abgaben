@@ -4,7 +4,6 @@ import mathematik.Intervall;
 
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -32,14 +31,14 @@ public class Hauptprogramm {
 
         // isLeer()
         Intervall<String> stringIntervall1 = new Intervall<>(s1, s8);
-        System.out.println("Intervall1: " + stringIntervall1);
+        System.out.println("stringIntervall1: " + stringIntervall1);
         System.out.println("Leeres Intervall?: " + stringIntervall1.isLeer());
 
         System.out.println("----------------------------------------------------------------");
 
         // enthaelt()
         Intervall<String> stringIntervall2 = new Intervall<>(s3, s7);
-        System.out.println("Intervall: " + stringIntervall2);
+        System.out.println("stringIntervall2: " + stringIntervall2);
         System.out.println("Liegt Bob im Intervall?: " + stringIntervall2.enthaelt(s2));
         System.out.println("Liegt Ellen im Intervall?: " + stringIntervall2.enthaelt(s5));
         System.out.println("Liegt Gert im Intervall?: " + stringIntervall2.enthaelt(s7));
@@ -48,8 +47,8 @@ public class Hauptprogramm {
         System.out.println("----------------------------------------------------------------");
 
         // schnitt()
-        Intervall<String> stringIntervall3 = new Intervall<>(s4, s6);
-        System.out.println("Intervall3: " + stringIntervall2);
+        Intervall<String> stringIntervall3 = new Intervall<>(s4, s8);
+        System.out.println("stringIntervall3: " + stringIntervall3);
         System.out.println("Schnittmenge von Intervall2 und Intervall3: " + stringIntervall2.schnitt(stringIntervall3));
 
         System.out.println("----------------------------------------------------------------");
@@ -60,21 +59,21 @@ public class Hauptprogramm {
          */
 
         //Part1 dateIntervall1 geschnitten mit dateIntervall2:
-        Date date1 = new Date(100, Calendar.FEBRUARY, 29);
-        Date date2 = new Date(103, Calendar.APRIL, 13);
-        Date date3 = new Date(105, Calendar.DECEMBER, 11);
-        Date date4 = new Date(107, Calendar.AUGUST, 17);
+        Date date1 = new Date(100, 0, 20);
+        Date date2 = new Date(103, 4, 13);
+        Date date3 = new Date(105, 11, 11);
+        Date date4 = new Date(107, 8, 17);
 
         Intervall<Date> dateIntervall1 = new Intervall<>(date1, date3);
         Intervall<Date> dateIntervall2 = new Intervall<>(date2, date4);
 
-        System.out.println("Intervall1: " + dateIntervall1);
-        System.out.println("Intervall2: " + dateIntervall2);
-        System.out.println("Schnittmenge von Intervall1 und Intervall2: " + dateIntervall2.schnitt(dateIntervall1));
+        System.out.println("dateIntervall1: " + dateIntervall1);
+        System.out.println("dateIntervall2: " + dateIntervall2);
+        System.out.println("Schnittmenge von dateIntervall1 und dateIntervall2: " + dateIntervall2.schnitt(dateIntervall1));
 
         System.out.println("----------------------------------------------------------------");
 
-        // Part2: dateIntervall geschnitten mit timeIntervall
+        // Part2: dateIntervall1 geschnitten mit timeIntervall
         Time time1 = new Time(4364347618030L);
         Time time2 = new Time(956428762223452L);
         Time time3 = new Time(System.currentTimeMillis());
@@ -82,18 +81,18 @@ public class Hauptprogramm {
         Intervall<Date> timeIntervall = new Intervall<>(time1, time3);
         Intervall<Date> dateTimeIntervall = timeIntervall.schnitt(dateIntervall1);
 
-        System.out.println("Zeitintervall: " + timeIntervall);
+        System.out.println("timeIntervall: " + timeIntervall);
         System.out.println("Schnittintervall aus dateIntervall1 und timeIntervall: " + dateTimeIntervall);
 
         System.out.println("----------------------------------------------------------------");
 
         Timestamp timestamp1 = new Timestamp(7274358192000L);
         System.out.println("Timestamp1: " + timestamp1);
-        System.out.println("Ist Timestamp1 im dateIntervall enthalten?: " + dateIntervall1.enthaelt(timestamp1));
+        System.out.println("Ist Timestamp1 im dateIntervall1 enthalten?: " + dateIntervall1.enthaelt(timestamp1));
         System.out.println("Ist Timestamp1 im timeIntervall enthalten? " + timeIntervall.enthaelt(timestamp1));
 
 
-        // Befehle dir nicht funktionieren sollen:
+        // Befehle die nicht funktionieren sollen:
 
         //Intervall<Object> falsch; //hier kommt der Compilerfehler
         Intervall<String> richtig = new Intervall<>("A", "B");

@@ -3,6 +3,7 @@ package mathematik;
 /**
  * Klasse Intervall, die ein mathematisches Intervall auf
  * einer linear geordneten Menge darstellt
+ * Hauptprogramm unter package spielereien
  *
  * @author Andreas Beznoskov,
  *         Dinh Tuan Anh Nguyen
@@ -12,11 +13,13 @@ public class Intervall<T extends Comparable<T>> {
     /**
      * untere Grenze eines Intervalls
      */
-    private T untereGrenze;
+
+    private final T untereGrenze;
     /**
      * obere Grenze eines Intervalls
      */
-    private T obereGrenze;
+    private final T obereGrenze;
+
     /**
      * Initialisiert ein Intervall-Objekt anhand der gegebenen untereGrenze und oberGrenze
      * @param untereGrenze untere Grenze des Intervalls
@@ -26,6 +29,7 @@ public class Intervall<T extends Comparable<T>> {
     public Intervall(T untereGrenze, T obereGrenze) {
         if (untereGrenze == null || obereGrenze == null)
             throw new NullPointerException();
+
         this.untereGrenze = untereGrenze;
         this.obereGrenze = obereGrenze;
     }
@@ -81,8 +85,8 @@ public class Intervall<T extends Comparable<T>> {
         if (anderes == null)
             throw new NullPointerException();
 
-        T neueObereGrenze = obereGrenze.compareTo(anderes.untereGrenze) < 0 ? obereGrenze : anderes.obereGrenze;
-        T neueUntereGrenze = untereGrenze.compareTo(anderes.untereGrenze) > 0 ? untereGrenze : anderes.untereGrenze;
+        T neueObereGrenze = obereGrenze.compareTo(anderes.getObereGrenze()) < 0 ? obereGrenze : anderes.getObereGrenze();
+        T neueUntereGrenze = untereGrenze.compareTo(anderes.getUntereGrenze()) > 0 ? untereGrenze : anderes.getUntereGrenze();
 
         return new Intervall<>(neueUntereGrenze, neueObereGrenze);
     }
