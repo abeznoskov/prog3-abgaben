@@ -7,13 +7,14 @@ package mathematik;
  *
  * @author Andreas Beznoskov,
  *         Dinh Tuan Anh Nguyen
- *
+ * @param <T> Datentyp der Intervallgrenzen.
+ * Die Elemente von T müssen vergleichbar sein mit einer mit equals() konsistenten Ordnung.
  */
-public class Intervall<T extends Comparable<T>> {
+public class Intervall<T extends Comparable<? super T>> {
+
     /**
      * untere Grenze eines Intervalls
      */
-
     private final T untereGrenze;
     /**
      * obere Grenze eines Intervalls
@@ -65,12 +66,14 @@ public class Intervall<T extends Comparable<T>> {
      * @return true, wenn der Wert im Intervall liegt, sonst false
      * @throws NullPointerException wenn wert NULL ist
      */
-    public <E extends T> boolean enthaelt(E wert) {
-        if (wert == null){
+    public <E extends Comparable<? super T>> boolean enthaelt(E wert) {
+        if (wert == null){ // Comparable hat eine NPE Kontrolle
             throw new NullPointerException();
         }
 
-        return untereGrenze.compareTo(wert) <= 0 && obereGrenze.compareTo(wert) >= 0;
+        // mit nur <E extends T>, Timestamp wurde nicht korrekt kontrolliert
+        // return untereGrenze.compareTo(wert) <= 0 && obereGrenze.compareTo(wert) >= 0;
+        return wert.compareTo(this.untereGrenze) >= 0 && wert.compareTo(this.obereGrenze) <= 0;
     }
 
     /**
@@ -81,13 +84,21 @@ public class Intervall<T extends Comparable<T>> {
      * @throws NullPointerException wenn anderes Intervall NULL ist
      *
      */
-    public <A extends T>  Intervall<T> schnitt(Intervall<? extends A> anderes) {
+    public <A extends T>  Intervall<T> schnitt(Intervall<A> anderes) {
         if (anderes == null)
             throw new NullPointerException();
 
         T neueObereGrenze = obereGrenze.compareTo(anderes.getObereGrenze()) < 0 ? obereGrenze : anderes.getObereGrenze();
         T neueUntereGrenze = untereGrenze.compareTo(anderes.getUntereGrenze()) > 0 ? untereGrenze : anderes.getUntereGrenze();
 
+        /*
+        T min = this.untereGrenze;
+        if(min.compareTo(anderes.untereGrenze)>0)
+            min = anderes.untereGrenze;
+
+        T max = this.obereGrenze;
+        ...
+        */
         return new Intervall<>(neueUntereGrenze, neueObereGrenze);
     }
 
