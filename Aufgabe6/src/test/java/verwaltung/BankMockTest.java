@@ -93,21 +93,23 @@ class BankMockTest {
     }
 
     @Test
-    public void kontoLoeschenKontoExistiertTest() {
+    void testIstGesperrtKontoLoeschen() {
+        when(giroKontoA.isGesperrt()).thenReturn(true);
+
+        assertTrue(bank.kontoLoeschen(kontoNummerA));
+    }
+
+    @Test
+    void testExistierendesKontoLoeschen() {
         assertTrue(bank.kontoLoeschen(kontoNummerA));
 
         verifyNoInteractions(giroKontoA);
     }
 
     @Test
-    public void kontoLoeschenKontoExistiertNichtTest() {
+    void testNichtExistierendesKontoLoeschen() {
         assertFalse(bank.kontoLoeschen(99999L));
     }
 
-    @Test
-    public void kontoLoeschenKontoIstGesperrtTest() {
-        when(giroKontoA.isGesperrt()).thenReturn(true);
 
-        assertTrue(bank.kontoLoeschen(kontoNummerA));
-    }
 }
