@@ -85,6 +85,26 @@ public class Bank {
         return vergebeneKontoNr;
     }
 
+
+    /**
+     * Fuegt gegebene Konto k in die Kontenliste der Bank ein und
+     * liefert die dabei von der Bank vergebene Kontonummer zurueck
+     *
+     * @param k das einzufuehrende Mockkonto
+     * @return die zugewiesene Kontonummer
+     * @throws IllegalArgumentException wenn Konto null
+     */
+    public long mockEinfuegen(Konto k) {
+        if (k == null) {
+            throw new IllegalArgumentException();
+        }
+        this.vergebeneKontoNr += 1;
+
+        this.kontoListe.put(vergebeneKontoNr, k);
+
+        return vergebeneKontoNr;
+    }
+
     /**
      * Gibt alle Konten als ihr *.toString() zurück
      *
