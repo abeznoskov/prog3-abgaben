@@ -234,15 +234,25 @@ public class Bank {
      * @return true  -> wenn Überweisen erfolgreich
      *         false -> wenn Überweisen fehlgeschlagen
      * @throws GesperrtException wenn das Konto gesperrt
+     * @throws KontoNichtVorhandenException wenn Konto nicht vorhanden
      *
      */
     public boolean geldUeberweisen(long vonKontonr,
                                    long nachKontonr,
                                    Geldbetrag betrag,
-                                   String verwendungszweck) throws GesperrtException {
+                                   String verwendungszweck) throws GesperrtException, KontoNichtVorhandenException {
+
+        if(betrag == null || verwendungszweck == null)
+            throw new IllegalArgumentException("betrag oder verwendungszweck null");
 
         Konto von = kontoListe.get(vonKontonr);
         Konto an = kontoListe.get(nachKontonr);
+
+        if(von == null)
+            throw new KontoNichtVorhandenException(vonKontonr);
+
+        if(an == null)
+            throw new KontoNichtVorhandenException(nachKontonr);
 
         if (!(von instanceof UeberweisungsfaehigesKonto) || !(an instanceof UeberweisungsfaehigesKonto))
             return false;
