@@ -1,17 +1,16 @@
 package verwaltung;
 
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 import bankprojekt.verarbeitung.*;
 import bankprojekt.verwaltung.Bank;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
-class BankTestMock {
+class bankTestMock {
 
     Bank bank;
     Kunde A;
@@ -27,10 +26,10 @@ class BankTestMock {
     void setUp() {
         bank = new Bank(13571135L);
         A = new Kunde("testKundeA", "Girokonto", "Girostraße 1", LocalDate.parse("1998-01-05"));
-        B = new Kunde("testKundeB", "Sparbuch", "Sparstraße 1", LocalDate.parse("2001-23-11"));
+        B = new Kunde("testKundeB", "Sparbuch", "Sparstraße 1", LocalDate.parse("2011-11-11"));
 
-        giroKontoA = mock();
-        sparbuchB = mock();
+        giroKontoA = mock(Girokonto.class);
+        sparbuchB = mock(Sparbuch.class);
 
         when(giroKontoA.getInhaber()).thenReturn(A);
         when(sparbuchB.getInhaber()).thenReturn(B);
