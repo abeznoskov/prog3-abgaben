@@ -7,6 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import java.util.stream.*;
+import java.time.LocalDate;
+import java.time.Period;
+
 /**
  * Bank fuer das Speichern und Verwalten von Konten
  *
@@ -268,11 +272,17 @@ public class Bank {
 
     /**
      * Methode zahlt auf alle Konten von Kunden, die in diesem Jahr 18 werden, den betrag ein
-     * @param betrag der geschenkt wird
-     *
+     * @param betrag Geldbetrag der geschenkt wird
+     * @throws IllegalArgumentException wenn betrag negativ
      */
-    public void schenkungAnNeuerwachsene(Geldbetrag betrag){
+    public void schenkungAnNeuerwachsene(Geldbetrag betrag) throws IllegalArgumentException{
+        if (betrag.isNegativ())
+            throw new IllegalArgumentException();
 
+        LocalDate now = LocalDate.now();
+        kontoListe.values().stream()
+                .filter(k -> k.getInhaber().getGeburtstag().getYear() == LocalDate.now().getYear() - 18)
+                .forEach(k -> k.einzahlen(betrag));
     }
 
     /**
@@ -280,24 +290,38 @@ public class Bank {
      * @return Liste der Kunden
      */
     public List<Kunde> getKundenMitLeeremKonto() {
-        return null;
+        return kontoListe.values().stream()
+                .filter(k -> k.getKontostand().isNegativ())
+                .map(konto -> konto.getInhaber())
+                .collect(Collectors.toList());
     }
 
     /**
      * liefert die Namen und Geburtstage aller Kunden der Bank. Doppelte Kunden sollen dabei aussortiert werden.
      * Sortieren Sie die Liste nach Monat und Tag des Geburtstages (nicht nach dem Geburtsjahr!)
      * Format: Hans 05.01.,
-     *         Anna 03., ...
+     *         Anna 03.10, ...
+     * @return Kunden mit Geburtstagen
      */
-     public String getKundengeburtstage(){
-         return null;
-     }
+    public String getKundengeburtstage() {
+        return kontoListe.values().stream()
+                .map(konto -> konto.getInhaber())
+                .distinct()
+                .map(k -> String.format("%s %td.%tm.", k.getName(), k.getGeburtstag(), k.getGeburtstag()) + System.lineSeparator())
+                .collect(Collectors.joining()); // Sammle die Strings in einen finalen String
+    }
+
 
     /**
      * liefert die Anzahl der Kunden, die jetzt mindestens 67 sind.
-     * @return
+     * @return Anzahl Senioren
      */
-    public int getAnzahlSenioren() {
-        return 0;
+    public long getAnzahlSenioren() {
+        return kontoListe.values().stream()
+                .map(konto -> konto.getInhaber())
+                .distinct()
+                .filter(k -> Period.between(k.getGeburtstag(), LocalDate.now()).getYears() >= 67) // Filtere Senioren
+                .count();
     }
+
 }
