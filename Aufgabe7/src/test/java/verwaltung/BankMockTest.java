@@ -6,7 +6,6 @@ import static org.mockito.Mockito.*;
 import bankprojekt.verarbeitung.*;
 import bankprojekt.verwaltung.Bank;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import bankprojekt.verwaltung.*;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
@@ -15,13 +14,13 @@ import java.time.LocalDate;
 class BankMockTest {
 
     Bank bank;
-    Kunde A;
-    Kunde B;
-    Kunde C;
+    Kunde kundeA;
+    Kunde kundeB;
+    Kunde kundeC;
 
-    Girokonto giroKontoA;
-    Sparbuch sparbuchB;
-    Girokonto giroKontoC;
+    Konto kontoA;
+    Konto kontoB;
+    Konto kontoC;
 
     long kontoNummerA;
     long kontoNummerB;
@@ -30,29 +29,29 @@ class BankMockTest {
     @BeforeEach
     void setUp() {
         bank = new Bank(13571135L);
-        A = new Kunde("testKundeA", "Girokonto", "Girostraße 1", LocalDate.parse("1998-01-05"));
-        B = new Kunde("testKundeB", "Sparbuch", "Sparstraße 1", LocalDate.parse("2011-11-11"));
-        C = new Kunde("testKundeC", "Girokonto", "Girostraße 2", LocalDate.parse("2011-11-11"));
+        kundeA = new Kunde("testKundeA", "Girokonto", "Girostraße 1", LocalDate.parse("1998-01-05"));
+        kundeB = new Kunde("testKundeB", "Sparbuch", "Sparstraße 1", LocalDate.parse("2011-11-11"));
+        kundeC = new Kunde("testKundeC", "Girokonto", "Girostraße 2", LocalDate.parse("2011-11-11"));
 
-        giroKontoA = mock(Girokonto.class);
-        sparbuchB = mock(Sparbuch.class);
-        giroKontoC = mock(Girokonto.class);
+        kontoA = mock(UeberweisungsfaehigesKonto.class);
+        kontoB = mock(Konto.class);
+        kontoC = mock(UeberweisungsfaehigesKonto.class);
 
-        when(giroKontoA.getInhaber()).thenReturn(A);
-        when(sparbuchB.getInhaber()).thenReturn(B);
-        when(giroKontoC.getInhaber()).thenReturn(C);
-        kontoNummerA = bank.mockEinfuegen(giroKontoA);
-        kontoNummerB = bank.mockEinfuegen(sparbuchB);
-        kontoNummerC = bank.mockEinfuegen(giroKontoC);
+        when(kontoA.getInhaber()).thenReturn(kundeA);
+        when(kontoB.getInhaber()).thenReturn(kundeB);
+        when(kontoC.getInhaber()).thenReturn(kundeC);
+        kontoNummerA = bank.mockEinfuegen(kontoA);
+        kontoNummerB = bank.mockEinfuegen(kontoB);
+        kontoNummerC = bank.mockEinfuegen(kontoC);
     }
 
     @Test
     void geldUeberweisenErfolgreich() throws GesperrtException, KontoNichtVorhandenException {
-        when(giroKontoA.ueberweisungAbsenden(any(), anyString(), anyLong(), anyLong(), anyString())).thenReturn(true);
+        when(((UeberweisungsfaehigesKonto) kontoA).ueberweisungAbsenden(any(), anyString(), anyLong(), anyLong(), anyString())).thenReturn(true);
         assertTrue(bank.geldUeberweisen(kontoNummerA, kontoNummerC, new Geldbetrag(100), "abc"));
 
-        verify(giroKontoA, times(1)).ueberweisungAbsenden(any(), anyString(), anyLong(), anyLong(), anyString());
-        verify(giroKontoC, times(1)).ueberweisungEmpfangen(any(), anyString(), anyLong(), anyLong(), anyString());
+        verify((UeberweisungsfaehigesKonto) kontoA, times(1)).ueberweisungAbsenden(any(), anyString(), anyLong(), anyLong(), anyString());
+        verify((UeberweisungsfaehigesKonto) kontoC, times(1)).ueberweisungEmpfangen(any(), anyString(), anyLong(), anyLong(), anyString());
     }
 
     @Test
@@ -63,19 +62,23 @@ class BankMockTest {
 
         assertFalse(result);
 
-        verifyNoInteractions(giroKontoA);
-        verifyNoInteractions(sparbuchB);
+        verifyNoInteractions(kontoA);
+        verifyNoInteractions(kontoB);
     }
 
     @Test
     void testGeldUeberweisenGesperrtesKonto() throws Exception {
         Geldbetrag betrag = new Geldbetrag(10000);
 
-        when(giroKontoA.ueberweisungAbsenden(any(), anyString(), anyLong(), anyLong(), anyString())).thenThrow(GesperrtException.class);
+        when(((UeberweisungsfaehigesKonto) kontoA).ueberweisungAbsenden(any(), anyString(), anyLong(), anyLong(), anyString()))
+                .thenThrow(GesperrtException.class);
 
         assertThrows(GesperrtException.class, () -> bank.geldUeberweisen(kontoNummerA, kontoNummerC, betrag, "Miete"));
-        
-        verify(giroKontoA, times(1)).ueberweisungAbsenden(any(), any(), anyLong(), anyLong(), any());
+
+        verify((UeberweisungsfaehigesKonto) kontoA, times(1)).ueberweisungAbsenden(any(), anyString(), anyLong(), anyLong(), anyString());
+        // TODO: Fix code anhand dieses Testes
+        // Test fails hier, irgendwas bei kontoC
+        verifyNoInteractions(kontoC); // Konto C darf nicht empfangen
     }
 
     @Test
@@ -84,6 +87,8 @@ class BankMockTest {
 
         assertThrows(KontoNichtVorhandenException.class, () ->
                 bank.geldUeberweisen(999999L, kontoNummerB, betrag, "Miete"));
+        verifyNoInteractions(kontoA, kontoB, kontoC); // Keine Aktionen auf Konten
+
     }
 
     @Test
@@ -94,22 +99,26 @@ class BankMockTest {
 
     @Test
     void testIstGesperrtKontoLoeschen() {
-        when(giroKontoA.isGesperrt()).thenReturn(true);
+        when(kontoA.isGesperrt()).thenReturn(true);
 
         assertTrue(bank.kontoLoeschen(kontoNummerA));
+
+        assertFalse(bank.kontoVorhanden(kontoNummerA)); // Konto sollte entfernt sein
+
     }
 
     @Test
     void testExistierendesKontoLoeschen() {
         assertTrue(bank.kontoLoeschen(kontoNummerA));
 
-        verifyNoInteractions(giroKontoA);
+        assertFalse(bank.kontoVorhanden(kontoNummerA)); // Konto sollte entfernt sein
     }
 
     @Test
     void testNichtExistierendesKontoLoeschen() {
         assertFalse(bank.kontoLoeschen(99999L));
     }
+
 
 
 }

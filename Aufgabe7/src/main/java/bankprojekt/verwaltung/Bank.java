@@ -268,6 +268,16 @@ public class Bank {
         return true;
     }
 
+    /**
+     * Ueberprueft, ob ein Konto mit angegebenen Kontonummer existiert
+     *
+     * @param kontonummer Kontonummer des Kontos
+     * @return true, wenn ein Konto gefunden, sonst false
+     */
+    public boolean kontoVorhanden(long kontonummer) {
+        return kontoListe.containsKey(kontonummer);
+    }
+
     // Aufgabe 7:
 
     /**

@@ -10,7 +10,7 @@ import bankprojekt.geld.Waehrung;
  * @author Doro
  *
  */
-public class Girokonto extends UeberweisungsfaehigesKonto{
+public class Girokonto extends UeberweisungsfaehigesKonto {
 	/**
 	 * Wert, bis zu dem das Konto überzogen werden darf
 	 */
