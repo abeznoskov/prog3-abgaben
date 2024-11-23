@@ -263,4 +263,41 @@ public class Bank {
         ((UeberweisungsfaehigesKonto) an).ueberweisungEmpfangen(betrag, von.getInhaber().toString(),von.getKontonummer(), this.bankleitzahl, verwendungszweck);
         return true;
     }
+
+    // Aufgabe 7:
+
+    /**
+     * Methode zahlt auf alle Konten von Kunden, die in diesem Jahr 18 werden, den betrag ein
+     * @param betrag der geschenkt wird
+     *
+     */
+    public void schenkungAnNeuerwachsene(Geldbetrag betrag){
+
+    }
+
+    /**
+     * Die Methode liefert eine Liste aller Kunden, die ein Konto mit negativem Kontostand haben.
+     * @return Liste der Kunden
+     */
+    public List<Kunde> getKundenMitLeeremKonto() {
+        return null;
+    }
+
+    /**
+     * liefert die Namen und Geburtstage aller Kunden der Bank. Doppelte Kunden sollen dabei aussortiert werden.
+     * Sortieren Sie die Liste nach Monat und Tag des Geburtstages (nicht nach dem Geburtsjahr!)
+     * Format: Hans 05.01.,
+     *         Anna 03., ...
+     */
+     public String getKundengeburtstage(){
+         return null;
+     }
+
+    /**
+     * liefert die Anzahl der Kunden, die jetzt mindestens 67 sind.
+     * @return
+     */
+    public int getAnzahlSenioren() {
+        return 0;
+    }
 }
