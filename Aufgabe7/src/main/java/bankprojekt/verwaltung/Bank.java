@@ -306,7 +306,7 @@ public class Bank {
 
     /**
      * Die Methode liefert eine Liste aller Kunden, die ein Konto mit negativem Kontostand haben.
-     * @return Liste der Kunden
+     * @return Liste der Kunden mit negativem Kontostand
      */
     public List<Kunde> getKundenMitLeeremKonto() {
         return kontoListe.values().stream()
@@ -327,9 +327,8 @@ public class Bank {
                 .map(konto -> konto.getInhaber())
                 .distinct()
                 .map(k -> String.format("%s %td.%tm.", k.getName(), k.getGeburtstag(), k.getGeburtstag()) + System.lineSeparator())
-                .collect(Collectors.joining()); // Sammle die Strings in einen finalen String
+                .collect(Collectors.joining()); // Fuege Strings zusammen
     }
-
 
     /**
      * liefert die Anzahl der Kunden, die jetzt mindestens 67 sind.
