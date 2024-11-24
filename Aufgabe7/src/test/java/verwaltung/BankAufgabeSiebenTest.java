@@ -12,7 +12,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class BankTestSieben {
+class BankAufgabeSiebenTest {
 
     private Bank bank;
     private Konto kontoMock1;
