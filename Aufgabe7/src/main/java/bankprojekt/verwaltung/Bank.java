@@ -261,10 +261,19 @@ public class Bank {
         if (!(von instanceof UeberweisungsfaehigesKonto) || !(an instanceof UeberweisungsfaehigesKonto))
             return false;
 
-        if(!((UeberweisungsfaehigesKonto) von).ueberweisungAbsenden(betrag, an.getInhaber().toString(), an.getKontonummer(), this.bankleitzahl, verwendungszweck))
-            return false;
+        if (von.isGesperrt()) {
+            throw new GesperrtException(vonKontonr);
+        }
 
-        ((UeberweisungsfaehigesKonto) an).ueberweisungEmpfangen(betrag, von.getInhaber().toString(),von.getKontonummer(), this.bankleitzahl, verwendungszweck);
+
+        if (!((UeberweisungsfaehigesKonto) von).ueberweisungAbsenden(
+                betrag, an.getInhaber().toString(), an.getKontonummer(), this.bankleitzahl, verwendungszweck)) {
+            return false;
+        }
+
+
+        ((UeberweisungsfaehigesKonto) an).ueberweisungEmpfangen(
+                betrag, von.getInhaber().toString(), von.getKontonummer(), this.bankleitzahl, verwendungszweck);
         return true;
     }
 
