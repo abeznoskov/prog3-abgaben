@@ -74,13 +74,13 @@ class BankAufgabeSiebenTest {
     @Test
     void getKundengeburtstageTest() {
         // Mock-Daten
-        when(kundeMock1.getName()).thenReturn("Hans");
+        when(kundeMock1.getVorname()).thenReturn("Hans");
         when(kundeMock1.getGeburtstag()).thenReturn(LocalDate.of(1998, 1, 5));
 
-        when(kundeMock2.getName()).thenReturn("Anna");
+        when(kundeMock2.getVorname()).thenReturn("Anna");
         when(kundeMock2.getGeburtstag()).thenReturn(LocalDate.of(1995, 10, 3));
 
-        String expected = "Hans 05.01." + System.lineSeparator() + "Anna 03.10." + System.lineSeparator();
+        String expected = "Hans 05.01." + System.lineSeparator() + "Anna 03.10.";
 
         String result = bank.getKundengeburtstage();
 
