@@ -15,7 +15,7 @@ public class NullstellenSuche {
      */
     public static double findeNullstelle(Function<Double, Double> funktion, double a, double b, double toleranz) {
 
-        if (funktion.apply(a) * funktion.apply(b) >= 0) {
+        if (funktion.apply(a) * funktion.apply(b) > 0) {
             throw new IllegalArgumentException("Die Funktion muss an den Intervallgrenzen unterschiedliche Vorzeichen haben.");
         }
 
@@ -24,7 +24,9 @@ public class NullstellenSuche {
             mitte = (a + b) / 2;
 
             double funktionswertMitte = funktion.apply(mitte);
-            if (Math.abs(funktionswertMitte) < toleranz) {
+            // nicht in der Aufgabe lieber:
+            if (Math.abs(funktionswertMitte) == 0) {
+            //if (Math.abs(funktionswertMitte) < toleranz) {
                 return mitte;
             }
 

@@ -301,6 +301,8 @@ public class Bank {
         LocalDate now = LocalDate.now();
         kontoListe.values().stream()
                 .filter(k -> k.getInhaber().getGeburtstag().getYear() == LocalDate.now().getYear() - 18)
+                // . filter(k -> LocalDate.now().getYear() - konto.getInhaber().getGeburtstag().getYear()==18)
+                // damit man alle beachtet, die noch 18 werden im jahr
                 .forEach(k -> k.einzahlen(betrag));
     }
 
@@ -309,10 +311,14 @@ public class Bank {
      * @return Liste der Kunden mit negativem Kontostand
      */
     public List<Kunde> getKundenMitLeeremKonto() {
-        return kontoListe.values().stream()
+        return kontoListe
+                .values()
+                .stream()
                 .filter(k -> k.getKontostand().isNegativ())
-                .map(konto -> konto.getInhaber())
-                .collect(Collectors.toList());
+                .map(konto -> konto.getInhaber()) // Alternativ: mit Methodenreferenz
+                .distinct()
+                .collect(Collectors.toList()); // oder: .toList()
+        // oder return am Ende und List vorher initialisieren
     }
 
     /**
@@ -323,11 +329,18 @@ public class Bank {
      * @return Kunden mit Geburtstagen
      */
     public String getKundengeburtstage() {
-        return kontoListe.values().stream()
+
+        // Comparatpr, um Geburtstage vergleichen fürs Sortieren!!
+        return kontoListe
+                .values()
+                .stream()
                 .map(konto -> konto.getInhaber())
                 .distinct()
                 .map(k -> String.format("%s %td.%tm.", k.getName(), k.getGeburtstag(), k.getGeburtstag()) + System.lineSeparator())
+                //.reduce("Geburtstagsliste" + System.getProperty("line.seperator"));
+                    // (alt, neu) ...
                 .collect(Collectors.joining()); // Fuege Strings zusammen
+
     }
 
     /**
@@ -335,7 +348,9 @@ public class Bank {
      * @return Anzahl Senioren
      */
     public long getAnzahlSenioren() {
-        return kontoListe.values().stream()
+        return kontoListe
+                .values()
+                .stream()
                 .map(konto -> konto.getInhaber())
                 .distinct()
                 .filter(k -> Period.between(k.getGeburtstag(), LocalDate.now()).getYears() >= 67) // Filtere Senioren
