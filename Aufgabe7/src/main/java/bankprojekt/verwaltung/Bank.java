@@ -2,10 +2,7 @@ package bankprojekt.verwaltung;
 
 import bankprojekt.verarbeitung.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import java.util.stream.*;
 import java.time.LocalDate;
@@ -330,17 +327,17 @@ public class Bank {
      */
     public String getKundengeburtstage() {
 
-        // Comparatpr, um Geburtstage vergleichen fürs Sortieren!!
+        // Comparator, der nur nach Monat und Tag sortiert
+        Comparator<Kunde> geburtstagsComparator = Comparator.comparing(
+                k -> k.getGeburtstag().withYear(0)); // Jahr ignorieren
+
         return kontoListe
                 .values()
                 .stream()
                 .map(konto -> konto.getInhaber())
                 .distinct()
-                .map(k -> String.format("%s %td.%tm.", k.getName(), k.getGeburtstag(), k.getGeburtstag()) + System.lineSeparator())
-                //.reduce("Geburtstagsliste" + System.getProperty("line.seperator"));
-                    // (alt, neu) ...
-                .collect(Collectors.joining()); // Fuege Strings zusammen
-
+                .map(k -> String.format("%s %td.%tm.", k.getVorname(), k.getGeburtstag(), k.getGeburtstag()))
+                .collect(Collectors.joining(System.lineSeparator())); // Fuege Strings zusammen
     }
 
     /**
@@ -356,5 +353,4 @@ public class Bank {
                 .filter(k -> Period.between(k.getGeburtstag(), LocalDate.now()).getYears() >= 67) // Filtere Senioren
                 .count();
     }
-
 }

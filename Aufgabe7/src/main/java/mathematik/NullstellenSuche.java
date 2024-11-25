@@ -2,6 +2,13 @@ package mathematik;
 
 import java.util.function.Function;
 
+/**
+ * Klasse fuer Nullstellensuche
+ *
+ * @author Andreas Beznoskov,
+ *         Dinh Tuan Anh Nguyen
+ *
+ */
 public class NullstellenSuche {
 
     /**
@@ -24,7 +31,7 @@ public class NullstellenSuche {
             mitte = (a + b) / 2;
 
             double funktionswertMitte = funktion.apply(mitte);
-            // nicht in der Aufgabe lieber:
+            // nicht in der Aufgabe (z.B. 0.00001*x) lieber:
             if (Math.abs(funktionswertMitte) == 0) {
             //if (Math.abs(funktionswertMitte) < toleranz) {
                 return mitte;
