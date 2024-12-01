@@ -90,7 +90,7 @@ public class BallSpielerei extends Application {
 	 */
 	public void alleBeenden() {
 		// loescht alle Baelle auf der Oberflaesche/Pane
-		Platform.runLater(() -> view.getSpielflaeche().getChildren().clear());
+		view.getSpielflaeche().getChildren().clear();
 
 		// beendet alle laufenden Threads aus ballThreads
 		for (Thread t : ballThreads) {
