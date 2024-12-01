@@ -26,13 +26,12 @@ public class BallSpielerei extends Application {
 		primaryStage.setOnCloseRequest(e -> {alleBeenden();});
 		primaryStage.show();
 
-		// Uhrzeit-Thread starten
 		Thread uhrzeitThread = new Thread(() -> {
 			while (true) {
 				String aktuelleZeit = java.time.LocalTime.now().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss"));
-				Platform.runLater(() -> view.setUhrzeit(aktuelleZeit)); // UI-Update im JavaFX-Thread
+				Platform.runLater(() -> view.setUhrzeit(aktuelleZeit));
 				try {
-					Thread.sleep(1000); // Aktualisierung jede Sekunde
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					Thread.currentThread().interrupt();
 					break;
@@ -51,7 +50,7 @@ public class BallSpielerei extends Application {
 	 */
 	public void neuerBall() {
 		Random r = new Random();
-		int dauer = r.nextInt(500) + 1000; // Zufallszahl zwischen 1000 und 1500
+		int dauer = r.nextInt(500) + 1000;
 		int farbe = r.nextInt(3);
 		int dx = r.nextInt(5) + 1;
 		int dy = r.nextInt(5) + 1;
@@ -59,7 +58,7 @@ public class BallSpielerei extends Application {
 		view.ballEintragen(b);
 
 		Thread t = new Thread(() -> b.huepfen(dauer));
-		t.setDaemon(true); // Damit Threads automatisch beendet werden
+		t.setDaemon(true);
 		t.start();
 		ballThreads.add(t);
 	}
@@ -84,11 +83,11 @@ public class BallSpielerei extends Application {
 	 * beendet das Hüpfen aller Bälle
 	 */
 	public void alleBeenden() {
-		Platform.runLater(() -> view.getSpielflaeche().getChildren().clear()); // Alle Bälle entfernen
+		Platform.runLater(() -> view.getSpielflaeche().getChildren().clear());
 		for (Thread t : ballThreads) {
-			t.interrupt(); // Threads unterbrechen
+			t.interrupt();
 		}
-		ballThreads.clear(); // Liste leeren
+		ballThreads.clear();
 	}
 
 

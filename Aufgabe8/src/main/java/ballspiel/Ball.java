@@ -105,23 +105,23 @@ public class Ball extends Circle{
 				synchronized (topf) {
 					while (topf.getFuellstand() < BENOETIGTE_MENGE) {
 						try {
-							topf.wait(); // Wartet auf Benachrichtigung
+							topf.wait();
 						} catch (InterruptedException e) {
 							Thread.currentThread().interrupt();
-							return; // Thread sauber beenden
+							return;
 						}
 					}
 					topf.fuellstandVerringern(BENOETIGTE_MENGE);
 				}
-				Platform.runLater(this::einSchrittWeiter); // Ball bewegen im UI-Thread
+				Platform.runLater(this::einSchrittWeiter);
 				try {
-					Thread.sleep(5); // Pause für flüssige Animation
+					Thread.sleep(5);
 				} catch (InterruptedException e) {
 					Thread.currentThread().interrupt();
 					return;
 				}
 			}
-			Platform.runLater(this::unsichtbarMachen); // Ball entfernen
+			Platform.runLater(this::unsichtbarMachen);
 		};
 
 		Thread thread = new Thread(task);

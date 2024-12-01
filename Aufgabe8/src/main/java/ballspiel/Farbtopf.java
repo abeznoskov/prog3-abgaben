@@ -33,7 +33,7 @@ public class Farbtopf {
 	public synchronized void fuellstandErhoehen(int menge) {
 		if (menge > 0) {
 			fuellstand += menge;
-			notifyAll(); // Wartende Threads benachrichtigen
+			notifyAll();
 		}
 	}
 
