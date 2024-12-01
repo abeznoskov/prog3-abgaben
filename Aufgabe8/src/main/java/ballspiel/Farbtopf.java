@@ -30,11 +30,13 @@ public class Farbtopf {
 	 * erhöht den Füllstand um die angegebene Menge
 	 * @param menge dazukommende Menge
 	 */
-	public synchronized void fuellstandErhoehen(int menge)
-	{
-		if(menge > 0)
+	public synchronized void fuellstandErhoehen(int menge) {
+		if (menge > 0) {
 			fuellstand += menge;
+			notifyAll(); // Wartende Threads benachrichtigen
+		}
 	}
+
 	
 	/**
 	 * farbe
@@ -54,5 +56,5 @@ public class Farbtopf {
 			throw new IllegalArgumentException();
 		this.farbe = farbe;
 	}
-	
+
 }

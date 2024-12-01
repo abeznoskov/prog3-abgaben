@@ -94,25 +94,42 @@ public class Ball extends Circle{
 		}
 		zeichnen(false);
 	}
-	
+
 	/**
-	 * bewegt den Ball dauer viele Schritte weiter in der Oberfläche. Um eine angenehme Animation
-	 * zu erhalten, wird nach jedem Schritt eine Pause eingelegt.
+	 * bewegt den Ball dauer viele Schritte weiter, ohne die UI zu blockieren.
 	 * @param dauer Anzahl der Schritte
 	 */
-	public void huepfen(int dauer)
-	{
-		for (int i = 1; i <= dauer; i++) {
-			while (topf.getFuellstand()< BENOETIGTE_MENGE) {
-					zeichnen(true);
+	public void huepfen(int dauer) {
+		Runnable task = () -> {
+			for (int i = 0; i < dauer; i++) {
+				synchronized (topf) {
+					while (topf.getFuellstand() < BENOETIGTE_MENGE) {
+						try {
+							topf.wait(); // Wartet auf Benachrichtigung
+						} catch (InterruptedException e) {
+							Thread.currentThread().interrupt();
+							return; // Thread sauber beenden
+						}
+					}
+					topf.fuellstandVerringern(BENOETIGTE_MENGE);
+				}
+				Platform.runLater(this::einSchrittWeiter); // Ball bewegen im UI-Thread
+				try {
+					Thread.sleep(5); // Pause für flüssige Animation
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+					return;
+				}
 			}
-			this.einSchrittWeiter();
-			try {
-				Thread.sleep(5); //notwendig, damit die Animation nicht
-								 //zu schnell ist für menschliche Augen
-			} catch (InterruptedException e) {
-			}
-		}
-		this.unsichtbarMachen();
+			Platform.runLater(this::unsichtbarMachen); // Ball entfernen
+		};
+
+		Thread thread = new Thread(task);
+		thread.setDaemon(true);
+		thread.start();
 	}
+
+
+
+
 }

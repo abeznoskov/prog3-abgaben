@@ -88,4 +88,13 @@ public class BallOberflaeche extends VBox {
 	public void ballEintragen(Ball ball) {
 		spielflaeche.getChildren().add(ball);
 	}
+
+	public Pane getSpielflaeche() {
+		return spielflaeche;
+	}
+
+	public void setUhrzeit(String zeit) {
+		uhrzeit.setText(zeit);
+	}
+
 }
