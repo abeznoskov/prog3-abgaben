@@ -89,10 +89,18 @@ public class BallOberflaeche extends VBox {
 		spielflaeche.getChildren().add(ball);
 	}
 
+	/**
+	 * Gibt das Spielfeld/Pane zurueck
+	 * @return Pane, das als Spielfeld dient
+	 */
 	public Pane getSpielflaeche() {
 		return spielflaeche;
 	}
 
+	/**
+	 * Setter fuer angezeigte Uhrzeit
+	 * @param zeit Uhrzeit
+	 */
 	public void setUhrzeit(String zeit) {
 		uhrzeit.setText(zeit);
 	}

@@ -12,6 +12,9 @@ import javafx.stage.Stage;
 /**
  * Startet ein kleines Ballspiel als Übung für Threads
  *
+ * @author Andreas Beznoskov,
+ *         Dinh Tuan Anh Nguyen
+ *
  */
 public class BallSpielerei extends Application {
 	private BallOberflaeche view;
@@ -43,7 +46,8 @@ public class BallSpielerei extends Application {
 	}
 
 
-	private List<Thread> ballThreads = new ArrayList<>();
+	// Liste fuer die verschiedenen Threads der Baelle
+	private final List<Thread> ballThreads = new ArrayList<>();
 
 	/**
 	 * erzeugt einen neuen Ball und macht ihn in der Oberfläche sichtbar
@@ -57,8 +61,9 @@ public class BallSpielerei extends Application {
 		Ball b = new Ball(view.getVerfuegbareBreite(), view.getVerfuegbareHoehe(), dx, dy, farben[farbe]);
 		view.ballEintragen(b);
 
+		// erzeugter Ball huepft nebenlauufig, damit die anderen Buttons ueberhaupt reagieren koennen (siehe Ball.java)
+		// bzw. damit man mehrere Baelle parallel huepfen lassen kann
 		Thread t = new Thread(() -> b.huepfen(dauer));
-		t.setDaemon(true);
 		t.start();
 		ballThreads.add(t);
 	}
@@ -83,10 +88,15 @@ public class BallSpielerei extends Application {
 	 * beendet das Hüpfen aller Bälle
 	 */
 	public void alleBeenden() {
+		// loescht alle Baelle auf der Oberflaesche/Pane
 		Platform.runLater(() -> view.getSpielflaeche().getChildren().clear());
+
+		// beendet alle laufenden Threads aus ballThreads
 		for (Thread t : ballThreads) {
 			t.interrupt();
 		}
+
+		// setzt alle Threads in ballThreads auf null
 		ballThreads.clear();
 	}
 

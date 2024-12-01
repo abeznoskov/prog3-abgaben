@@ -33,6 +33,7 @@ public class Farbtopf {
 	public synchronized void fuellstandErhoehen(int menge) {
 		if (menge > 0) {
 			fuellstand += menge;
+			// notify fuer den synchronized-Block in ball.huepfen()
 			notifyAll();
 		}
 	}

@@ -96,40 +96,37 @@ public class Ball extends Circle{
 	}
 
 	/**
-	 * bewegt den Ball dauer viele Schritte weiter, ohne die UI zu blockieren.
+	 * bewegt den Ball dauer viele Schritte weiter in der Oberfläche. Um eine angenehme Animation
+	 * zu erhalten, wird nach jedem Schritt eine Pause eingelegt.
 	 * @param dauer Anzahl der Schritte
 	 */
 	public void huepfen(int dauer) {
-		Runnable task = () -> {
-			for (int i = 0; i < dauer; i++) {
-				synchronized (topf) {
-					while (topf.getFuellstand() < BENOETIGTE_MENGE) {
-						try {
-							topf.wait();
-						} catch (InterruptedException e) {
-							Thread.currentThread().interrupt();
-							return;
-						}
+		for (int i = 0; i < dauer; i++) {
+			// Aktives warten in der while-Schleife loeschen und mit wait() und notify() anpassen
+			// beide Methoden muessen im synchronized Block stehen!!
+			synchronized (topf) {
+				// notifyAll() wird in der Methode Farbtop.fuellstandErhoehen() des Farbtopf-Objekts aufgerufen
+				while (topf.getFuellstand() < BENOETIGTE_MENGE) {
+					try {
+						// Thread des Balls wartet, bis genug Farbe im topf ist
+						topf.wait();
+					} catch (InterruptedException e) {
+						Thread.currentThread().interrupt();
+						return;
 					}
-					topf.fuellstandVerringern(BENOETIGTE_MENGE);
 				}
-				Platform.runLater(this::einSchrittWeiter);
-				try {
-					Thread.sleep(5);
-				} catch (InterruptedException e) {
-					Thread.currentThread().interrupt();
-					return;
-				}
+				topf.fuellstandVerringern(BENOETIGTE_MENGE);
 			}
-			Platform.runLater(this::unsichtbarMachen);
-		};
+			this.einSchrittWeiter();
 
-		Thread thread = new Thread(task);
-		thread.setDaemon(true);
-		thread.start();
+			try {
+				Thread.sleep(5); //notwendig, damit die Animation nicht
+				//zu schnell ist für menschliche Augen
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				return;
+			}
+		}
+		this.unsichtbarMachen();
 	}
-
-
-
-
 }
