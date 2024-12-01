@@ -108,7 +108,7 @@ public class Ball extends Circle{
 				// notifyAll() wird in der Methode Farbtop.fuellstandErhoehen() des Farbtopf-Objekts aufgerufen
 				while (topf.getFuellstand() < BENOETIGTE_MENGE) {
 					try {
-						// Thread des Balls wartet, bis genug Farbe im topf ist
+						// Thread des Balls wartet, bis sich der Fuellstand der Farbe aendert
 						topf.wait();
 					} catch (InterruptedException e) {
 						Thread.currentThread().interrupt();

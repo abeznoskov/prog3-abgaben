@@ -29,19 +29,20 @@ public class BallSpielerei extends Application {
 		primaryStage.setOnCloseRequest(e -> {alleBeenden();});
 		primaryStage.show();
 
+		// Jede Minute Uhrzeit updaten z.B. mit sleep(). Endlosschleife für eine laufende Uhr
 		Thread uhrzeitThread = new Thread(() -> {
 			while (true) {
+				// aktuelle Uhrzeit als String erzeugen
 				String aktuelleZeit = java.time.LocalTime.now().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss"));
-				Platform.runLater(() -> view.setUhrzeit(aktuelleZeit));
+				view.setUhrzeit(aktuelleZeit);
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(60000); // Damit es nur jede 60 Sekunden updated
 				} catch (InterruptedException e) {
 					Thread.currentThread().interrupt();
 					break;
 				}
 			}
 		});
-		uhrzeitThread.setDaemon(true);
 		uhrzeitThread.start();
 	}
 
@@ -61,7 +62,7 @@ public class BallSpielerei extends Application {
 		Ball b = new Ball(view.getVerfuegbareBreite(), view.getVerfuegbareHoehe(), dx, dy, farben[farbe]);
 		view.ballEintragen(b);
 
-		// erzeugter Ball huepft nebenlauufig, damit die anderen Buttons ueberhaupt reagieren koennen (siehe Ball.java)
+		// erzeugter Ball huepft nebenlauufig, damit die anderen Buttons ueberhaupt reagieren koennen
 		// bzw. damit man mehrere Baelle parallel huepfen lassen kann
 		Thread t = new Thread(() -> b.huepfen(dauer));
 		t.start();
