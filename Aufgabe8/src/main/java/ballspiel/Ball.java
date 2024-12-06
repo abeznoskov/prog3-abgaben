@@ -102,17 +102,19 @@ public class Ball extends Circle{
 	 */
 	public void huepfen(int dauer) {
 		for (int i = 0; i < dauer; i++) {
+			// for(int i = 0; i <= dauer && !Thread.interrupted(); i++)
 			// Aktives warten in der while-Schleife loeschen und mit wait() und notify() anpassen
 			// beide Methoden muessen im synchronized Block stehen!!
 			synchronized (topf) {
 				// notifyAll() wird in der Methode Farbtop.fuellstandErhoehen() des Farbtopf-Objekts aufgerufen
 				while (topf.getFuellstand() < BENOETIGTE_MENGE) {
 					try {
+						// zeichnen(true);
 						// Thread des Balls wartet, bis sich der Fuellstand der Farbe aendert
 						topf.wait();
 					} catch (InterruptedException e) {
-						Thread.currentThread().interrupt();
-						return;
+						this.unsichtbarMachen();
+						break;
 					}
 				}
 				topf.fuellstandVerringern(BENOETIGTE_MENGE);
@@ -123,10 +125,20 @@ public class Ball extends Circle{
 				Thread.sleep(5); //notwendig, damit die Animation nicht
 				//zu schnell ist für menschliche Augen
 			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-				return;
+				break;
 			}
 		}
 		this.unsichtbarMachen();
 	}
+
+	/**
+	 * beendet das Hüpfen vorzeitig
+	 * in Klasse Ball, für bessere Kapselung, damit von außen einfach nur Methoden augerufen werden und keine Threads
+	 */
+	/*
+	public void huepfenBeenden() {
+		if (t != null)
+			t.interrupt();
+		this.t = null;
+	}*/
 }
