@@ -17,8 +17,8 @@ public class Aktie {
 	private static Map<String, Aktie> alleAktien = new HashMap<>();
 	private String wkn;
 	private Geldbetrag kurs;
-	private final Random random = new Random();
 
+	private final Random random = new Random();
 	private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(3);
 
 	/**
@@ -46,8 +46,11 @@ public class Aktie {
 		this.kurs = k;
 		alleAktien.put(wkn, this);
 
+		// Zufällige Zeitspanne zwischen 1 und 5 Sekunden
+		int zeit = random.nextInt(5) + 1;
+
 		// Kursänderungen planen
-		scheduler.scheduleAtFixedRate(this::aendereKurs, 1, 5, TimeUnit.SECONDS);
+		scheduler.scheduleAtFixedRate(this::aendereKurs, zeit, zeit, TimeUnit.SECONDS);
 	}
 
 	/**
@@ -67,9 +70,16 @@ public class Aktie {
 	}
 
 	private synchronized void aendereKurs() {
-		double prozent = (random.nextDouble() * 6) - 3;
+		double prozent = ((random.nextDouble() * 6) - 3);
+		prozent = Math.round(prozent * 1000.0) / 1000.0;
+
 		Geldbetrag temp1 = new Geldbetrag(kurs.getBetrag() * (prozent / 100.0));
+
 		double temp2 = kurs.plus(temp1).getBetrag();
+		temp2 = Math.round(temp2 * 1000.0) / 1000.0;
+
 		kurs = new Geldbetrag(temp2);
+
+		System.out.println("Kurs: " + kurs.getBetrag() + " --> geändert: " + prozent + "%");
 	}
 }
