@@ -80,6 +80,6 @@ public class Aktie {
 
 		kurs = new Geldbetrag(temp2);
 
-		System.out.println("Kurs: " + kurs.getBetrag() + " --> geändert: " + prozent + "%");
+		//System.out.println("Kurs: " + kurs.getBetrag() + " --> geändert: " + prozent + "%");
 	}
 }
