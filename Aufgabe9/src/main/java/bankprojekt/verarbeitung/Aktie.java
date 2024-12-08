@@ -2,6 +2,10 @@ package bankprojekt.verarbeitung;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Eine Aktie, die ständig ihren Kurs verändert
@@ -13,7 +17,10 @@ public class Aktie {
 	private static Map<String, Aktie> alleAktien = new HashMap<>();
 	private String wkn;
 	private Geldbetrag kurs;
-	
+	private final Random random = new Random();
+
+	private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(3);
+
 	/**
 	 * gibt die Aktie mit der gewünschten Wertpapierkennnummer zurück
 	 * @param wkn Wertpapierkennnummer
@@ -26,7 +33,7 @@ public class Aktie {
 	}
 	
 	/**
-	 * erstellt eine neu Aktie mit den angegebenen Werten
+	 * erstellt eine neue Aktie mit den angegebenen Werten
 	 * @param wkn Wertpapierkennnummer
 	 * @param k aktueller Kurs
 	 * @throws IllegalArgumentException wenn einer der Parameter null bzw. negativ ist
@@ -38,6 +45,9 @@ public class Aktie {
 		this.wkn = wkn;
 		this.kurs = k;
 		alleAktien.put(wkn, this);
+
+		// Kursänderungen planen
+		scheduler.scheduleAtFixedRate(this::aendereKurs, 1, 5, TimeUnit.SECONDS);
 	}
 
 	/**
@@ -54,5 +64,12 @@ public class Aktie {
 	 */
 	public Geldbetrag getKurs() {
 		return kurs;
+	}
+
+	private synchronized void aendereKurs() {
+		double prozent = (random.nextDouble() * 6) - 3;
+		Geldbetrag temp1 = new Geldbetrag(kurs.getBetrag() * (prozent / 100.0));
+		double temp2 = kurs.plus(temp1).getBetrag();
+		kurs = new Geldbetrag(temp2);
 	}
 }
