@@ -46,16 +46,13 @@ public class Aktie {
 		this.kurs = k;
 		alleAktien.put(wkn, this);
 
-		// Zufällige Zeitspanne zwischen 1 und 5 Sekunden
-		int zeit = random.nextInt(5) + 1;
-
-		// Kursänderungen planen
-		scheduler.scheduleAtFixedRate(this::aendereKurs, zeit, zeit, TimeUnit.SECONDS);
+		scheduleNextAendereKurs();
 	}
 
 	/**
 	 * Wertpapierkennnummer
 	 * @return WKN der Aktie
+	 *
 	 */
 	public String getWkn() {
 		return wkn;
@@ -64,12 +61,18 @@ public class Aktie {
 	/**
 	 * aktueller Kurs
 	 * @return Kurs der Aktie
+	 *
 	 */
 	public Geldbetrag getKurs() {
 		return kurs;
 	}
 
+	/**
+	 * ändert den Kurs mit einer änderungsrate von -3 bis +3 %
+	 *
+	 */
 	private synchronized void aendereKurs() {
+
 		double prozent = ((random.nextDouble() * 6) - 3);
 		prozent = Math.round(prozent * 1000.0) / 1000.0;
 
@@ -81,5 +84,16 @@ public class Aktie {
 		kurs = new Geldbetrag(temp2);
 
 		//System.out.println("Kurs: " + kurs.getBetrag() + " --> geändert: " + prozent + "%");
+
+		scheduleNextAendereKurs();
+	}
+
+	/**
+	 * regelt, wann die nächste Kursänderung passieren soll mit dynamischem Zeitintervall
+	 *
+	 */
+	private synchronized void scheduleNextAendereKurs() {
+		int zeit = random.nextInt(5) + 1;
+		scheduler.schedule(this::aendereKurs, zeit, TimeUnit.SECONDS);
 	}
 }
