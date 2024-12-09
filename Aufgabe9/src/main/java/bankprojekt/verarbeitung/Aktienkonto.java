@@ -11,7 +11,7 @@ import java.util.concurrent.*;
  */
 public class Aktienkonto extends Konto {
 
-    private final Map<String, Integer> depot = new HashMap<>();
+    private final Map<String, Integer> depot = new ConcurrentHashMap<>();
     private static final ExecutorService executor = Executors.newCachedThreadPool();
 
     /**
@@ -40,10 +40,14 @@ public class Aktienkonto extends Konto {
     public Future<Geldbetrag> kaufauftrag(String wkn, int anzahl, Geldbetrag hoechstpreis) {
         return executor.submit(() -> {
             Aktie aktie = Aktie.getAktie(wkn);
-            if (aktie == null) return new Geldbetrag(0);
+            if (aktie == null || anzahl <= 0 || hoechstpreis == null || hoechstpreis.isNegativ())
+                //return new Geldbetrag(0);
+                throw new IllegalArgumentException();
 
             while (aktie.getKurs().compareTo(hoechstpreis) > 0) {
-                Thread.sleep(500);
+                Thread.sleep(500); // kein sleep nutzen
+
+                // lieber: kursVeraendert.awaitUninterruptException();
             }
 
             synchronized (this) {
@@ -80,7 +84,9 @@ public class Aktienkonto extends Konto {
             if (aktie == null) return new Geldbetrag(0);
 
             while (aktie.getKurs().compareTo(minimalpreis) < 0) {
-                Thread.sleep(500);
+                Thread.sleep(500); // kein sleep nutzen
+
+                // lieber: kursVeraendert.awaitUninterruptException();
             }
 
             synchronized (this) {
