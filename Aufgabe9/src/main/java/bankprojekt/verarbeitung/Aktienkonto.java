@@ -1,5 +1,8 @@
 package bankprojekt.verarbeitung;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.*;
@@ -9,10 +12,11 @@ import java.util.concurrent.*;
  * Erworbene Konten werden, in einem depot gespeichert
  *
  */
-public class Aktienkonto extends Konto {
+public class Aktienkonto extends Konto implements Serializable {
 
+    private static final long serialVersionUID = 1L; // Versionsnummer für die Serialisierung
     private final Map<String, Integer> depot = new ConcurrentHashMap<>();
-    private static final ExecutorService executor = Executors.newCachedThreadPool();
+    private static transient ExecutorService executor = Executors.newCachedThreadPool();
 
     /**
      * Erstellt ein neues Aktienkonto.
@@ -23,6 +27,12 @@ public class Aktienkonto extends Konto {
      */
     public Aktienkonto(Kunde inhaber, long kontoNr) {
         super(inhaber, kontoNr);
+    }
+
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject();
+        // Initialisiere das ExecutorService nach der Deserialisierung
+        executor = Executors.newCachedThreadPool();
     }
 
     /**
