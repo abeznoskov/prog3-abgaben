@@ -2,12 +2,14 @@ package bankprojekt.verarbeitung;
 
 import bankprojekt.geld.Waehrung;
 
+import java.io.Serializable;
+
 /**
  * Ein Geldbetrag mit Währung
  * @author Andreas Beznoskov,
  *         Dinh Tuan Anh Nguyen
  */
-public class Geldbetrag implements Comparable<Geldbetrag>{
+public class Geldbetrag implements Comparable<Geldbetrag>, Serializable {
 	/**
 	 * Betrag in der in waehrung angegebenen Währung
 	 */

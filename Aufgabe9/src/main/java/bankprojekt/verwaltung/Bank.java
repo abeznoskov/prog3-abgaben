@@ -2,6 +2,7 @@ package bankprojekt.verwaltung;
 
 import bankprojekt.verarbeitung.*;
 
+import java.io.*;
 import java.util.*;
 
 import java.util.stream.*;
@@ -15,8 +16,9 @@ import java.time.Period;
  *         Dinh Tuan Anh Nguyen
  *
  */
-public class Bank {
+public class Bank implements Serializable {
 
+    private static final long serialVersionUID = 1L; // Versionsnummer für die Serialisierung
     private final long bankleitzahl; // BLZ in DE starten bei 10000000
     private Map<Long, Konto> kontoListe = new HashMap<>();
     private long vergebeneKontoNr = 100000000000L;
@@ -352,5 +354,34 @@ public class Bank {
                 .distinct()
                 .filter(k -> Period.between(k.getGeburtstag(), LocalDate.now()).getYears() >= 67) // Filtere Senioren
                 .count();
+    }
+
+    // Aufgabe 10:
+
+    /**
+     * Speichert die Bank in den angegebenen Zielstrom.
+     *
+     * @param ziel OutputStream zum Speichern
+     * @throws IOException bei Fehlern während der Serialisierung
+     */
+    public void speichern(OutputStream ziel) throws IOException {
+        try (ObjectOutputStream oos = new ObjectOutputStream(ziel)) {
+            oos.writeObject(this); // Serialisiere das gesamte Bank-Objekt
+        }
+    }
+
+    /**
+     * Liest eine Bank aus der angegebenen Quelle ein.
+     *
+     * @param quelle InputStream zum Laden
+     * @return eingelesene Bank oder eine leere Bank bei Fehlern
+     */
+    public static Bank einlesen(InputStream quelle) {
+        try (ObjectInputStream ois = new ObjectInputStream(quelle)) {
+            return (Bank) ois.readObject(); // Deserialisiere das Bank-Objekt
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return new Bank(10000000); // Leere Bank mit Standard-BLZ zurückgeben
+        }
     }
 }
