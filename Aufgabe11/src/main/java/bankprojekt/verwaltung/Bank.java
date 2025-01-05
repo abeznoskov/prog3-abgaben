@@ -48,6 +48,7 @@ public class Bank implements Serializable {
         return bankleitzahl;
     }
 
+    /*
     /**
      * Erstellt ein Girokonto für den angegebenen Kunden
      *
@@ -56,6 +57,7 @@ public class Bank implements Serializable {
      * @throws IllegalArgumentException wenn Kunde null
      *
      */
+    /*
     public long girokontoErstellen(Kunde inhaber) throws IllegalArgumentException{
         if (inhaber == null)
             throw new IllegalArgumentException();
@@ -67,7 +69,24 @@ public class Bank implements Serializable {
 
         return vergebeneKontoNr;
     }
+    */
+    /**
+     * Erstellt ein Konto für den angegebenen Kunden
+     * @param inhaber der Kunde
+     * @return die vergebene Kontonummer zurueck
+     * @throws IllegalArgumentException wenn Kunde null
+     */
+    public long kontoErstellen(Kontofabrik fabrik, Kunde inhaber) throws IllegalArgumentException {
+        if (inhaber == null)
+            throw new IllegalArgumentException();
+        this.vergebeneKontoNr += 1;
+        Konto konto = fabrik.erstellen(vergebeneKontoNr, inhaber);
+        kontoListe.put(vergebeneKontoNr, konto);
+        return vergebeneKontoNr;
+    }
 
+
+    /*
     /**
      * Erstellt ein Sparbuch für den angegebenen Kunden
      *
@@ -76,6 +95,7 @@ public class Bank implements Serializable {
      * @throws IllegalArgumentException wenn Kunde null
      *
      */
+    /*
     public long sparbuchErstellen(Kunde inhaber) throws IllegalArgumentException {
         if (inhaber == null)
             throw new IllegalArgumentException();
@@ -87,7 +107,7 @@ public class Bank implements Serializable {
 
         return vergebeneKontoNr;
     }
-
+*/
 
     /**
      * Fuegt gegebene Konto k in die Kontenliste der Bank ein und
