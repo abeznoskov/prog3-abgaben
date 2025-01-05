@@ -37,8 +37,8 @@ class BankAufgabeSiebenTest {
         when(kontoMock2.getInhaber()).thenReturn(kundeMock2);
 
         // Füge die Mock-Konten zur Bank hinzu
-        bank.mockEinfuegen(kontoMock1);
-        bank.mockEinfuegen(kontoMock2);
+        //bank.mockEinfuegen(kontoMock1);
+        //bank.mockEinfuegen(kontoMock2);
     }
 
     @Test

@@ -3,14 +3,14 @@ package spielereien;
 import bankprojekt.verarbeitung.Kunde;
 import bankprojekt.verwaltung.Bank;
 import java.io.*;
-
+/*
 public class BankSerialisierungHauptprogramm {
     public static void main(String[] args) {
         // Erstellen einer Bank
         Bank bank = new Bank(12345678L);
 
         // Testweise ein Konto hinzufügen
-        bank.girokontoErstellen(new Kunde());
+        bank.kontoErstellen(new Kunde());
 
         // Speichern der Bank
         try (FileOutputStream fos = new FileOutputStream("bank.txt")) {
@@ -31,3 +31,4 @@ public class BankSerialisierungHauptprogramm {
         }
     }
 }
+*/

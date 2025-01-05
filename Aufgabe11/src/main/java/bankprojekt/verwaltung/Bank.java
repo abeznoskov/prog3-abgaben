@@ -48,28 +48,7 @@ public class Bank implements Serializable {
         return bankleitzahl;
     }
 
-    /*
-    /**
-     * Erstellt ein Girokonto für den angegebenen Kunden
-     *
-     * @param inhaber der Kunde
-     * @return die zugewiesene Kontonummer
-     * @throws IllegalArgumentException wenn Kunde null
-     *
-     */
-    /*
-    public long girokontoErstellen(Kunde inhaber) throws IllegalArgumentException{
-        if (inhaber == null)
-            throw new IllegalArgumentException();
 
-        this.vergebeneKontoNr += 1;
-
-        Girokonto k = new Girokonto(inhaber, vergebeneKontoNr, new Geldbetrag(standardDispo));
-        this.kontoListe.put(vergebeneKontoNr, k);
-
-        return vergebeneKontoNr;
-    }
-    */
     /**
      * Erstellt ein Konto für den angegebenen Kunden
      * @param inhaber der Kunde
@@ -82,49 +61,6 @@ public class Bank implements Serializable {
         this.vergebeneKontoNr += 1;
         Konto konto = fabrik.erstellen(vergebeneKontoNr, inhaber);
         kontoListe.put(vergebeneKontoNr, konto);
-        return vergebeneKontoNr;
-    }
-
-
-    /*
-    /**
-     * Erstellt ein Sparbuch für den angegebenen Kunden
-     *
-     * @param inhaber der Kunde
-     * @return die zugewiesene Kontonummer
-     * @throws IllegalArgumentException wenn Kunde null
-     *
-     */
-    /*
-    public long sparbuchErstellen(Kunde inhaber) throws IllegalArgumentException {
-        if (inhaber == null)
-            throw new IllegalArgumentException();
-
-        this.vergebeneKontoNr += 1;
-
-        Sparbuch s = new Sparbuch(inhaber, vergebeneKontoNr);
-        kontoListe.put(vergebeneKontoNr, s);
-
-        return vergebeneKontoNr;
-    }
-*/
-
-    /**
-     * Fuegt gegebene Konto k in die Kontenliste der Bank ein und
-     * liefert die dabei von der Bank vergebene Kontonummer zurueck
-     *
-     * @param k das einzufuehrende Mockkonto
-     * @return die zugewiesene Kontonummer
-     * @throws IllegalArgumentException wenn Konto null
-     */
-    public long mockEinfuegen(Konto k) {
-        if (k == null) {
-            throw new IllegalArgumentException();
-        }
-        this.vergebeneKontoNr += 1;
-
-        this.kontoListe.put(vergebeneKontoNr, k);
-
         return vergebeneKontoNr;
     }
 

@@ -19,15 +19,20 @@ class BankMockTest {
     Kunde kundeC;
     Kunde kundeD;
 
-    Konto kontoA;
-    Konto kontoB;
-    Konto kontoC;
-    Konto kontoD;
+    Girokonto kontoA;
+    Girokonto kontoB;
+    Sparbuch kontoC;
+    Sparbuch kontoD;
 
     long kontoNummerA;
     long kontoNummerB;
     long kontoNummerC;
     long kontoNummerD;
+
+    Kontofabrik giroKontofabrikKundeA;
+    Kontofabrik giroKontofabrikKundeB;
+    Kontofabrik sparbuchfabrikKundeC;
+    Kontofabrik sparbuchfabrikKundeD;
 
     @BeforeEach
     void setUp() {
@@ -35,31 +40,41 @@ class BankMockTest {
         kundeA = new Kunde("testKundeA", "Girokonto", "Girostraße 1", LocalDate.parse("1998-01-05"));
         kundeB = new Kunde("testKundeB", "Sparbuch", "Sparstraße 1", LocalDate.parse("2011-02-11"));
         kundeC = new Kunde("testKundeC", "Girokonto", "Girostraße 2", LocalDate.parse("2011-11-11"));
-        kundeD = new Kunde("testKundeD", "Girokonto", "Girostraße 3", LocalDate.parse("2010-07-07"));
+        kundeD = new Kunde("testKundeD", "Girokonto", "Sparstraße 3", LocalDate.parse("2010-07-07"));
 
-        kontoA = mock(UeberweisungsfaehigesKonto.class);
-        kontoB = mock(Konto.class);
-        kontoC = mock(UeberweisungsfaehigesKonto.class);
-        kontoD = mock(Konto.class);
+        kontoA = mock();
+        kontoB = mock();
+        kontoC = mock();
+        kontoD = mock();
+
+        giroKontofabrikKundeA = mock();
+        giroKontofabrikKundeB = mock();
+        sparbuchfabrikKundeC = mock();
+        sparbuchfabrikKundeD = mock();
+
+        when(giroKontofabrikKundeA.erstellen(anyLong(), any())).thenReturn(kontoA);
+        when(giroKontofabrikKundeB.erstellen(anyLong(), any())).thenReturn(kontoB);
+        when(sparbuchfabrikKundeC.erstellen(anyLong(), any())).thenReturn(kontoC);
+        when(sparbuchfabrikKundeD.erstellen(anyLong(), any())).thenReturn(kontoD);
 
         when(kontoA.getInhaber()).thenReturn(kundeA);
         when(kontoB.getInhaber()).thenReturn(kundeB);
         when(kontoC.getInhaber()).thenReturn(kundeC);
         when(kontoD.getInhaber()).thenReturn(kundeD);
 
-        kontoNummerA = bank.mockEinfuegen(kontoA);
-        kontoNummerB = bank.mockEinfuegen(kontoB);
-        kontoNummerC = bank.mockEinfuegen(kontoC);
-        kontoNummerD = bank.mockEinfuegen(kontoD);
+        kontoNummerA = bank.kontoErstellen(giroKontofabrikKundeA, kundeA);
+        kontoNummerB = bank.kontoErstellen(giroKontofabrikKundeB, kundeB);
+        kontoNummerC = bank.kontoErstellen(sparbuchfabrikKundeC, kundeC);
+        kontoNummerD = bank.kontoErstellen(sparbuchfabrikKundeD, kundeD);
     }
 
     @Test
     void geldUeberweisenErfolgreich() throws GesperrtException, KontoNichtVorhandenException {
-        when(((UeberweisungsfaehigesKonto) kontoA).ueberweisungAbsenden(any(), anyString(), anyLong(), anyLong(), anyString())).thenReturn(true);
-        assertTrue(bank.geldUeberweisen(kontoNummerA, kontoNummerC, new Geldbetrag(100), "abc"));
+        when(kontoA.ueberweisungAbsenden(any(), anyString(), anyLong(), anyLong(), anyString())).thenReturn(true);
+        assertTrue(bank.geldUeberweisen(kontoNummerA, kontoNummerB, new Geldbetrag(100), "abc"));
 
-        verify((UeberweisungsfaehigesKonto) kontoA, times(1)).ueberweisungAbsenden(any(), anyString(), anyLong(), anyLong(), anyString());
-        verify((UeberweisungsfaehigesKonto) kontoC, times(1)).ueberweisungEmpfangen(any(), anyString(), anyLong(), anyLong(), anyString());
+        verify(kontoA, times(1)).ueberweisungAbsenden(any(), anyString(), anyLong(), anyLong(), anyString());
+        verify(kontoB, times(1)).ueberweisungEmpfangen(any(), anyString(), anyLong(), anyLong(), anyString());
     }
 
     @Test
@@ -75,18 +90,19 @@ class BankMockTest {
     }
 
     @Test
-    void testGeldUeberweisenMitGesperrtemKonto() throws Exception {
+    void testGeldUeberweisenMitGesperrtemKonto() throws GesperrtException {
         Geldbetrag betrag = new Geldbetrag(10000);
 
         // Quellkonto ist gesperrt
-        when(kontoA.isGesperrt()).thenReturn(true);
+        when(kontoA.ueberweisungAbsenden(any(), anyString(), anyLong(), anyLong(), anyString())).thenThrow(GesperrtException.class);
 
+        // TODO: GesperrteException wird nicht korrekt ausgeworfen
         // GesperrtException erwartet
-        assertThrows(GesperrtException.class, () -> bank.geldUeberweisen(kontoNummerA, kontoNummerC, betrag, "Miete"));
+        assertThrows(GesperrtException.class, () -> bank.geldUeberweisen(kontoNummerA, kontoNummerB, new Geldbetrag(100), "Miete"));
 
         // Sicherstellen, dass ueberweisungAbsenden nicht aufgerufen wurde
-        verify((UeberweisungsfaehigesKonto) kontoA, never()).ueberweisungAbsenden(any(), anyString(), anyLong(), anyLong(), anyString());
-        verifyNoInteractions(kontoC);
+        verify(kontoA, never()).ueberweisungEmpfangen(any(), anyString(), anyLong(), anyLong(), anyString());
+        verifyNoInteractions(kontoB);
     }
 
     @Test

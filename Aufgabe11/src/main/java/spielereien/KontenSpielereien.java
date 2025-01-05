@@ -92,8 +92,8 @@ public class KontenSpielereien {
 		Kunde testKundeA = new Kunde("David", "Schneider", "Arsch", geb);
 		Kunde testKundeB = new Kunde("David2", "Schneider2", "Arsch2", geb);
 
-		bank.girokontoErstellen(testKundeA);
-		bank.girokontoErstellen(testKundeB);
+		//bank.girokontoErstellen(testKundeA);
+		//bank.girokontoErstellen(testKundeB);
 
 		System.out.println(bank.getAlleKonten());
 
