@@ -64,31 +64,19 @@ public class Sparbuch extends Konto implements Serializable {
 	}
 
 	@Override
-	public boolean abheben (Geldbetrag betrag) throws GesperrtException{
-		if (betrag == null || betrag.isNegativ()) {
-			throw new IllegalArgumentException("Betrag ungültig");
-		}
-		if(this.isGesperrt())
-		{
-			GesperrtException e = new GesperrtException(this.getKontonummer());
-			throw e;
-		}
+	protected boolean pruefeAbhebung(Geldbetrag betrag) {
 		LocalDate heute = LocalDate.now();
-		if(heute.getMonth() != zeitpunkt.getMonth() || heute.getYear() != zeitpunkt.getYear())
-		{
-			this.bereitsAbgehoben = new Geldbetrag();
+		if (heute.getMonth() != zeitpunkt.getMonth() || heute.getYear() != zeitpunkt.getYear()) {
+			bereitsAbgehoben = new Geldbetrag(); // Reset des monatlichen Limits
 		}
-		Geldbetrag neu = getKontostand().minus(betrag);
-		if (neu.compareTo(Sparbuch.MINIMUM) >= 0 && 
-				 bereitsAbgehoben.plus(betrag).compareTo(Sparbuch.ABHEBESUMME)<= 0)
-		{
-			setKontostand(neu);
-			bereitsAbgehoben = bereitsAbgehoben.plus(betrag);
-			this.zeitpunkt = LocalDate.now();
-			return true;
-		}
-		else
-			return false;
+		return getKontostand().minus(betrag).compareTo(MINIMUM) >= 0 &&
+				bereitsAbgehoben.plus(betrag).compareTo(ABHEBESUMME) <= 0;
+	}
+
+	@Override
+	protected void nachAbhebung(Geldbetrag betrag) {
+		bereitsAbgehoben = bereitsAbgehoben.plus(betrag);
+		zeitpunkt = LocalDate.now();
 	}
 
 }

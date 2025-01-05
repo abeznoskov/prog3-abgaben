@@ -99,19 +99,8 @@ public class Girokonto extends UeberweisungsfaehigesKonto implements Serializabl
     }
 
 	@Override
-	public boolean abheben(Geldbetrag betrag) throws GesperrtException{
-		if (betrag == null || betrag.isNegativ()) {
-			throw new IllegalArgumentException("Betrag ungültig");
-		}
-		if(this.isGesperrt())
-			throw new GesperrtException(this.getKontonummer());
-		if (!getKontostand().plus(dispo).minus(betrag).isNegativ())
-		{
-			setKontostand(getKontostand().minus(betrag));
-			return true;
-		}
-		else
-			return false;
+	protected boolean pruefeAbhebung(Geldbetrag betrag) {
+		return !getKontostand().plus(dispo).minus(betrag).isNegativ();
 	}
 
 	/**

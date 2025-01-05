@@ -152,8 +152,35 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 	 * @return true, wenn die Abhebung geklappt hat, 
 	 * 		   false, wenn sie abgelehnt wurde
 	 */
-	public abstract boolean abheben(Geldbetrag betrag) 
-								throws GesperrtException;
+	public boolean abheben(Geldbetrag betrag) throws GesperrtException {
+		if (betrag == null || betrag.isNegativ()) {
+			throw new IllegalArgumentException("Betrag ungültig");
+		}
+		if (this.isGesperrt()) {
+			throw new GesperrtException(this.getKontonummer());
+		}
+
+		if (pruefeAbhebung(betrag)) {
+			setKontostand(getKontostand().minus(betrag));
+			nachAbhebung(betrag);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Subklassen implementieren diese Methode, um ihre spezifischen Abheberegeln zu prüfen.
+	 */
+	protected abstract boolean pruefeAbhebung(Geldbetrag betrag);
+
+	/**
+	 * Optionale Methode, die nach einer erfolgreichen Abhebung ausgeführt werden kann.
+	 * Kann von Subklassen überschrieben werden, muss aber nicht.
+	 */
+	protected void nachAbhebung(Geldbetrag betrag) {
+		// Standardmäßig keine Aktion
+	}
 	
 	/**
 	 * sperrt das Konto, Aktionen zum Schaden des Benutzers sind nicht mehr möglich.

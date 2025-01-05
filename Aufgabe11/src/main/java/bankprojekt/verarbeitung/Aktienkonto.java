@@ -120,20 +120,7 @@ public class Aktienkonto extends Konto implements Serializable {
      *
      */
     @Override
-    public boolean abheben(Geldbetrag betrag) throws GesperrtException {
-        if (this.isGesperrt()) {
-            throw new GesperrtException(this.getKontonummer());
-        }
-
-        if (betrag == null || betrag.isNegativ()) {
-            throw new IllegalArgumentException("Der Betrag darf nicht negativ, unendlich oder NaN sein.");
-        }
-
-        if (!getKontostand().minus(betrag).isNegativ())
-        {
-            setKontostand(getKontostand().minus(betrag));
-            return true;
-        }
-        return false;
+    protected boolean pruefeAbhebung(Geldbetrag betrag) {
+        return !getKontostand().minus(betrag).isNegativ();
     }
 }
