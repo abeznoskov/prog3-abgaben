@@ -15,8 +15,10 @@ import static org.mockito.Mockito.*;
 class BankAufgabeSiebenTest {
 
     private Bank bank;
-    private Konto kontoMock1;
-    private Konto kontoMock2;
+    private Kontofabrik kontoFabrikMock1;
+    private Kontofabrik kontoFabrikMock2;
+    private Girokonto kontoMock1;
+    private Girokonto kontoMock2;
     private Kunde kundeMock1;
     private Kunde kundeMock2;
 
@@ -25,20 +27,25 @@ class BankAufgabeSiebenTest {
         bank = new Bank(12345678L);
 
         // Mocking Kunden
-        kundeMock1 = mock(Kunde.class);
-        kundeMock2 = mock(Kunde.class);
+        kundeMock1 = mock();
+        kundeMock2 = mock();
 
         // Mocking Konten
-        kontoMock1 = mock(Konto.class);
-        kontoMock2 = mock(Konto.class);
+        kontoMock1 = mock();
+        kontoMock2 = mock();
 
+        kontoFabrikMock1 = mock();
+        kontoFabrikMock2 = mock();
+
+        when(kontoFabrikMock1.erstellen(anyLong(), any())).thenReturn(kontoMock1);
+        when(kontoFabrikMock2.erstellen(anyLong(), any())).thenReturn(kontoMock2);
         // Initiale Setups für Mock-Objekte
         when(kontoMock1.getInhaber()).thenReturn(kundeMock1);
         when(kontoMock2.getInhaber()).thenReturn(kundeMock2);
 
         // Füge die Mock-Konten zur Bank hinzu
-        //bank.mockEinfuegen(kontoMock1);
-        //bank.mockEinfuegen(kontoMock2);
+        bank.kontoErstellen(kontoFabrikMock1, kundeMock1);
+        bank.kontoErstellen(kontoFabrikMock2, kundeMock2);
     }
 
     @Test

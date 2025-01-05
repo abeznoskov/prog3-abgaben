@@ -11,6 +11,11 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 
+/**
+ * Test Klasse fur Aufgabe 6 und 11 mit Mock
+ * @author Andreas Beznoskov,
+ *         Dinh Tuan Anh Nguyen
+ * */
 class BankMockTest {
 
     Bank bank;
