@@ -35,14 +35,14 @@ public class Girokonto extends UeberweisungsfaehigesKonto implements Serializabl
 	 * @param dispo Dispo
 	 * @throws IllegalArgumentException wenn der inhaber null ist oder der angegebene dispo negativ bzw. NaN ist
 	 */
-	public Girokonto(Kunde inhaber, long nummer, Geldbetrag dispo)
+	public Girokonto(Kunde inhaber, long nummer, Geldbetrag dispo) throws IllegalArgumentException
 	{
 		super(inhaber, nummer);
 		if(dispo == null || dispo.isNegativ())
 			throw new IllegalArgumentException("Der Dispo ist nicht gültig!");
 		this.dispo = dispo;
 	}
-	
+
 	/**
 	 * liefert den Dispo
 	 * @return Dispo von this
