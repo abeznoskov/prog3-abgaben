@@ -94,7 +94,9 @@ class BankMockTest {
         Geldbetrag betrag = new Geldbetrag(10000);
 
         // Quellkonto ist gesperrt
-        when(kontoA.ueberweisungAbsenden(any(), anyString(), anyLong(), anyLong(), anyString())).thenThrow(GesperrtException.class);
+        // Welches von beiden "when's" ist sinnvoller?
+        // when(kontoA.ueberweisungAbsenden(any(), anyString(), anyLong(), anyLong(), anyString())).thenThrow(GesperrtException.class);
+        when(kontoA.isGesperrt()).thenReturn(true);
 
         // TODO: GesperrteException wird nicht korrekt ausgeworfen
         // GesperrtException erwartet
@@ -112,7 +114,6 @@ class BankMockTest {
         assertThrows(KontoNichtVorhandenException.class, () ->
                 bank.geldUeberweisen(999999L, kontoNummerB, betrag, "Miete"));
         verifyNoInteractions(kontoA, kontoB, kontoC);
-
     }
 
     @Test

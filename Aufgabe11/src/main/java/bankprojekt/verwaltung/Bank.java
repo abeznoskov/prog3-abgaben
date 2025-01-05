@@ -205,7 +205,7 @@ public class Bank implements Serializable {
             throw new IllegalArgumentException("betrag oder verwendungszweck null");
 
         Konto von = kontoListe.get(vonKontonr);
-        Konto an = kontoListe.get(nachKontonr);
+        Konto an = kontoListe.get(nachKontonr); 
 
         if(von == null)
             throw new KontoNichtVorhandenException(vonKontonr);
