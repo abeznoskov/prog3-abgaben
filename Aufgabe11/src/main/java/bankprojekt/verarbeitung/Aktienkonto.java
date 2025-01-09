@@ -115,7 +115,6 @@ public class Aktienkonto extends Konto implements Serializable {
      * @param betrag der abzuhebende Betrag
      * @return true, wenn die Abhebung erfolgreich war,
      *         false, wenn die Abhebung abgelehnt wurde
-     * @throws GesperrtException         wenn das Konto gesperrt ist
      * @throws IllegalArgumentException wenn der Betrag negativ oder null ist
      *
      */
