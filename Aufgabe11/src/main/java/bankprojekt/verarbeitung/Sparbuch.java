@@ -75,6 +75,7 @@ public class Sparbuch extends Konto implements Serializable {
 
 	@Override
 	protected void nachAbhebung(Geldbetrag betrag) {
+		// eventuell die current Month hier kontrollieren?
 		bereitsAbgehoben = bereitsAbgehoben.plus(betrag);
 		zeitpunkt = LocalDate.now();
 	}
