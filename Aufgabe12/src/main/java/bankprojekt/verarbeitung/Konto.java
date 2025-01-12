@@ -152,7 +152,7 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 	 * @return true, wenn die Abhebung geklappt hat, 
 	 * 		   false, wenn sie abgelehnt wurde
 	 */
-	public boolean abheben(Geldbetrag betrag) throws GesperrtException {
+	public final boolean abheben(Geldbetrag betrag) throws GesperrtException {
 		if (betrag == null || betrag.isNegativ()) {
 			throw new IllegalArgumentException("Betrag ungültig");
 		}

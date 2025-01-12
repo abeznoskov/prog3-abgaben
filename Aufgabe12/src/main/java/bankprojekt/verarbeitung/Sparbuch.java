@@ -63,15 +63,28 @@ public class Sparbuch extends Konto implements Serializable {
     	return ausgabe;
 	}
 
-	@Override
-	protected boolean pruefeAbhebung(Geldbetrag betrag) {
-		LocalDate heute = LocalDate.now();
-		if (heute.getMonth() != zeitpunkt.getMonth() || heute.getYear() != zeitpunkt.getYear()) {
-			bereitsAbgehoben = new Geldbetrag(); // Reset des monatlichen Limits
-		}
-		return getKontostand().minus(betrag).compareTo(MINIMUM) >= 0 &&
-				bereitsAbgehoben.plus(betrag).compareTo(ABHEBESUMME) <= 0;
-	}
+ /**
+  * Ueberprueft, ob die Abhebung moeglich ist, nur wenn:
+  * Guthaben auf dem Sparbuch nicht negativ gehen darf und das Monatslimit nicht ueberschritten wird
+  * @param betrag Geld was abgehoben werden soll
+  * @return true wenn Abhebung moeglich ist, sonst false
+  */
+@Override
+protected boolean pruefeAbhebung(Geldbetrag betrag) {
+    aktualisiereMonatslimit(); // Monatslimit Kontrolle
+    return getKontostand().minus(betrag).compareTo(MINIMUM) >= 0 &&
+            bereitsAbgehoben.plus(betrag).compareTo(ABHEBESUMME) <= 0;
+}
+ /**
+  * Methode um Monatslimit zu aktualisieren, mit Kontrolle
+  */
+ private void aktualisiereMonatslimit() {
+     LocalDate heute = LocalDate.now();
+     if (heute.getMonth() != zeitpunkt.getMonth() || heute.getYear() != zeitpunkt.getYear()) {
+         bereitsAbgehoben = new Geldbetrag(); // Reset des monatlichen Limits
+         zeitpunkt = heute;
+     }
+ }
 
 	@Override
 	protected void nachAbhebung(Geldbetrag betrag) {

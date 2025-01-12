@@ -4,7 +4,6 @@ package bankprojekt.verarbeitung;
  * Fabrik fuer Sparbuch
  */
 public class Sparbuchfabrik extends Kontofabrik {
-    @Override
     /**
      * Erstellt ein neues Konto
      * @param kontonummer des Kontos
@@ -12,6 +11,7 @@ public class Sparbuchfabrik extends Kontofabrik {
      * return Sparbuch
      * @throws IllegalArgumentException bei leerem kunde
      */
+    @Override
     public Konto erstellen(long kontonummer, Kunde kunde) {
         return new Sparbuch(kunde, kontonummer);
     }
