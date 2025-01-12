@@ -3,6 +3,8 @@ package bankprojekt.verarbeitung;
 import bankprojekt.geld.Waehrung;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * stellt ein allgemeines Bank-Konto dar
@@ -268,4 +270,35 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 			throw new IllegalArgumentException("Die Zielwährung darf nicht null sein!");
 		kontostand.umrechnen(neu);
 	}
+
+	// Aufgabe 12
+	/**
+	 * enthaelt die Beschreibung des Guthabens eines Kontos
+	 */
+	private List<Beobachter> anzeigeListe = new LinkedList<>();
+
+	/**
+	 * benachrichtigt alle angemeldeten Beobachter
+	 */
+	protected void benachrichtigen(){
+		anzeigeListe.forEach(b->b.aktualisieren(this));
+	}
+
+	/**
+	 * meldet b am Subjekt an
+	 * @param b der neue Beobachter
+	 */
+	public void anmelden(Beobachter b){
+		if(b != null)
+			anzeigeListe.add(b);
+	}
+
+	/**
+	 * meldet b am Subjekt ab
+	 * @param b der zu entfernende Beobachter
+	 */
+    public void abmelden(Beobachter b){
+        if(b != null)
+            anzeigeListe.remove(b);
+    }
 }

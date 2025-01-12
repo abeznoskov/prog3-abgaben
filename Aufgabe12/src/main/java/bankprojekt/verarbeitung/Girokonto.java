@@ -3,6 +3,7 @@ package bankprojekt.verarbeitung;
 import bankprojekt.geld.Waehrung;
 
 import java.io.Serializable;
+import java.sql.SQLOutput;
 
 /**
  * Ein Girokonto, d.h. ein Konto mit einem Dispo und der Fähigkeit,
@@ -12,7 +13,7 @@ import java.io.Serializable;
  * @author Doro
  *
  */
-public class Girokonto extends UeberweisungsfaehigesKonto implements Serializable {
+public class Girokonto extends UeberweisungsfaehigesKonto implements Serializable, Beobachter {
 	/**
 	 * Wert, bis zu dem das Konto überzogen werden darf
 	 */
@@ -112,6 +113,28 @@ public class Girokonto extends UeberweisungsfaehigesKonto implements Serializabl
 		if(neu == null)
 			throw new IllegalArgumentException("Die Zielwährung darf nicht null sein!");
 		dispo.umrechnen(neu);
+	}
+
+	/**
+	 * wird aufgerufen, wenn sich Dispo veaendert
+	 *
+	 * @param konto Konto das den Dispo ausgeben soll
+	 */
+	@Override
+	public void aktualisieren(Konto konto) {
+		Geldbetrag aktuellerDispo = konto.getKontostand();
+
+		// Vergleich der Dispos
+		if (aktuellerDispo.compareTo(dispo) > 0) {
+			System.out.println("Dispo wurde von " + dispo + " auf " + aktuellerDispo + " umgeaendert.");
+		}
+		else if (aktuellerDispo.compareTo(dispo) < 0) {
+			System.out.println("Dispo wurde verringert von " + dispo + " auf " + aktuellerDispo + ".");
+		}
+		else { //optional, da Aufgabe es nicht verlangt
+			System.out.println("Dispo bleibt unveraendert bei " + dispo + ".");
+		}
+		dispo = aktuellerDispo;
 	}
 
 }
