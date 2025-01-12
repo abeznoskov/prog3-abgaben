@@ -26,9 +26,6 @@ public class DigitalUhr implements Beobachter
 	@FXML private Button btnAus;
 	private Stage stage;
 	
-	private ScheduledExecutorService service;
-	private Future<?> laufen;
-	
 	private Zeit zeit;
 	private boolean uhrAn;
 	
@@ -36,9 +33,11 @@ public class DigitalUhr implements Beobachter
 	 * erstellt das Fenster für die digitale Uhr und bringt es auf den
 	 * Bildschirm; zu Beginn läuft die Uhr im 1-Sekunden-Takt
 	 */
-	public DigitalUhr() {
-		this.zeit = new Zeit();
-		
+	public DigitalUhr(Zeit zeitModell) {
+		this.zeit = zeitModell; // Nutze die übergebene Zeit-Instanz
+		zeitModell.anmelden(this); // Melde diese View als Beobachter an
+		uhrAn = true;
+
 		stage = new Stage();
 		FXMLLoader loader = 
 				new FXMLLoader(getClass().getResource("digitaluhr.fxml"));
@@ -53,10 +52,6 @@ public class DigitalUhr implements Beobachter
         stage.setTitle("Digitaluhr");
         stage.setScene(scene);
         stage.show();
-        
-      //Thread starten, um die Uhrzeit laufen zu lassen:
-		service = Executors.newSingleThreadScheduledExecutor();
-		laufen = service.scheduleAtFixedRate(() -> tick(), 0, 1, TimeUnit.SECONDS);
 		einschalten();
 	} 
 	
@@ -92,21 +87,7 @@ public class DigitalUhr implements Beobachter
 	 */
 	private void fensterSchliessen()
 	{
-		laufen.cancel(false);
-		service.shutdown();
-	}
-
-	/**
-	 * Holen der aktuellen Uhrzeit und Anzeige, wenn die Uhr angestellt ist
-	 */
-	private void tick() 
-	{
-		if(uhrAn)
-		{
-			Platform.runLater( () ->
-				anzeige.setText(String.format("%02d:%02d:%02d", 
-						zeit.getStunde(), zeit.getMinute(),zeit.getSekunde())));
-		}
+		beenden();
 	}
 
 	/**
