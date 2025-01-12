@@ -24,6 +24,10 @@ public class Starter extends Application {
 	private List<DigitalUhr> dUhren = new LinkedList<>();
 	private List<KreisUhr> kUhren = new LinkedList<>();
 
+	private Zeit model;
+	private DigitalUhr view1;
+	private KreisUhr view2;
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
@@ -48,19 +52,27 @@ public class Starter extends Application {
 	/**
 	 * wird beim Klick auf Digital-Button aufgerufen
 	 */
-	private void neueDigitalUhr()
-	{
-		dUhren.add(new DigitalUhr());
+	private void neueDigitalUhr() {
+		DigitalUhr digitalUhr = new DigitalUhr();
+		if (model == null) {
+			model = new Zeit();
+		}
+		model.anmelden(digitalUhr);
+		dUhren.add(digitalUhr);
 	}
 	
 	/**
 	 * wird beim Klick auf Analog-Button aufgerufen
 	 */
-	private void neueKreisUhr()
-	{
-		kUhren.add(new KreisUhr());
+	private void neueKreisUhr() {
+		KreisUhr kreisUhr = new KreisUhr();
+		if (model == null) {
+			model = new Zeit();
+		}
+		model.anmelden(kreisUhr);
+		kUhren.add(kreisUhr);
 	}
-	
+
 	private void alleEntfernen()
 	{
 		for(KreisUhr k : kUhren) k.dispose();
@@ -72,4 +84,17 @@ public class Starter extends Application {
 	private void starterSchliessen()
 	{
 	}
+
+	public void anhalten() {
+		if (model != null) {
+			model.anhaltenUhr();
+		}
+	}
+
+	public void fortsetzen() {
+		if (model != null) {
+			model.fortsetzenUhr();
+		}
+	}
+
 }

@@ -19,7 +19,7 @@ import javafx.stage.Stage;
  * Stellt eine Digitale Uhr dar, die man anhalten und weiterlaufen lassen kann
  *
  */
-public class DigitalUhr
+public class DigitalUhr implements Beobachter
 {
 	@FXML private Label anzeige;
 	@FXML private Button btnEin;
@@ -116,5 +116,16 @@ public class DigitalUhr
 		stage.close();
 	}
 
-
+	/**
+	 * Wird aufgerufen, wenn sich die Uhrzeit veraendert
+	 * @param zeit aktuelle Zeit
+	 */
+	@Override
+	public void aktualisieren(Zeit zeit) {
+		if (uhrAn) {
+			Platform.runLater(() ->
+					anzeige.setText(String.format("%02d:%02d:%02d",
+							zeit.getStunde(), zeit.getMinute(), zeit.getSekunde())));
+		}
+	}
 }

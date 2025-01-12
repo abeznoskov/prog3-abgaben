@@ -18,7 +18,7 @@ import javax.swing.JFrame;
  * @author Doro
  *
  */
-public class KreisUhr extends JFrame 
+public class KreisUhr extends JFrame implements Beobachter
 {
 	private static final long serialVersionUID = 1L;
 	private static final String TITEL = "Kreisuhr";
@@ -48,6 +48,7 @@ public class KreisUhr extends JFrame
 	private Zeit uhrzeit;
 	private boolean uhrAn;
 	private Color[] farben = ZEIGERFARBE;
+
 
 	/**
 	 * erstellt die analoge Uhr und bringt sie auf den Bildschirm
@@ -132,5 +133,14 @@ public class KreisUhr extends JFrame
 			g.setColor(farben[i]);
 			g.drawLine(ZENTRUM_X, ZENTRUM_Y, END_X[i][zeit[i]], END_Y[i][zeit[i]]);
 		}
+	}
+
+	/**
+	 * Wird aufgerufen, wenn sich die Uhrzeit veraendert
+	 * @param zeit aktuelle Zeit
+	 */
+	public void aktualisieren(Zeit zeit){
+		Zeit aktuelleZeit = zeit;
+		repaint();
 	}
 }
