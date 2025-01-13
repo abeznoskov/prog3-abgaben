@@ -6,6 +6,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
 import javax.swing.JFrame;
 
 /**
@@ -61,13 +62,10 @@ public class KreisUhr extends JFrame implements Beobachter {
 			public void keyPressed(KeyEvent e) {
 				switch (Character.toUpperCase(e.getKeyChar())) {
 					case 'E' -> {
-						uhrAn = true;
-						farben = ZEIGERFARBE;
+						// keine Farben hier, da View
 						zeitModell.fortsetzenUhr(); // Setzt das Zeitmodell fort
 					}
 					case 'A' -> {
-						uhrAn = false;
-						farben = GRAUE_FARBEN;
 						zeitModell.anhaltenUhr(); // Haelt das Zeitmodell an
 					}
 				}
@@ -118,5 +116,30 @@ public class KreisUhr extends JFrame implements Beobachter {
 	public void aktualisieren(Zeit zeit) {
 		this.uhrzeit = zeit;
 		repaint();
+	}
+
+	@Override
+	public void uhrAn() {
+
+	}
+
+	@Override
+	public void beenden() {
+
+	}
+
+	/**
+	 * This method gets called when a bound property is changed.
+	 *
+	 * @param evt A PropertyChangeEvent object describing the event source
+	 *            and the property that has changed.
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+
+	}
+
+	public void setUhrAn (boolean uhrAn) {
+		//this.farben = b?...
 	}
 }

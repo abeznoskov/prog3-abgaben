@@ -91,18 +91,22 @@ public class Starter extends Application {
 	/**
      * Uhr wird angehalten
      */
-	public void anhalten() {
+	public void anhalten(Beobachter b) {
 		if (model != null) {
-			model.anhaltenUhr();
+			//model.anhaltenUhr();
+			model.abmelden(b);
+			//view.setUhrAn(false);
 		}
 	}
 
 	/**
 	 * Uhr wird fortgesetzt
 	 */
-	public void fortsetzen() {
+	public void fortsetzen(Beobachter b) {
 		if (model != null) {
-			model.fortsetzenUhr();
+			//model.fortsetzenUhr();
+			model.anmelden(b);
+			//view.setUhrAn(true);
 		}
 	}
 }

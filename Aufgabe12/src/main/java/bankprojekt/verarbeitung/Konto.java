@@ -289,7 +289,7 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 	 * @param b der neue Beobachter
 	 */
 	public void anmelden(Beobachter b){
-		if(b != null)
+		if(b != null) // damit nicht null in die liste kommt
 			anzeigeListe.add(b);
 	}
 
