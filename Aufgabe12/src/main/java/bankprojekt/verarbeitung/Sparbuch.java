@@ -90,6 +90,7 @@ protected boolean pruefeAbhebung(Geldbetrag betrag) {
 	protected void nachAbhebung(Geldbetrag betrag) {
 		// eventuell die current Month hier kontrollieren?
 		bereitsAbgehoben = bereitsAbgehoben.plus(betrag);
+		benachrichtigen();
 		zeitpunkt = LocalDate.now();
 	}
 

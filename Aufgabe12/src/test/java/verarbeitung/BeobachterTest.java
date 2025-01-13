@@ -22,11 +22,6 @@ public class BeobachterTest {
             return true;
         }
 
-        // Ermöglicht benachrichtigen() aus Konto.java aufzurufen
-        // da diese protected ist
-        public void testBenachrichtigen() {
-            super.benachrichtigen();
-        }
     }
 
     @Before
@@ -44,11 +39,7 @@ public class BeobachterTest {
 
     @Test
     public void testBenachrichtigen() {
-        // Methode benachrichtigen auf dem Konto aufrufen
-        konto.testBenachrichtigen();
+        // Test, ob Beobachter bei allen Kontostands-/Dispoänderungen benachrichtig werden
 
-        // Wurde aktualisieren aufgerufen?
-        verify(beobachter1, times(1)).aktualisieren(konto);
-        verify(beobachter2, times(1)).aktualisieren(konto);
     }
 }

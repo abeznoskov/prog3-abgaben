@@ -131,6 +131,7 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 			throw new IllegalArgumentException("Falscher Betrag");
 		}
 		setKontostand(getKontostand().plus(betrag));
+		benachrichtigen();
 	}
 	
 	@Override
@@ -165,6 +166,7 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 		if (pruefeAbhebung(betrag)) {
 			setKontostand(getKontostand().minus(betrag));
 			nachAbhebung(betrag);
+			benachrichtigen();
 			return true;
 		} else {
 			return false;
