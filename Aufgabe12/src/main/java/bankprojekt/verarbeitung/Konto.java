@@ -39,8 +39,10 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 	 * @param kontostand neuer Kontostand, darf nicht null sein
 	 */
 	protected void setKontostand(Geldbetrag kontostand) {
-		if(kontostand != null)
+		if(kontostand != null) {
+			benachrichtigen();
 			this.kontostand = kontostand;
+		}
 	}
 
 	/**
@@ -131,7 +133,6 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 			throw new IllegalArgumentException("Falscher Betrag");
 		}
 		setKontostand(getKontostand().plus(betrag));
-		benachrichtigen();
 	}
 	
 	@Override
@@ -277,18 +278,18 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 	/**
 	 * enthaelt die Beschreibung des Guthabens eines Kontos
 	 */
-	private List<Beobachter> anzeigeListe = new LinkedList<>();
+	private final List<Beobachter> anzeigeListe = new LinkedList<>();
 
 	/**
-	 * benachrichtigt alle angemeldeten Beobachter
+	 * benachrichtigt dann alle angemeldeten Beobachter, wenn ein Attribut des Kontos veraendert wird
 	 */
 	protected void benachrichtigen(){
 		anzeigeListe.forEach(b->b.aktualisieren(this));
 	}
 
 	/**
-	 * meldet b am Subjekt an
-	 * @param b der neue Beobachter
+	 * meldet b am Subjekt an, der ueber Veraenderungen im Konto informiert wird
+	 * @param b der benachrichtig wird
 	 */
 	public void anmelden(Beobachter b){
 		if(b != null) // damit nicht null in die liste kommt
@@ -296,7 +297,7 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 	}
 
 	/**
-	 * meldet b am Subjekt ab
+	 * meldet b am Subjekt a, dieser wird dann nicht mehr ueber Veraenderungen im Konto informiert
 	 * @param b der zu entfernende Beobachter
 	 */
     public void abmelden(Beobachter b){

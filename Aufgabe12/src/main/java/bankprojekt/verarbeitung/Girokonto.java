@@ -60,8 +60,8 @@ public class Girokonto extends UeberweisungsfaehigesKonto implements Serializabl
 	public void setDispo(Geldbetrag dispo) {
 		if(dispo == null || dispo.isNegativ())
 			throw new IllegalArgumentException("Der Dispo ist nicht gültig!");
-		this.dispo = dispo;
 		benachrichtigen();
+		this.dispo = dispo;
 	}
 	
 	@Override
@@ -77,7 +77,6 @@ public class Girokonto extends UeberweisungsfaehigesKonto implements Serializabl
         if (!getKontostand().plus(dispo).minus(betrag).isNegativ())
         {
             setKontostand(getKontostand().minus(betrag));
-			benachrichtigen();
             return true;
         }
         else

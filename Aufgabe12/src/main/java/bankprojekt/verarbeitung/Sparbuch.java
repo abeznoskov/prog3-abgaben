@@ -10,7 +10,7 @@ import java.time.LocalDate;
  * @author Doro
  *
  */
-public class Sparbuch extends Konto implements Serializable, Beobachter {
+public class Sparbuch extends Konto implements Serializable {
 	/**
 	 * Zinssatz, mit dem das Sparbuch verzinst wird. 0,03 entspricht 3%
 	 */
@@ -90,31 +90,7 @@ protected boolean pruefeAbhebung(Geldbetrag betrag) {
 	protected void nachAbhebung(Geldbetrag betrag) {
 		// eventuell die current Month hier kontrollieren?
 		bereitsAbgehoben = bereitsAbgehoben.plus(betrag);
-		benachrichtigen();
 		zeitpunkt = LocalDate.now();
-	}
-
-	/**
-	 * wird aufgerufen, wenn sich Kontostand veaendert
-	 *
-	 * @param konto Konto das den Kontostand ausgeben soll
-	 */
-	@Override
-	public void aktualisieren(Konto konto) {
-		// Hole den aktuellen Kontostand des Kontos
-		Geldbetrag aktuellerKontostand = konto.getKontostand();
-
-		// Vergleich mit dem bisherigen Kontostand
-		if (aktuellerKontostand.compareTo(this.getKontostand()) > 0) {
-			System.out.println("Der Kontostand des Sparbuchs hat sich erhoeht: Neuer Kontostand ist " + aktuellerKontostand + ".");
-		}
-		else if (aktuellerKontostand.compareTo(this.getKontostand()) < 0) {
-			System.out.println("Der Kontostand des Sparbuchs hat sich verringert: Neuer Kontostand ist " + aktuellerKontostand + ".");
-		}
-		else { // ebenso optional, da aufgabe es nicht verlangt
-			System.out.println("Der Kontostand des Sparbuchs bleibt unveraendert bei " + aktuellerKontostand + ".");
-		}
-		this.setKontostand(aktuellerKontostand);
 	}
 
 }
