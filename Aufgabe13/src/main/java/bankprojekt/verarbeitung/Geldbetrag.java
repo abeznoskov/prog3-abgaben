@@ -78,17 +78,18 @@ public class Geldbetrag implements Comparable<Geldbetrag>, Serializable {
 	 * @return this + summand in der Währung von this
 	 * @throws IllegalArgumentException wenn summand null ist
 	 */
-	public Geldbetrag plus(Geldbetrag summand)
-	{
-		if(summand == null)
+	public Geldbetrag plus(Geldbetrag summand) {
+		if (summand == null) {
 			throw new IllegalArgumentException();
+		}
 
-		// tempoaeres Attribut für Summand
+		// Kopiere den summand, bevor wir eine Umrechnung vornehmen
 		Geldbetrag tempSummand = new Geldbetrag(summand.getBetrag(), summand.getWaehrung());
 
-		if(this.waehrung != summand.getWaehrung())
-			summand.umrechnen(this.waehrung);
-
+		// Konvertiere die Waehrung falls notwendig
+		if (!this.waehrung.equals(tempSummand.getWaehrung())) {
+			tempSummand.umrechnen(this.waehrung);
+		}
 		return new Geldbetrag(this.betrag + tempSummand.betrag, this.waehrung);
 	}
 	
@@ -98,17 +99,17 @@ public class Geldbetrag implements Comparable<Geldbetrag>, Serializable {
 	 * @return this - subtrahend in der Währung von this
 	 * @throws IllegalArgumentException wenn subtrahend null ist
 	 */
-	public Geldbetrag minus(Geldbetrag subtrahend)
-	{
-		if(subtrahend == null)
+	public Geldbetrag minus(Geldbetrag subtrahend) {
+		if (subtrahend == null) {
 			throw new IllegalArgumentException();
-
-		// tempoaeres Attribut für Subtrahend
+		}
+		// Kopiere den subtrahend für Umrechnung
 		Geldbetrag tempSubtrahend = new Geldbetrag(subtrahend.getBetrag(), subtrahend.getWaehrung());
 
-		if(this.waehrung != subtrahend.getWaehrung())
+		// Konvertiere die Währung falls notwendig
+		if (!this.waehrung.equals(tempSubtrahend.getWaehrung())) {
 			tempSubtrahend.umrechnen(this.waehrung);
-
+		}
 		return new Geldbetrag(this.betrag - tempSubtrahend.betrag, this.waehrung);
 	}
 
