@@ -37,10 +37,13 @@ public class KontoController extends Application {
         // Aufgabe 3 c):
 
         // Einzahlen Button
-        // TODO: Negative Einzahlung fixen
         kontoOberflaeche.getEinzahlenButton().setOnAction(event -> {
             try {
                 double betrag = Double.parseDouble(kontoOberflaeche.getBetrag().getText());
+                if (betrag < 0) { // keine negative Einzahlung
+                    kontoOberflaeche.getMeldung().setText("Einzahlbetrag darf nicht negativ sein.");
+                    return;
+                }
                 Waehrung waehrung = kontoOberflaeche.getWaehrung().getValue();
                 girokonto.einzahlen(new Geldbetrag(betrag, waehrung));
                 kontoOberflaeche.getMeldung().setText("Einzahlung erfolgreich.");
@@ -53,6 +56,10 @@ public class KontoController extends Application {
         kontoOberflaeche.getAbhebenButton().setOnAction(event -> {
             try {
                 double betrag = Double.parseDouble(kontoOberflaeche.getBetrag().getText());
+                if (betrag < 0) { // keine negative Abhebung
+                    kontoOberflaeche.getMeldung().setText("Abhebebetrag darf nicht negativ sein.");
+                    return;
+                }
                 Waehrung waehrung = kontoOberflaeche.getWaehrung().getValue();
                 if (girokonto.abheben(new Geldbetrag(betrag, waehrung))) {
                     kontoOberflaeche.getMeldung().setText("Abhebung erfolgreich.");
