@@ -2,7 +2,6 @@ package bankprojekt.oberflaeche;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.geometry.HPos;
@@ -11,7 +10,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -147,31 +145,47 @@ public class KontoOberflaeche extends BorderPane {
 		this.setBottom(aktionen);
 	}
 
-	// Getter-Methoden:
-
-	// Fuer Aufgabe 3 a)
+	/** Fuer Aufgabe 3 a)
+     *  Gibt den Kontostand zurueck
+     */
 	public Text getNummer() {
 		return nummer;
 	}
 
-	// Fuer Aufgabe 3 c)
+	/** Fuer Aufgabe 3 c)
+	 *  Gibt meldung zurueck
+	 */
 	public Text getMeldung() {
 		return meldung;
 	}
+	/**
+	 * Gibt den betrag zurueck
+	 */
 	public TextField getBetrag() {
 		return betrag;
 	}
+	/**
+	 * Gibt die Art der Waehrung zurueck, aus der ChoiceBox
+	 */
 	public ChoiceBox<Waehrung> getWaehrung() {
 		return waehrung;
 	}
+	/**
+	 * gibt den Button fuer das Einzahlen zurueck
+	 */
 	public Button getEinzahlenButton() {
 		return einzahlen;
 	}
+	/**
+	 * gibt den Button fuer das Abheben zurueck
+	 */
 	public Button getAbhebenButton() {
 		return abheben;
 	}
 
-	// Fuer Aufgabe 3 e)
+	/** Fuer Aufgabe 3 e)
+	 *  Gibt die Adresse des Kunden zurueck
+	 */
 	public TextArea getAdresse() {
 		return adresse;
 	}
