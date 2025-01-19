@@ -26,7 +26,7 @@ public class KontoController extends Application {
 
         // Aktualisiere die Oberfläche mit den Daten des Girokontos
         kontoOberflaeche.getNummer().setText(String.valueOf(girokonto.getKontonummer()));
-        kontoOberflaeche.getStand().setText(girokonto.getKontostand().toString());
+        kontoOberflaeche.updateKontostand(girokonto.getKontostand().toString());
         kontoOberflaeche.getGesperrt().setSelected(girokonto.isGesperrt());
         kontoOberflaeche.getAdresse().setText(girokonto.getInhaber().getAdresse());
 
@@ -36,7 +36,7 @@ public class KontoController extends Application {
                 double betrag = Double.parseDouble(kontoOberflaeche.getBetrag().getText());
                 Waehrung waehrung = kontoOberflaeche.getWaehrung().getValue();
                 girokonto.einzahlen(new Geldbetrag(betrag, waehrung));
-                kontoOberflaeche.getStand().setText(girokonto.getKontostand().toString());
+                kontoOberflaeche.updateKontostand(girokonto.getKontostand().toString());
                 kontoOberflaeche.getMeldung().setText("Einzahlung erfolgreich.");
             } catch (NumberFormatException e) {
                 kontoOberflaeche.getMeldung().setText("Ungültiger Betrag.");
@@ -48,14 +48,23 @@ public class KontoController extends Application {
                 double betrag = Double.parseDouble(kontoOberflaeche.getBetrag().getText());
                 Waehrung waehrung = kontoOberflaeche.getWaehrung().getValue();
                 if (girokonto.abheben(new Geldbetrag(betrag, waehrung))) {
-                    kontoOberflaeche.getStand().setText(girokonto.getKontostand().toString());
+                    kontoOberflaeche.updateKontostand(girokonto.getKontostand().toString());
                     kontoOberflaeche.getMeldung().setText("Abhebung erfolgreich.");
                 } else {
                     kontoOberflaeche.getMeldung().setText("Abhebung nicht möglich.");
                 }
             } catch (NumberFormatException | GesperrtException e) {
-                kontoOberflaeche.getMeldung().setText("Ungültiger Betrag.");
+                kontoOberflaeche.getMeldung().setText("Ungültiger Betrag oder Konto gesperrt.");
             }
+        });
+
+        // Im KontoController.java
+        kontoOberflaeche.getGesperrt().setOnAction(event -> {
+            //girokonto.setGesperrt(kontoOberflaeche.getGesperrt().isSelected());
+        });
+
+        kontoOberflaeche.getAdresse().textProperty().addListener((observable, oldValue, newValue) -> {
+            girokonto.getInhaber().setAdresse(newValue);
         });
 
         // Erstelle eine Szene mit der KontoOberflaeche

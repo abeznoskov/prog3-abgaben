@@ -84,6 +84,8 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 		return gesperrt;
 	}
 
+
+
 	/**
 	 * Setzt die beiden Eigenschaften kontoinhaber und kontonummer auf die angegebenen Werte,
 	 * der anfängliche Kontostand wird auf 0 gesetzt.

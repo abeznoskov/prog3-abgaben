@@ -134,4 +134,18 @@ public class KontoOberflaeche extends BorderPane {
 	public Button getAbhebenButton() {
 		return abheben;
 	}
+
+	public void updateKontostand(String kontostand) {
+		stand.setText(kontostand);
+		try {
+			double wert = Double.parseDouble(kontostand);
+			if (wert < 0) {
+				stand.setFill(Color.RED); // Negativer Kontostand
+			} else {
+				stand.setFill(Color.GREEN); // Positiver Kontostand
+			}
+		} catch (NumberFormatException e) {
+			stand.setFill(Color.BLACK); // Fehlerbehandlung
+		}
+	}
 }
