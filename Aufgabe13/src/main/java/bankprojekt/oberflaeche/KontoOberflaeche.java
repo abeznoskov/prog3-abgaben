@@ -20,7 +20,7 @@ import bankprojekt.geld.Waehrung;
 
 /**
  * Eine Oberfläche für ein einzelnes Konto. Man kann einzahlen
- * und abheben und sperren und die Adresse des Kontoinhabers 
+ * und abheben und sperren und die Adresse des Kontoinhabers
  * ändern
  * @author Doro
  *
@@ -69,7 +69,7 @@ public class KontoOberflaeche extends BorderPane {
 	 * löst eine Abhebung aus
 	 */
 	private Button abheben;
-	
+
 	/**
 	 * erstellt die Oberfläche
 	 */
@@ -79,12 +79,12 @@ public class KontoOberflaeche extends BorderPane {
 		ueberschrift.setFont(new Font("Sans Serif", 25));
 		BorderPane.setAlignment(ueberschrift, Pos.CENTER);
 		this.setTop(ueberschrift);
-		
+
 		anzeige = new GridPane();
 		anzeige.setPadding(new Insets(20));
 		anzeige.setVgap(10);
 		anzeige.setAlignment(Pos.CENTER);
-		
+
 		txtNummer = new Text("Kontonummer:");
 		txtNummer.setFont(new Font("Sans Serif", 15));
 		anzeige.add(txtNummer, 0, 0);
@@ -92,7 +92,7 @@ public class KontoOberflaeche extends BorderPane {
 		nummer.setFont(new Font("Sans Serif", 15));
 		GridPane.setHalignment(nummer, HPos.RIGHT);
 		anzeige.add(nummer, 1, 0);
-		
+
 		txtStand = new Text("Kontostand:");
 		txtStand.setFont(new Font("Sans Serif", 15));
 		anzeige.add(txtStand, 0, 1);
@@ -100,14 +100,14 @@ public class KontoOberflaeche extends BorderPane {
 		stand.setFont(new Font("Sans Serif", 15));
 		GridPane.setHalignment(stand, HPos.RIGHT);
 		anzeige.add(stand, 1, 1);
-		
+
 		txtGesperrt = new Text("Gesperrt: ");
 		txtGesperrt.setFont(new Font("Sans Serif", 15));
 		anzeige.add(txtGesperrt, 0, 2);
 		gesperrt = new CheckBox();
 		GridPane.setHalignment(gesperrt, HPos.RIGHT);
 		anzeige.add(gesperrt, 1, 2);
-		
+
 		txtAdresse = new Text("Adresse: ");
 		txtAdresse.setFont(new Font("Sans Serif", 15));
 		anzeige.add(txtAdresse, 0, 3);
@@ -116,18 +116,18 @@ public class KontoOberflaeche extends BorderPane {
 		adresse.setPrefRowCount(2);
 		GridPane.setHalignment(adresse, HPos.RIGHT);
 		anzeige.add(adresse, 1, 3);
-		
+
 		meldung = new Text("Willkommen lieber Benutzer");
 		meldung.setFont(new Font("Sans Serif", 15));
 		meldung.setFill(Color.RED);
 		anzeige.add(meldung,  0, 4, 2, 1);
-		
+
 		this.setCenter(anzeige);
-		
+
 		aktionen = new HBox();
 		aktionen.setSpacing(10);
 		aktionen.setAlignment(Pos.CENTER);
-		
+
 		betrag = new TextField("100.00");
 		waehrung = new ChoiceBox();
 		waehrung.setItems(FXCollections.observableArrayList(Waehrung.values()));
@@ -138,7 +138,9 @@ public class KontoOberflaeche extends BorderPane {
 		aktionen.getChildren().add(einzahlen);
 		abheben = new Button("Abheben");
 		aktionen.getChildren().add(abheben);
-		
+
 		this.setBottom(aktionen);
+
+
 	}
 }

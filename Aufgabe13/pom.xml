@@ -131,6 +131,23 @@
                 </executions>
             </plugin>
 
+            <!-- Plugin fuer JavaFx -->
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version> <!-- Stellen Sie sicher, dass die Version stimmt -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>bankprojekt.controller.KontoController</mainClass> <!-- Ihr Hauptklasse -->
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
