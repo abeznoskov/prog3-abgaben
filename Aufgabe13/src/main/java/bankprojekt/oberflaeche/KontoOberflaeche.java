@@ -1,5 +1,9 @@
 package bankprojekt.oberflaeche;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleWrapper;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -7,40 +11,86 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.control.TextField;
 import bankprojekt.geld.Waehrung;
+import javafx.beans.binding.Bindings;
 
+/**
+ * Eine Oberfläche für ein einzelnes Konto. Man kann einzahlen
+ * und abheben und sperren und die Adresse des Kontoinhabers 
+ * ändern
+ * @author Doro
+ *
+ */
 public class KontoOberflaeche extends BorderPane {
-
+	private Text ueberschrift;
+	private GridPane anzeige;
+	private Text txtNummer;
+	/**
+	 * Anzeige der Kontonummer
+	 */
 	private Text nummer;
+	private Text txtStand;
+	/**
+	 * Anzeige des Kontostandes
+	 */
 	private Text stand;
+	private Text txtGesperrt;
+	/**
+	 * Anzeige und Änderung des Gesperrt-Zustandes
+	 */
 	private CheckBox gesperrt;
+	private Text txtAdresse;
+	/**
+	 * Anzeige und Änderung der Adresse des Kontoinhabers
+	 */
 	private TextArea adresse;
+	/**
+	 * Anzeige von Meldungen über Kontoaktionen
+	 */
 	private Text meldung;
+	private HBox aktionen;
+	/**
+	 * Auswahl des Betrags für eine Kontoaktion
+	 */
 	private TextField betrag;
+	/**
+	 * Auswahl für die Währung des Betrages für eine Kontoaktion
+	 */
 	private ChoiceBox<Waehrung> waehrung;
+	/**
+	 * löst eine Einzahlung aus
+	 */
 	private Button einzahlen;
+	/**
+	 * löst eine Abhebung aus
+	 */
 	private Button abheben;
 
-	public KontoOberflaeche() {
-		Text ueberschrift = new Text("Ein Konto verändern");
+	/**
+	 * erstellt die Oberfläche
+	 */
+	public KontoOberflaeche()
+	{
+		ueberschrift = new Text("Ein Konto verändern");
 		ueberschrift.setFont(new Font("Sans Serif", 25));
 		BorderPane.setAlignment(ueberschrift, Pos.CENTER);
 		this.setTop(ueberschrift);
 
-		GridPane anzeige = new GridPane();
+		anzeige = new GridPane();
 		anzeige.setPadding(new Insets(20));
 		anzeige.setVgap(10);
 		anzeige.setAlignment(Pos.CENTER);
 
-		Text txtNummer = new Text("Kontonummer:");
+		txtNummer = new Text("Kontonummer:");
 		txtNummer.setFont(new Font("Sans Serif", 15));
 		anzeige.add(txtNummer, 0, 0);
 		nummer = new Text();
@@ -48,7 +98,7 @@ public class KontoOberflaeche extends BorderPane {
 		GridPane.setHalignment(nummer, HPos.RIGHT);
 		anzeige.add(nummer, 1, 0);
 
-		Text txtStand = new Text("Kontostand:");
+		txtStand = new Text("Kontostand:");
 		txtStand.setFont(new Font("Sans Serif", 15));
 		anzeige.add(txtStand, 0, 1);
 		stand = new Text();
@@ -56,14 +106,14 @@ public class KontoOberflaeche extends BorderPane {
 		GridPane.setHalignment(stand, HPos.RIGHT);
 		anzeige.add(stand, 1, 1);
 
-		Text txtGesperrt = new Text("Gesperrt: ");
+		txtGesperrt = new Text("Gesperrt: ");
 		txtGesperrt.setFont(new Font("Sans Serif", 15));
 		anzeige.add(txtGesperrt, 0, 2);
 		gesperrt = new CheckBox();
 		GridPane.setHalignment(gesperrt, HPos.RIGHT);
 		anzeige.add(gesperrt, 1, 2);
 
-		Text txtAdresse = new Text("Adresse: ");
+		txtAdresse = new Text("Adresse: ");
 		txtAdresse.setFont(new Font("Sans Serif", 15));
 		anzeige.add(txtAdresse, 0, 3);
 		adresse = new TextArea();
@@ -75,16 +125,16 @@ public class KontoOberflaeche extends BorderPane {
 		meldung = new Text("Willkommen lieber Benutzer");
 		meldung.setFont(new Font("Sans Serif", 15));
 		meldung.setFill(Color.RED);
-		anzeige.add(meldung, 0, 4, 2, 1);
+		anzeige.add(meldung,  0, 4, 2, 1);
 
 		this.setCenter(anzeige);
 
-		HBox aktionen = new HBox();
+		aktionen = new HBox();
 		aktionen.setSpacing(10);
 		aktionen.setAlignment(Pos.CENTER);
 
 		betrag = new TextField("100.00");
-		waehrung = new ChoiceBox<>();
+		waehrung = new ChoiceBox();
 		waehrung.setItems(FXCollections.observableArrayList(Waehrung.values()));
 		waehrung.getSelectionModel().select(0);
 		aktionen.getChildren().add(betrag);
@@ -97,55 +147,64 @@ public class KontoOberflaeche extends BorderPane {
 		this.setBottom(aktionen);
 	}
 
-	// Getter-Methoden
+	// Getter-Methoden:
 
+	// Fuer Aufgabe 3 a)
 	public Text getNummer() {
 		return nummer;
 	}
 
-	public Text getStand() {
-		return stand;
-	}
-
-	public CheckBox getGesperrt() {
-		return gesperrt;
-	}
-
-	public TextArea getAdresse() {
-		return adresse;
-	}
-
+	// Fuer Aufgabe 3 c)
 	public Text getMeldung() {
 		return meldung;
 	}
-
 	public TextField getBetrag() {
 		return betrag;
 	}
-
 	public ChoiceBox<Waehrung> getWaehrung() {
 		return waehrung;
 	}
-
 	public Button getEinzahlenButton() {
 		return einzahlen;
 	}
-
 	public Button getAbhebenButton() {
 		return abheben;
 	}
 
-	public void updateKontostand(String kontostand) {
-		stand.setText(kontostand);
-		try {
-			double wert = Double.parseDouble(kontostand);
-			if (wert < 0) {
-				stand.setFill(Color.RED); // Negativer Kontostand
-			} else {
-				stand.setFill(Color.GREEN); // Positiver Kontostand
-			}
-		} catch (NumberFormatException e) {
-			stand.setFill(Color.BLACK); // Fehlerbehandlung
-		}
+	// Fuer Aufgabe 3 e)
+	public TextArea getAdresse() {
+		return adresse;
+	}
+
+
+	/** Aufgabe 3 b)
+	 * Methode bindet die ReadOnlyKontostand an dem anzuzeigenden stand
+	 * und faebrt diese anhand des Kontostandes gruen/rot
+	 * @param readOnlyKontostand der Kontostand als ReadOnly
+	 */
+	public void bindToModel(ReadOnlyDoubleProperty readOnlyKontostand) {
+		stand.textProperty().bind(Bindings.format("%.2f", readOnlyKontostand));
+
+		stand.fillProperty().bind(Bindings.createObjectBinding(() -> {
+			double currentValue = readOnlyKontostand.get();
+			return currentValue < 0 ? Color.RED : Color.GREEN;
+		}, readOnlyKontostand));
+	}
+
+	/** Aufgabe 3 d)
+	 *  Methode, um die gesperrtProperty des Kontos mit der CheckBox zu verbinden
+	 * 	bindet die Checkbox bidirectional an die gesperrtProperty des Kontos
+	 *  @param gesperrtProperty gesperrt Status als ReadOnly
+	 */
+	public void bindGesperrtToModel(BooleanProperty gesperrtProperty) {
+		gesperrt.selectedProperty().bindBidirectional(gesperrtProperty);
+	}
+
+	/** Aufgabe 3 e)
+	 * Bindet die TextArea bidirectional an die Adresse des Kunden
+	 * @param adresseProperty adresse Property des Kunden
+	 */
+	public void bindAdresseToModel(StringProperty adresseProperty) {
+		adresse.textProperty().bindBidirectional(adresseProperty);
 	}
 }

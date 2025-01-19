@@ -24,59 +24,49 @@ public class KontoController extends Application {
         // Erstelle eine Instanz von KontoOberflaeche
         KontoOberflaeche kontoOberflaeche = new KontoOberflaeche();
 
-        // Aktualisiere die Oberfläche mit den Daten des Girokontos
-        kontoOberflaeche.getNummer().setText(String.valueOf(girokonto.getKontonummer()));
-        kontoOberflaeche.updateKontostand(girokonto.getKontostand().toString());
-        kontoOberflaeche.getGesperrt().setSelected(girokonto.isGesperrt());
-        kontoOberflaeche.getAdresse().setText(girokonto.getInhaber().getAdresse());
 
-        // Setze Ereignis-Handler für die Oberfläche
+        // Aufgabe 3 a) Kontonummer darstellen
+        kontoOberflaeche.getNummer().setText(String.valueOf(girokonto.getKontonummer()));
+        // Aufgabe 3 b) Kontostand mit Bind
+        kontoOberflaeche.bindToModel(girokonto.kontostandProperty());
+        // Aufgabe 3 d) BirectionalBind des gesperrt-Status
+        kontoOberflaeche.bindGesperrtToModel(girokonto.gesperrtProperty());
+        // Aufgabe 3 e) BirectionalBind der Adresse
+        kontoOberflaeche.bindAdresseToModel(kunde.adresseProperty());
+
+        // Aufgabe 3 c):
+
+        // Einzahlen Button
+        // TODO: Negative Einzahlung fixen
         kontoOberflaeche.getEinzahlenButton().setOnAction(event -> {
             try {
                 double betrag = Double.parseDouble(kontoOberflaeche.getBetrag().getText());
                 Waehrung waehrung = kontoOberflaeche.getWaehrung().getValue();
                 girokonto.einzahlen(new Geldbetrag(betrag, waehrung));
-                kontoOberflaeche.updateKontostand(girokonto.getKontostand().toString());
                 kontoOberflaeche.getMeldung().setText("Einzahlung erfolgreich.");
             } catch (NumberFormatException e) {
-                kontoOberflaeche.getMeldung().setText("Ungültiger Betrag.");
+                kontoOberflaeche.getMeldung().setText("Ungueltiger Betrag.");
             }
         });
-
+        // Abheben Button
+        // TODO: Negative Abhebung fixen
         kontoOberflaeche.getAbhebenButton().setOnAction(event -> {
             try {
                 double betrag = Double.parseDouble(kontoOberflaeche.getBetrag().getText());
                 Waehrung waehrung = kontoOberflaeche.getWaehrung().getValue();
                 if (girokonto.abheben(new Geldbetrag(betrag, waehrung))) {
-                    kontoOberflaeche.updateKontostand(girokonto.getKontostand().toString());
                     kontoOberflaeche.getMeldung().setText("Abhebung erfolgreich.");
                 } else {
-                    kontoOberflaeche.getMeldung().setText("Abhebung nicht möglich.");
+                    kontoOberflaeche.getMeldung().setText("Abhebung nicht moeglich.");
                 }
             } catch (NumberFormatException | GesperrtException e) {
-                kontoOberflaeche.getMeldung().setText("Ungültiger Betrag oder Konto gesperrt.");
+                kontoOberflaeche.getMeldung().setText("Ungueltiger Betrag oder Konto gesperrt.");
             }
         });
 
-        // Im KontoController.java
-        kontoOberflaeche.getGesperrt().setOnAction(event -> {
-            //girokonto.setGesperrt(kontoOberflaeche.getGesperrt().isSelected());
-        });
-
-        kontoOberflaeche.getAdresse().textProperty().addListener((observable, oldValue, newValue) -> {
-            girokonto.getInhaber().setAdresse(newValue);
-        });
-
-        // Erstelle eine Szene mit der KontoOberflaeche
         Scene scene = new Scene(kontoOberflaeche, 800, 600); // Größe der Szene anpassen nach Bedarf
-
-        // Setze den Titel des Fensters
         primaryStage.setTitle("Konto Verwaltung");
-
-        // Setze die Szene auf die Bühne
         primaryStage.setScene(scene);
-
-        // Zeige die Bühne
         primaryStage.show();
     }
 }
