@@ -1,6 +1,8 @@
 package bankprojekt.verarbeitung;
 
 import bankprojekt.geld.Waehrung;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleWrapper;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -33,15 +35,25 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 	 * der aktuelle Kontostand
 	 */
 	private Geldbetrag kontostand;
+	private ReadOnlyDoubleWrapper readOnlyKontostand = new ReadOnlyDoubleWrapper();
+
+	/**
+	 * Der Kontostand der Klasse Konto soll als Property verfuegbar sein.
+	 * @return kontostand als ReadOnly
+	 */
+	public ReadOnlyDoubleProperty kontostandProperty() {
+		return this.readOnlyKontostand.getReadOnlyProperty();
+	}
 
 	/**
 	 * setzt den aktuellen Kontostand
-	 * @param kontostand neuer Kontostand, darf nicht null sein
+	 * @param betrag neuer Kontostand, darf nicht null sein
 	 */
-	protected void setKontostand(Geldbetrag kontostand) {
-		if(kontostand != null) {
+	protected void setKontostand(Geldbetrag betrag) {
+		if(betrag != null) {
+			this.kontostand = betrag;
+			this.readOnlyKontostand.set(betrag.getBetrag());
 			benachrichtigen();
-			this.kontostand = kontostand;
 		}
 	}
 
@@ -64,7 +76,9 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 			throw new IllegalArgumentException("Inhaber darf nicht null sein!");
 		this.inhaber = inhaber;
 		this.nummer = kontonummer;
-		this.kontostand = new Geldbetrag();
+		// TODO das kann nicht richtig sein ???
+		this.kontostand = new Geldbetrag(0);
+		this.readOnlyKontostand.set(kontostand.getBetrag());
 		this.gesperrt = false;
 	}
 	
@@ -100,7 +114,8 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 	
 	/**
 	 * liefert den aktuellen Kontostand
-	 * @return   Kontostand
+	 *
+	 * @return Kontostand
 	 */
 	public Geldbetrag getKontostand() {
 		return kontostand;
@@ -271,6 +286,7 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 	public void waehrungswechsel(Waehrung neu){
 		if(neu == null)
 			throw new IllegalArgumentException("Die Zielwährung darf nicht null sein!");
+		// TODO: fix needed ?
 		kontostand.umrechnen(neu);
 	}
 
