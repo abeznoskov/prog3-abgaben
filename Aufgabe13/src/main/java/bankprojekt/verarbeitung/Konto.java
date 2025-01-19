@@ -1,8 +1,7 @@
 package bankprojekt.verarbeitung;
 
 import bankprojekt.geld.Waehrung;
-import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.ReadOnlyDoubleWrapper;
+import javafx.beans.property.*;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -45,6 +44,21 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 		return this.readOnlyKontostand.getReadOnlyProperty();
 	}
 
+
+	/**
+	 * Boolesche Property, die zeigt, ob der Kontostand im Plus oder Minus ist
+	 *
+	 */
+	private ReadOnlyBooleanWrapper isPositiv = new ReadOnlyBooleanWrapper();
+
+	/**
+	 * gibt Property zurueck, die zeit, ob Kontostand im Plus oder Minus gerade befindet.
+	 * @return isPositiv als ReadOnly
+	 */
+	public ReadOnlyBooleanProperty isPositivProperty() {
+		return isPositiv.getReadOnlyProperty();
+	}
+
 	/**
 	 * setzt den aktuellen Kontostand
 	 * @param betrag neuer Kontostand, darf nicht null sein
@@ -54,6 +68,8 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 			this.kontostand = betrag;
 			this.readOnlyKontostand.set(betrag.getBetrag());
 			benachrichtigen();
+            this.isPositiv.set(!betrag.isNegativ());
+
 		}
 	}
 
@@ -61,7 +77,12 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 	 * Wenn das Konto gesperrt ist (gesperrt = true), können keine Aktionen daran mehr vorgenommen werden,
 	 * die zum Schaden des Kontoinhabers wären (abheben, Inhaberwechsel)
 	 */
-	private boolean gesperrt;
+	//private boolean gesperrt;
+	private final SimpleBooleanProperty gesperrt = new SimpleBooleanProperty(false);
+
+	public BooleanProperty gesperrtProperty() {
+		return gesperrt;
+	}
 
 	/**
 	 * Setzt die beiden Eigenschaften kontoinhaber und kontonummer auf die angegebenen Werte,
@@ -79,7 +100,8 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 		// TODO das kann nicht richtig sein ???
 		this.kontostand = new Geldbetrag(0);
 		this.readOnlyKontostand.set(kontostand.getBetrag());
-		this.gesperrt = false;
+		this.gesperrt.set(false);
+		this.isPositiv.set(kontostand.getBetrag() > 0);
 	}
 	
 	/**
@@ -106,12 +128,12 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 	public void setInhaber(Kunde kinh) throws GesperrtException{
 		if (kinh == null)
 			throw new IllegalArgumentException("Der Inhaber darf nicht null sein!");
-		if(this.gesperrt)
+		if(this.isGesperrt())
 			throw new GesperrtException(this.nummer);        
 		this.inhaber = kinh;
 
 	}
-	
+
 	/**
 	 * liefert den aktuellen Kontostand
 	 *
@@ -134,14 +156,14 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 	 * @return true, wenn das Konto gesperrt ist
 	 */
 	public boolean isGesperrt() {
-		return gesperrt;
+		return gesperrt.get();
 	}
-	
+
 	/**
 	 * Erhöht den Kontostand um den eingezahlten Betrag.
 	 *
 	 * @param betrag double
-	 * @throws IllegalArgumentException wenn der betrag negativ ist 
+	 * @throws IllegalArgumentException wenn der betrag negativ ist
 	 */
 	public void einzahlen(Geldbetrag betrag) {
 		if (betrag == null || betrag.isNegativ()) {
@@ -149,7 +171,7 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 		}
 		setKontostand(getKontostand().plus(betrag));
 	}
-	
+
 	@Override
 	public String toString() {
 		String ausgabe;
@@ -206,14 +228,15 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 	 * sperrt das Konto, Aktionen zum Schaden des Benutzers sind nicht mehr möglich.
 	 */
 	public void sperren() {
-		this.gesperrt = true;
+		this.gesperrt.set(true);
 	}
 
 	/**
 	 * entsperrt das Konto, alle Kontoaktionen sind wieder möglich.
 	 */
 	public void entsperren() {
-		this.gesperrt = false;
+		// oder? setGesperrt(false)
+		this.gesperrt.set(false);
 	}
 	
 	
@@ -223,7 +246,7 @@ public abstract class Konto implements Comparable<Konto>, Serializable
 	 */
 	public String getGesperrtText()
 	{
-		if (this.gesperrt)
+		if (this.isGesperrt())
 		{
 			return "GESPERRT";
 		}
